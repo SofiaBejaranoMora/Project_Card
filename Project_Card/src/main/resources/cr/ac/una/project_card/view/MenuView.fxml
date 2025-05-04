@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="SystemBackground" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.MenuController">
+   <children>
+      <HBox alignment="CENTER" layoutX="85.0" layoutY="73.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <MFXButton id="MenuSessionAndAdjust" fx:id="btnSettings" onAction="#onActionBtnSettings" stylesheets="@Style.css" text=" . . . " VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets left="5.0" top="5.0" />
+                     </VBox.margin>
+                  </MFXButton>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label id="MenuLabel" stylesheets="@Style.css" text="Menú" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <MFXButton id="MenuButton" fx:id="btnNew" onAction="#onActionBtnNew" stylesheets="@Style.css" text="Nuevo" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </MFXButton>
+                  <MFXButton id="MenuButton" fx:id="btnContinue" onAction="#onActionBtnContinue" stylesheets="@Style.css" text="Seguir" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </MFXButton>
+                  <MFXButton id="MenuButton" fx:id="btnAchievements" onAction="#onActionBtnAchievements" stylesheets="@Style.css" text="Logros" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </MFXButton>
+                  <MFXButton id="MenuButton" fx:id="btnCloseSession" onAction="#OnActionBtnCloseSession" stylesheets="@Style.css" text="Cerrar Sesión" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </MFXButton>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button id="MenuSessionAndAdjust" fx:id="btnSession" mnemonicParsing="false" onAction="#onActionBtnSession" stylesheets="@Style.css">
+                     <graphic>
+                        <ImageView fx:id="mgvUserPorfile" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

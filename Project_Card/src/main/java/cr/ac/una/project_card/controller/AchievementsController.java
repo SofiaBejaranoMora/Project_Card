@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 
 /** * FXML Controller class * * @author ashly */
-public class PointsController implements Initializable {
+public class AchievementsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

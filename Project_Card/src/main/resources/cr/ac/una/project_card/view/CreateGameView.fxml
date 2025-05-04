@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="SystemBackground" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.CreateGameController">
+   <children>
+      <VBox alignment="CENTER" layoutX="96.0" layoutY="43.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label id="MenuLabel" stylesheets="@Style.css" text="Nueva Partida">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="71.0" prefWidth="602.0">
+               <children>
+                  <Label styleClass="Label" stylesheets="@Style.css" text="Nombre de la partida: " HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <MFXTextField fx:id="txfNameGame" maxWidth="1.7976931348623157E308" onKeyPressed="#onKeyPressed" styleClass="TextField" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" right="10.0" />
+                     </HBox.margin>
+                  </MFXTextField>
+               </children>
+            </HBox>
+            <Label styleClass="Label" stylesheets="@Style.css" text="Dificultad" />
+            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <ImageView fx:id="mgvEasyMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="16.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="mgvMediumMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="60.0" right="60.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="mgvHardMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets right="16.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

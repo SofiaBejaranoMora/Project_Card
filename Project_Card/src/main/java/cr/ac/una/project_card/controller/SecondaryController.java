@@ -1,5 +1,6 @@
-package cr.ac.una.project_card;
+package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.App;
 import java.io.IOException;
 import javafx.fxml.FXML;
 

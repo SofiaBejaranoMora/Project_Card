@@ -1,0 +1,121 @@
+*{
+    -fx-green-background-color: #006600;
+    -fx-white-text-color: #fff;
+    -fx-black-text-color: #000;
+}
+
+.SystemBackground {
+    -fx-background-image: url("../resources/ProgramImages/SystemBackground.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 100% 100%;
+    -fx-background-position: center center;
+}
+
+.BackIcon {
+    -fx-image: url("../resources/ProgramImages/BackIcon.png");
+}
+
+.WebIcon {
+    -fx-image: url("../resources/ProgramImages/WebIcon.png");
+}
+
+.FullScreenIcon {
+    -fx-image: url("../resources/ProgramImages/FullScreenIcon.png");
+}
+
+.MinimizeScreenIcon {
+    -fx-image: url("../resources/ProgramImages/MinimizeScreenIcon.png");
+}
+
+.SettingsIcon {
+    -fx-image: url("../resources/ProgramImages/SettingsIcon.png");
+}
+
+.CardsIcon {
+    -fx-image: url("../resources/ProgramImages/CardsIcon.png");
+}
+
+.CluesIcon {
+    -fx-image: url("../resources/ProgramImages/CluesIcon.png");
+}
+
+.UndoIcon {
+    -fx-image: url("../resources/ProgramImages/UndoIcon.png");
+}
+
+.ExitIcon {
+    -fx-image: url("../resources/ProgramImages/ExitIcon.png");
+}
+
+#GameHBox {
+    -fx-background-color: -fx-green-background-color;
+}
+
+#GameLabel {
+    -fx-font-size: 18px;
+    -fx-text-fill: -fx-white-text-color;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(153, 153, 153, 1), 5, 0, 0, 1);
+}
+
+#GameButton {
+    -fx-background-color: -fx-green-background-color;
+    -fx-border-color: -fx-white-text-color;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-white-text-color;
+    -fx-font-weight: bold;
+    -fx-padding: 3px;
+}
+
+#MenuLabel {
+    -fx-font-size: 40px;
+    -fx-text-fill: -fx-black-text-color;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(153, 153, 153, 1), 5, 0, 0, 1);
+}
+
+#MenuButton {
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-black-text-color;
+    -fx-min-width: 170px;
+    -fx-pref-width: 170px;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+    -fx-font-size: 25px;
+    -fx-text-fill: -fx-black-text-color;
+    -fx-font-weight: bold;
+    -fx-padding: 3px;
+}
+
+#MenuSessionAndAdjust {
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-black-text-color;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-black-text-color;
+    -fx-font-weight: bold;
+    -fx-padding: 3px;
+}
+
+.Label {
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-black-text-color;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(153, 153, 153, 1), 5, 0, 0, 1);
+}
+
+.TextField {
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-black-text-color;
+    -fx-border-width: 3;
+    -fx-border-radius: 15;
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-black-text-color;
+    -fx-font-weight: bold;
+}

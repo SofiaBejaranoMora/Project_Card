@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
 
 /** * FXML Controller class * * @author ashly */
 public class MenuController implements Initializable {
@@ -21,16 +20,9 @@ public class MenuController implements Initializable {
     @FXML
     private MFXButton btnAchievements;
     @FXML
-    private MFXButton btnCloseSession;
+    private MFXButton btnStartSession;
     @FXML
-    private Button btnSession;
-    @FXML
-    private ImageView mgvUserPorfile;
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+    private Button btnExit;
 
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
@@ -49,11 +41,16 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    private void OnActionBtnCloseSession(ActionEvent event) {
+    private void OnActionBtnStartSession(ActionEvent event) {
     }
 
     @FXML
-    private void onActionBtnSession(ActionEvent event) {
+    private void onActionBtnExit(ActionEvent event) {
     }
     
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
+
 }

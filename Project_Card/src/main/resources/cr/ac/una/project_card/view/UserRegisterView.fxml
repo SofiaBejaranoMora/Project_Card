@@ -7,8 +7,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="SystemBackground" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.UserRegisterController">
    <children>
@@ -18,7 +18,7 @@
                <children>
                   <ImageView fx:id="mgvUserPhoto" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <VBox.margin>
-                        <Insets top="14.0" />
+                        <Insets />
                      </VBox.margin>
                   </ImageView>
                </children>
@@ -48,11 +48,12 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </MFXButton>
-                  <MFXButton id="MenuButton" fx:id="btnCloseSession" onAction="#onActionBtnCloseSession" stylesheets="@Style.css" text="Cerrar Sesión">
-                     <HBox.margin>
-                        <Insets left="20.0" />
-                     </HBox.margin>
-                  </MFXButton>
+                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <MFXButton id="MenuButton" fx:id="btnStartSession" onAction="#onActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión" />
+                        <MFXButton id="MenuButton" fx:id="btnCloseSession" onAction="#onActionBtnCloseSession" stylesheets="@Style.css" text="Cerrar Sesión" visible="false" />
+                     </children>
+                  </StackPane>
                </children>
             </HBox>
          </children>

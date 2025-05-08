@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -44,7 +45,7 @@
                         <Insets top="15.0" />
                      </VBox.margin>
                   </MFXButton>
-                  <MFXButton id="MenuButton" fx:id="btnCloseSession" onAction="#OnActionBtnCloseSession" stylesheets="@Style.css" text="Cerrar Sesión" VBox.vgrow="ALWAYS">
+                  <MFXButton id="MenuButton" fx:id="btnStartSession" onAction="#OnActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
@@ -53,9 +54,13 @@
             </VBox>
             <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button id="MenuSessionAndAdjust" fx:id="btnSession" mnemonicParsing="false" onAction="#onActionBtnSession" stylesheets="@Style.css">
+                  <Button id="MenuSessionAndAdjust" fx:id="btnExit" mnemonicParsing="false" onAction="#onActionBtnExit" stylesheets="@Style.css">
                      <graphic>
-                        <ImageView fx:id="mgvUserPorfile" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <styleClass>
+                              <String fx:value="CluesIcon" />
+                              <String fx:value="ExitIcon" />
+                           </styleClass></ImageView>
                      </graphic>
                      <VBox.margin>
                         <Insets right="5.0" top="5.0" />

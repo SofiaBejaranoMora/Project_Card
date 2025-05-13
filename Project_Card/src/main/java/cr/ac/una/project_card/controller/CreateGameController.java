@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 
 /** * FXML Controller class * * @author ashly */
-public class CreateGameController implements Initializable {
+public class CreateGameController extends Controller implements Initializable {
 
     @FXML
     private MFXTextField txfNameGame;
@@ -19,6 +19,26 @@ public class CreateGameController implements Initializable {
     private ImageView mgvMediumMode;
     @FXML
     private ImageView mgvHardMode;
+   
+    
+      //Clase auxiliar para manejar cartas
+    
+    public static class DynamicCard{
+        private Boolean isTurned;
+        private String frontImageName;
+        private String backImageName;
+        
+        public DynamicCard(){
+            isTurned=false;
+            frontImageName=null;
+            backImageName="temporaryIshakan";
+        }
+        
+        public void setFrontImage(String frontImagePath){
+            frontImageName=frontImagePath;
+        }
+    }
+   
     
     @FXML
     private void onKeyPressed(KeyEvent event) {
@@ -28,5 +48,13 @@ public class CreateGameController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @Override
+    public void initialize() {
+    }
+    
+    public void setCardImage(){
+        
+    }
 
 }

@@ -2,6 +2,7 @@
     -fx-green-background-color: #006600;
     -fx-white-text-color: #fff;
     -fx-black-text-color: #000;
+    -fx-global-font: url("../resources/Program/FredokaOne-Regular.ttf");
 }
 
 .SystemBackground {
@@ -89,6 +90,13 @@
     -fx-text-fill: -fx-black-text-color;
     -fx-font-weight: bold;
     -fx-padding: 3px;
+}
+
+#MenuButton:hover {
+    -fx-background-color: -fx-black-text-color;
+    -fx-text-fill: -fx-white-text-color;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
 }
 
 #MenuSessionAndAdjust {

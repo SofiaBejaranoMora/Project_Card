@@ -37,10 +37,14 @@ public class UserRegisterController extends Controller implements Initializable 
 
     @FXML
     private void onActionBtnStartSession(ActionEvent event) {
+        btnStartSession.setVisible(false);
+        btnCloseSession.setVisible(true);
     }
 
     @FXML
     private void onActionBtnCloseSession(ActionEvent event) {
+        btnCloseSession.setVisible(false);
+        btnStartSession.setVisible(true);
     }
     
     @FXML

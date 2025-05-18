@@ -1,5 +1,6 @@
 *{
     -fx-green-background-color: #006600;
+    -fx-ligthblue-background-color: #99ccff;
     -fx-white-text-color: #fff;
     -fx-black-text-color: #000;
     -fx-global-font: url("../resources/Program/FredokaOne-Regular.ttf");
@@ -141,4 +142,25 @@
     -fx-border-width: 3px;
     -fx-border-style: solid;
     -fx-border-radius: 5px;
+}
+
+.tab-pane .tab-header-area .tab-header-background  {
+    -fx-background-color: black;
+}
+.tab-pane .tab {
+    -fx-background-color: black;
+    -fx-border-radius: 5px;
+}
+.tab-pane .tab .tab-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: -fx-ligthblue-background-color;
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab:selected .tab-label {
+     -fx-text-fill: black;
 }

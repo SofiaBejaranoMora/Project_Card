@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
 /*** FXML Controller class * * @author ashly */
-public class GameController implements Initializable {
+public class GameController extends Controller implements Initializable {
 
     @FXML
     private MFXButton btnBack;
@@ -64,5 +64,10 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @Override
+    public void initialize() {
+        
+    }
 
 }

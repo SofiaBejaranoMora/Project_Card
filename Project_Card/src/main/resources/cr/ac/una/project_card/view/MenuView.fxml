@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -56,11 +55,7 @@
                <children>
                   <Button id="MenuSessionAndAdjust" fx:id="btnExit" mnemonicParsing="false" onAction="#onActionBtnExit" stylesheets="@Style.css">
                      <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <styleClass>
-                              <String fx:value="CluesIcon" />
-                              <String fx:value="ExitIcon" />
-                           </styleClass></ImageView>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="ExitIcon" />
                      </graphic>
                      <VBox.margin>
                         <Insets right="5.0" top="5.0" />

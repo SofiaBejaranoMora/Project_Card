@@ -5,11 +5,16 @@ import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 
 /** * FXML Controller class * * @author ashly */
-public class AchievementsController implements Initializable {
+public class AchievementsController  extends Controller  implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @Override
+    public void initialize() {
+        
+    }
     
 }

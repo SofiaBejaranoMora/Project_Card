@@ -9,7 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
 /** * FXML Controller class * * @author ashly */
-public class MenuController implements Initializable {
+public class MenuController extends Controller implements Initializable {
 
     @FXML
     private MFXButton btnSettings;
@@ -52,5 +52,10 @@ public class MenuController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @Override
+    public void initialize() {
+        
+    }
 
 }

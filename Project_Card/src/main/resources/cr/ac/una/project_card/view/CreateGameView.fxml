@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,11 +13,27 @@
    <children>
       <VBox alignment="CENTER" layoutX="96.0" layoutY="43.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label id="MenuLabel" stylesheets="@Style.css" text="Nueva Partida">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Label>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <HBox prefHeight="97.0" prefWidth="153.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button id="MenuSessionAndAdjust" fx:id="btnBack" mnemonicParsing="false" onAction="#onActionBtnBack" stylesheets="@Style.css">
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="ExitIcon" />
+                           </graphic>
+                        </Button>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="5.0" />
+                     </HBox.margin>
+                  </HBox>
+                  <Label id="MenuLabel" stylesheets="@Style.css" text="Nueva Partida" HBox.hgrow="ALWAYS" />
+                  <HBox prefHeight="97.0" prefWidth="163.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
             <HBox alignment="CENTER" prefHeight="71.0" prefWidth="602.0">
                <children>
                   <Label styleClass="Label" stylesheets="@Style.css" text="Nombre de la partida: " HBox.hgrow="ALWAYS">

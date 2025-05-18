@@ -8,7 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
 /** * FXML Controller class * * @author ashly */
-public class SettingsController implements Initializable {
+public class SettingsController extends Controller implements Initializable {
 
     @FXML
     private Button btnNomalCards;
@@ -20,6 +20,8 @@ public class SettingsController implements Initializable {
     private Button btnNormalBackground;
     @FXML
     private Button btnWoodBackground;
+    @FXML
+    private Button btnBack;
 
     @FXML
     private void onActionBtnNomalCards(ActionEvent event) {
@@ -40,10 +42,19 @@ public class SettingsController implements Initializable {
     @FXML
     private void onActionBtnWoodBackground(ActionEvent event) {
     }
-   
+    
+       @FXML
+    private void onActionBtnBack(ActionEvent event) {
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
- 
+
+    @Override
+    public void initialize() {
+        
+    }
+
 }

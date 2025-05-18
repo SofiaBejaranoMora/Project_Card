@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.util.FlowController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -9,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 /*** FXML Controller class * * @author ashly */
 public class GameController extends Controller implements Initializable {
@@ -38,6 +40,7 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
     }
 
     @FXML
@@ -46,6 +49,7 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
+        FlowController.getInstance().goViewInStage("SettingsView", (Stage) btnSettings.getScene().getWindow());
     }
 
     @FXML

@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.util.FlowController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
@@ -10,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 /** * FXML Controller class * * @author ashly */
 public class UserRegisterController extends Controller implements Initializable {
@@ -43,6 +45,7 @@ public class UserRegisterController extends Controller implements Initializable 
     
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
     }
 
     @Override

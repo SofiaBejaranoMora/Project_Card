@@ -78,6 +78,7 @@ private void onActionBtnStartSession(ActionEvent event) {
     } else {
         System.out.println("No hay imagen seleccionada para guardar.");
     }
+    lblCurrentPoints.setText("0");
     btnStartSession.setVisible(false);
     btnCloseSession.setVisible(true);
 }
@@ -92,7 +93,7 @@ private void onActionBtnStartSession(ActionEvent event) {
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
     }
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

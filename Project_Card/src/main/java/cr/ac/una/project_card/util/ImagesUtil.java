@@ -23,31 +23,17 @@ public class ImagesUtil {
         }
     }
     
-    public static String getCoinPath(int coinNumber) {
+    public static String getCoinPath(String userImage) {
         try {
-            String path = BASE_PATH + "ProgramImages/" + coinNumber + ".png";
+            String path = BASE_PATH + "ProgramImages/" + userImage + ".png";
             if (ImagesUtil.class.getResource(path) == null) {
                 System.err.println("No se encontró la imagen: " + path);
                 return null;
             }
             return ImagesUtil.class.getResource(path).toExternalForm();
         } catch (Exception e) {
-            System.err.println("Error cargando imagen " + coinNumber + ": " + e.getMessage());
+            System.err.println("Error cargando imagen " + userImage + ": " + e.getMessage());
             return null;
         }
-    }
-    
-    public static String getSkinPath(int skinNumber){
-        try {
-            String path = BASE_PATH + "skinName/" + skinNumber + ".png";
-                if (ImagesUtil.class.getResource(path) == null) {
-                    System.err.println("No se encontró la imagen: " + path);
-                    return null;
-                }
-                return ImagesUtil.class.getResource(path).toExternalForm();
-           } catch (Exception e) {
-            System.err.println("Error cargando imagen " + skinNumber + ": " + e.getMessage());
-            return null;
-           }
     }
 }

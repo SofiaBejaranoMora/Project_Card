@@ -11,18 +11,12 @@ public class ImagesUtil {
      */
     public static String getCardPath(String id) {
         try {
-            String pathPng = BASE_PATH + "ProgramImages/" + id + ".png";
-            if (ImagesUtil.class.getResource(pathPng) != null) {
-                return ImagesUtil.class.getResource(pathPng).toExternalForm();
-            }
-
-            String pathJpg = BASE_PATH + "ProgramImages/" + id + ".jpg";
-            if (ImagesUtil.class.getResource(pathJpg) != null) {
-                return ImagesUtil.class.getResource(pathJpg).toExternalForm();
-            }
-
-            System.err.println("No se encontró la imagen en formato PNG ni JPG: " + id);
+            String path = BASE_PATH + "ProgramImages/" + id + ".png";
+            if (ImagesUtil.class.getResource(path) == null) {
+            System.err.println("No se encontró la imagen en formato PNG ni JPG: " + path);
             return null;
+            }
+            return ImagesUtil.class.getResource(path).toExternalForm();
         } catch (Exception e) {
             System.err.println("Error cargando imagen " + id + ": " + e.getMessage());
             return null;

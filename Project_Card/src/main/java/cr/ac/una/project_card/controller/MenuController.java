@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 /** * FXML Controller class * * @author ashly */
 public class MenuController extends Controller implements Initializable {
@@ -28,27 +27,27 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("SettingsView", (Stage) btnSettings.getScene().getWindow());
+        FlowController.getInstance().goView("SettingsView");
     }
 
     @FXML
     private void onActionBtnNew(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("CreateGameView", (Stage) btnNew.getScene().getWindow());
+        FlowController.getInstance().goView("CreateGameView");
     }
 
     @FXML
     private void onActionBtnContinue(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("GameView", (Stage) btnContinue.getScene().getWindow());
+        FlowController.getInstance().goView("GameView");
     }
 
     @FXML
     private void onActionBtnAchievements(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("AchievementsView", (Stage) btnAchievements.getScene().getWindow());
+        FlowController.getInstance().goView("AchievementsView");
     }
 
     @FXML
     private void OnActionBtnStartSession(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("UserRegisterView", (Stage) btnStartSession.getScene().getWindow());
+        FlowController.getInstance().goView("UserRegisterView");
     }
 
     @FXML

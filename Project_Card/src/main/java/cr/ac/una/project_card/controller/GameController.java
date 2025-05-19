@@ -40,7 +40,7 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
+        FlowController.getInstance().goView("MenuView");
     }
 
     @FXML
@@ -49,7 +49,7 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("SettingsView", (Stage) btnSettings.getScene().getWindow());
+        FlowController.getInstance().goView("SettingsView");
     }
 
     @FXML

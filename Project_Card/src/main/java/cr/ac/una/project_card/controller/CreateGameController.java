@@ -25,16 +25,63 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-/**
- * FXML Controller class
- *
- * @author ashly
- */
+/** * FXML Controller class * * @author ashly */
 public class CreateGameController extends Controller implements Initializable {
 
+    private ImagesUtil imageUtility = new ImagesUtil();
+    private CardView easyModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
+    private CardView mediumModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
+    private CardView hardModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
+
+    @FXML
+    private MFXTextField txfNameGame;
+    @FXML
+    private ImageView mgvEasyMode;
+    @FXML
+    private ImageView mgvMediumMode;
+    @FXML
+    private ImageView mgvHardMode;
+    @FXML
+    private Button btnBack;
+
+    @FXML
+    private void onKeyPressed(KeyEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnBack(ActionEvent event) {
+        FlowController.getInstance().goView("MenuView");
+    }
+  
+    private void setupCardInteractions() {
+        replaceImageViewWithCard(mgvEasyMode, easyModeCard);
+        replaceImageViewWithCard(mgvMediumMode, mediumModeCard);
+        replaceImageViewWithCard(mgvHardMode, hardModeCard);
+    }
+
+    private void replaceImageViewWithCard(ImageView imageView, CardView card) {
+        HBox parent = (HBox) imageView.getParent();
+        if (parent != null) {
+            int index = parent.getChildren().indexOf(imageView);
+            parent.getChildren().remove(imageView);
+            parent.getChildren().add(index, card);
+        }
+    }
+
+    private void initialConditionsCards() {
+        mgvEasyMode.setImage(new Image(imageUtility.getCardPath(easyModeCard.getBackImagePath())));
+        mgvMediumMode.setImage(new Image(imageUtility.getCardPath(mediumModeCard.getBackImagePath())));
+        mgvHardMode.setImage(new Image(imageUtility.getCardPath(hardModeCard.getBackImagePath())));
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+       //initialConditionsCards();
+       //setupCardInteractions();
+    }
+    
     @Override
     public void initialize() {
     }
@@ -104,128 +151,5 @@ public class CreateGameController extends Controller implements Initializable {
         public boolean isFlipped() {
             return isFlipped;
         }
-    }
-
-    @FXML
-    private MFXTextField txfNameGame;
-    @FXML
-    private ImageView mgvEasyMode;
-    @FXML
-    private ImageView mgvMediumMode;
-    @FXML
-    private ImageView mgvHardMode;
-    @FXML
-    private Button btnBack;
-
-    private ImagesUtil imageUtility = new ImagesUtil();
-    private Mensaje messageUtil = new Mensaje();
-    private CardView easyModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
-    private CardView mediumModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
-    private CardView hardModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
-
-    private String nombrePartida;
-    private String difficulty;
-    private Set<String> existingGames = new HashSet<>();
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        configureHBox();
-        initialConditionsCards();
-        setupCardInteractions();
-        selectDifficulty();
-    }
-
-    private void configureHBox() {
-        HBox cardHBox = (HBox) mgvEasyMode.getParent();
-        if (cardHBox != null) {
-            cardHBox.setAlignment(Pos.CENTER);
-            cardHBox.setMaxWidth(Double.MAX_VALUE);
-            HBox.setHgrow(cardHBox, Priority.ALWAYS);
-
-            cardHBox.widthProperty().addListener((obs, old, newVal) -> {
-                double totalWidth = newVal.doubleValue();
-                double cardWidth = 150 * 3;
-                double spacing = (totalWidth - cardWidth) / 4;
-                cardHBox.setSpacing(Math.max(20, spacing));
-            });
-        }
-    }
-
-    private void initialConditionsCards() {
-        String easyBackUrl = imageUtility.getCardPath(easyModeCard.getBackImagePath());
-        String mediumBackUrl = imageUtility.getCardPath(mediumModeCard.getBackImagePath());
-        String hardBackUrl = imageUtility.getCardPath(hardModeCard.getBackImagePath());
-
-        if (easyBackUrl != null) mgvEasyMode.setImage(new Image(easyBackUrl));
-        if (mediumBackUrl != null) mgvMediumMode.setImage(new Image(mediumBackUrl));
-        if (hardBackUrl != null) mgvHardMode.setImage(new Image(hardBackUrl));
-    }
-
-    private void setupCardInteractions() {
-        replaceImageViewWithCard(mgvEasyMode, easyModeCard);
-        replaceImageViewWithCard(mgvMediumMode, mediumModeCard);
-        replaceImageViewWithCard(mgvHardMode, hardModeCard);
-    }
-
-    private void replaceImageViewWithCard(ImageView imageView, CardView card) {
-        HBox parent = (HBox) imageView.getParent();
-        if (parent != null) {
-            int index = parent.getChildren().indexOf(imageView);
-            parent.getChildren().remove(imageView);
-            parent.getChildren().add(index, card);
-            card.setFitWidth(imageView.getFitWidth());
-            card.setFitHeight(imageView.getFitHeight());
-            card.setPreserveRatio(imageView.isPreserveRatio());
-        }
-    }
-
-    @FXML
-    private void onKeyPressed(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            nombrePartida = txfNameGame.getText().trim();
-            if (nombrePartida.isEmpty()) {
-                messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida", "Por favor, ingresa un nombre antes de seleccionar la dificultad.");
-            } else {
-                if (isNameValid()) {
-                    messageUtil.show(Alert.AlertType.INFORMATION, "Dificultad", "Ahora selecciona una carta con un clic para elegir la dificultad.");
-                } else {
-                    messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida Inválido", "El nombre de partida ya ha sido seleccionado, intenta de nuevo.");
-                    txfNameGame.clear();
-                }
-            }
-        }
-    }
-
-    @FXML
-    private void onActionBtnBack(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
-    }
-
-    private boolean isNameValid() {
-        if (existingGames.contains(nombrePartida)) {
-            return false;
-        }
-        existingGames.add(nombrePartida); 
-        return true;
-    }
-
-    private void asignarDificultad(String dificultad) {
-        difficulty = dificultad;
-        if (nombrePartida == null || nombrePartida.isEmpty()) {
-            messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida", "Por favor, escribe un nombre de partida antes de seleccionar dificultad.");
-        } else if (difficulty != null) {
-            messageUtil.show(Alert.AlertType.CONFIRMATION, "Creando partida", "Creando partida " + nombrePartida + " con dificultad " + difficulty);
-            goToGameView();
-        }
-    }
-
-    private void selectDifficulty() {
-        easyModeCard.setOnMouseClicked(event -> asignarDificultad("easy"));
-        mediumModeCard.setOnMouseClicked(event -> asignarDificultad("medium"));
-        hardModeCard.setOnMouseClicked(event -> asignarDificultad("hard"));
-    }
-
-    private void goToGameView() {
-        FlowController.getInstance().goViewInStage("GameView", (Stage) txfNameGame.getScene().getWindow());
     }
 }

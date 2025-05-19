@@ -47,7 +47,7 @@ public class SettingsController extends Controller implements Initializable {
     
        @FXML
     private void onActionBtnBack(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
+        FlowController.getInstance().goView("MenuView");
     }
     
     @Override

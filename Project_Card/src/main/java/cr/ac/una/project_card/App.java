@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import static javafx.application.Application.launch;
 
 /**
  * JavaFX App
@@ -21,10 +22,11 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FlowController.getInstance().InitializeFlow(stage, null);
-        scene = new Scene(loadFXML("MenuView"), 640, 480);
+        scene = new Scene(loadFXML("PrincipalView"), 600, 400);
         MFXThemeManager.addOn(scene,Themes.DEFAULT,Themes.LEGACY);
         stage.setScene(scene);
         stage.show();
+        FlowController.getInstance().goView("MenuView");
     }
 
     public static void setRoot(String fxml) throws IOException {

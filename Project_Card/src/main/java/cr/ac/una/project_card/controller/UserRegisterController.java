@@ -98,7 +98,7 @@ private void onActionBtnStartSession(ActionEvent event) {
     
     @FXML
     private void onActionBtnBack(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
+        FlowController.getInstance().goView("MenuView");
     }
     
     @Override

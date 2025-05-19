@@ -197,12 +197,16 @@ public class CreateGameController extends Controller implements Initializable {
 @FXML
 private void onKeyPressed(KeyEvent event) {
     if (event.getCode() == KeyCode.ENTER) {
-        nombrePartida= txfNameGame.getText();
+        nombrePartida = txfNameGame.getText().trim();
 
         if (nombrePartida.isEmpty()) {
            messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida", "Por favor, ingresa un nombre antes de seleccionar la dificultad.");
         } else {
-            messageUtil.show(Alert.AlertType.INFORMATION, "Dificultad", "Ahora selecciona una carta un con click para elegir la dificultad.");
+            if(isNameValid()){
+                messageUtil.show(Alert.AlertType.INFORMATION, "Dificultad", "Ahora selecciona una carta un con click para elegir la dificultad.");
+            }else{
+                messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida Invalido", "El nombre de partida ya ha sido seleccionado, intente de nuevo");
+            }
         }
     }
 }
@@ -211,5 +215,10 @@ private void onKeyPressed(KeyEvent event) {
     @FXML
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
+    }
+    
+    private boolean isNameValid(){
+        //falta por implementar
+        return true;
     }
 }

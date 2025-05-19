@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.SettingsController">
    <children>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" styleClass="SystemBackground" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -32,53 +31,60 @@
                </children>
             </HBox>
             <Label styleClass="Label" stylesheets="@Style.css" text="Diseños de Cartas" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="btnNomalCards" mnemonicParsing="false" onAction="#onActionBtnNomalCards" styleClass="SettingsPhotos" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                      <HBox.margin>
-                        <Insets left="40.0" right="40.0" />
+                        <Insets />
                      </HBox.margin>
                   </Button>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="btnMandalaCards" mnemonicParsing="false" onAction="#onActionBtnMandalaCards" styleClass="SettingsPhotos" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                      <HBox.margin>
-                        <Insets left="40.0" right="40.0" />
+                        <Insets />
                      </HBox.margin>
                   </Button>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="btnGlorianCards" mnemonicParsing="false" onAction="#onActionBtnGlorianCards" styleClass="SettingsPhotos" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                      <HBox.margin>
-                        <Insets left="40.0" right="40.0" />
+                        <Insets />
                      </HBox.margin>
                   </Button>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <Label styleClass="Label" stylesheets="@Style.css" text="Diseños de Fondos" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="btnNormalBackground" mnemonicParsing="false" onAction="#onActionBtnNormalBackground" styleClass="SettingsPhotos" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="90.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                      <HBox.margin>
-                        <Insets left="50.0" right="50.0" />
+                        <Insets />
                      </HBox.margin>
                   </Button>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="btnWoodBackground" mnemonicParsing="false" onAction="#onActionBtnWoodBackground" styleClass="SettingsPhotos" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
                      <graphic>
                         <ImageView fitHeight="90.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                      <HBox.margin>
-                        <Insets left="50.0" right="50.0" />
+                        <Insets />
                      </HBox.margin>
                   </Button>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </children>

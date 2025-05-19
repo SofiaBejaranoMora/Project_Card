@@ -2,27 +2,20 @@ package cr.ac.una.project_card.controller;
 
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.ImagesUtil;
-import cr.ac.una.project_card.util.Mensaje;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
@@ -45,9 +38,27 @@ public class CreateGameController extends Controller implements Initializable {
     private ImageView mgvHardMode;
     @FXML
     private Button btnBack;
+    @FXML
+    private Button btnEasyMode;
+    @FXML
+    private Button btnMediumMode;
+    @FXML
+    private Button btnHardMode;
 
     @FXML
     private void onKeyPressed(KeyEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnEasyMode(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnMediumMode(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnHardMode(ActionEvent event) {
     }
 
     @FXML

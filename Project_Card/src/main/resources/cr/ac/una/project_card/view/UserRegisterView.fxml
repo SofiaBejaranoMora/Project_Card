@@ -11,14 +11,13 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.UserRegisterController">
    <children>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" styleClass="SystemBackground" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Button id="MenuSessionAndAdjust" fx:id="btnBack" mnemonicParsing="false" onAction="#onActionBtnBack" stylesheets="@Style.css">
                            <HBox.margin>
@@ -38,7 +37,7 @@
                         <Insets bottom="5.0" />
                      </HBox.margin>
                   </VBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>
                   <Insets top="5.0" />
@@ -66,17 +65,26 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <MFXButton id="MenuButton" fx:id="btnUploadPhoto" onAction="#onActionBtnUploadPhoto" stylesheets="@Style.css" text="Subir Foto">
                      <HBox.margin>
-                        <Insets right="20.0" />
+                        <Insets />
                      </HBox.margin>
                   </MFXButton>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <StackPane prefHeight="61.0" prefWidth="165.0">
                      <children>
-                        <MFXButton id="MenuButton" fx:id="btnStartSession" onAction="#onActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión" />
-                        <MFXButton id="MenuButton" fx:id="btnCloseSession" onAction="#onActionBtnCloseSession" stylesheets="@Style.css" text="Cerrar Sesión" visible="false" />
+                        <MFXButton id="MenuButton" fx:id="btnStartSession" onAction="#onActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión">
+                           <StackPane.margin>
+                              <Insets />
+                           </StackPane.margin></MFXButton>
+                        <MFXButton id="MenuButton" fx:id="btnCloseSession" onAction="#onActionBtnCloseSession" stylesheets="@Style.css" text="Cerrar Sesión" visible="false">
+                           <StackPane.margin>
+                              <Insets />
+                           </StackPane.margin></MFXButton>
                      </children>
                   </StackPane>
+                  <HBox prefHeight="100.0" prefWidth="200.0" />
                </children>
             </HBox>
          </children>

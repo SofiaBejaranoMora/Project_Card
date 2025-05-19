@@ -85,8 +85,15 @@ private void onActionBtnStartSession(ActionEvent event) {
 
     @FXML
     private void onActionBtnCloseSession(ActionEvent event) {
+        mgvUserPhoto.setImage(null);
+        lblCurrentPoints.setText("");
+        txfUserName.setText("");
         btnCloseSession.setVisible(false);
         btnStartSession.setVisible(true);
+    }
+    
+    private void currentSession(){
+        
     }
     
     @FXML

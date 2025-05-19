@@ -9,7 +9,7 @@ public class ImagesUtil {
      * @param imageName Nombre del archivo (e.g., "stillBack.png").
      * @return URL como String para Image, o null si no se encuentra.
      */
-    public static String getImagePath(int id) {
+    public static String getCardPath(int id) {
         try {
             String path = BASE_PATH + id + ".png";
             if (ImagesUtil.class.getResource(path) == null) {
@@ -23,7 +23,7 @@ public class ImagesUtil {
         }
     }
     
-    public static String getCoinPath(String userImage) {
+    public static String getUserPath(String userImage) {
         try {
             String path = BASE_PATH + "ProgramImages/" + userImage + ".png";
             if (ImagesUtil.class.getResource(path) == null) {

@@ -5,7 +5,9 @@ import cr.ac.una.project_card.util.ImagesUtil;
 import cr.ac.una.project_card.util.Mensaje;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
@@ -48,15 +50,11 @@ public class CreateGameController extends Controller implements Initializable {
             this.backImagePath = backImagePath;
             this.imageUtility = imageUtility;
 
-            // Configurar tamaño como los ImageView originales
             setFitWidth(150);
             setFitHeight(200);
             setPreserveRatio(true);
 
-            // Cargar imagen inicial (espalda)
             updateImage();
-
-            // Configurar animación y brillo
             setupHoverEffect();
         }
 
@@ -84,7 +82,6 @@ public class CreateGameController extends Controller implements Initializable {
                 if (rotateTransition.getStatus() == Animation.Status.RUNNING) {
                     return;
                 }
-
                 rotateTransition.setToAngle(isFlipped ? 0 : 180);
                 rotateTransition.setOnFinished(e -> {
                     isFlipped = !isFlipped;
@@ -93,11 +90,9 @@ public class CreateGameController extends Controller implements Initializable {
                 rotateTransition.play();
             });
 
-            setOnMouseExited(event -> {
-                setEffect(null);
-            });
+            setOnMouseExited(event -> setEffect(null));
         }
-        
+
         public String getBackImagePath() {
             return backImagePath;
         }
@@ -123,59 +118,50 @@ public class CreateGameController extends Controller implements Initializable {
     private Button btnBack;
 
     private ImagesUtil imageUtility = new ImagesUtil();
-    private Mensaje messageUtil=new Mensaje();
+    private Mensaje messageUtil = new Mensaje();
     private CardView easyModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
     private CardView mediumModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
     private CardView hardModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
-    
+
     private String nombrePartida;
+    private String difficulty;
+    private Set<String> existingGames = new HashSet<>();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configureHBox();
         initialConditionsCards();
         setupCardInteractions();
+        selectDifficulty();
     }
 
     private void configureHBox() {
-        // Obtener el HBox que contiene las cartas
         HBox cardHBox = (HBox) mgvEasyMode.getParent();
         if (cardHBox != null) {
-            // Centrar las cartas
             cardHBox.setAlignment(Pos.CENTER);
-            // Asegurar que el HBox use todo el espacio disponible
             cardHBox.setMaxWidth(Double.MAX_VALUE);
             HBox.setHgrow(cardHBox, Priority.ALWAYS);
 
-            // Espaciado dinámico basado en el ancho del HBox
             cardHBox.widthProperty().addListener((obs, old, newVal) -> {
                 double totalWidth = newVal.doubleValue();
-                double cardWidth = 150 * 3; // 3 cartas de 150px
-                double spacing = (totalWidth - cardWidth) / 4; // Espaciado entre y alrededor
-                cardHBox.setSpacing(Math.max(20, spacing)); // Mínimo 20px
+                double cardWidth = 150 * 3;
+                double spacing = (totalWidth - cardWidth) / 4;
+                cardHBox.setSpacing(Math.max(20, spacing));
             });
         }
     }
 
     private void initialConditionsCards() {
-        // Configurar imágenes iniciales (espalda)
         String easyBackUrl = imageUtility.getCardPath(easyModeCard.getBackImagePath());
         String mediumBackUrl = imageUtility.getCardPath(mediumModeCard.getBackImagePath());
         String hardBackUrl = imageUtility.getCardPath(hardModeCard.getBackImagePath());
 
-        if (easyBackUrl != null) {
-            mgvEasyMode.setImage(new Image(easyBackUrl));
-        }
-        if (mediumBackUrl != null) {
-            mgvMediumMode.setImage(new Image(mediumBackUrl));
-        }
-        if (hardBackUrl != null) {
-            mgvHardMode.setImage(new Image(hardBackUrl));
-        }
+        if (easyBackUrl != null) mgvEasyMode.setImage(new Image(easyBackUrl));
+        if (mediumBackUrl != null) mgvMediumMode.setImage(new Image(mediumBackUrl));
+        if (hardBackUrl != null) mgvHardMode.setImage(new Image(hardBackUrl));
     }
 
     private void setupCardInteractions() {
-        // Reemplazar ImageView con CardView en el HBox
         replaceImageViewWithCard(mgvEasyMode, easyModeCard);
         replaceImageViewWithCard(mgvMediumMode, mediumModeCard);
         replaceImageViewWithCard(mgvHardMode, hardModeCard);
@@ -187,38 +173,59 @@ public class CreateGameController extends Controller implements Initializable {
             int index = parent.getChildren().indexOf(imageView);
             parent.getChildren().remove(imageView);
             parent.getChildren().add(index, card);
-            // Copiar propiedades del ImageView original, sin márgenes
             card.setFitWidth(imageView.getFitWidth());
             card.setFitHeight(imageView.getFitHeight());
             card.setPreserveRatio(imageView.isPreserveRatio());
         }
     }
-    
-@FXML
-private void onKeyPressed(KeyEvent event) {
-    if (event.getCode() == KeyCode.ENTER) {
-        nombrePartida = txfNameGame.getText().trim();
 
-        if (nombrePartida.isEmpty()) {
-           messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida", "Por favor, ingresa un nombre antes de seleccionar la dificultad.");
-        } else {
-            if(isNameValid()){
-                messageUtil.show(Alert.AlertType.INFORMATION, "Dificultad", "Ahora selecciona una carta un con click para elegir la dificultad.");
-            }else{
-                messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida Invalido", "El nombre de partida ya ha sido seleccionado, intente de nuevo");
+    @FXML
+    private void onKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            nombrePartida = txfNameGame.getText().trim();
+            if (nombrePartida.isEmpty()) {
+                messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida", "Por favor, ingresa un nombre antes de seleccionar la dificultad.");
+            } else {
+                if (isNameValid()) {
+                    messageUtil.show(Alert.AlertType.INFORMATION, "Dificultad", "Ahora selecciona una carta con un clic para elegir la dificultad.");
+                } else {
+                    messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida Inválido", "El nombre de partida ya ha sido seleccionado, intenta de nuevo.");
+                    txfNameGame.clear();
+                }
             }
         }
     }
-}
-
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
     }
-    
-    private boolean isNameValid(){
-        //falta por implementar
+
+    private boolean isNameValid() {
+        if (existingGames.contains(nombrePartida)) {
+            return false;
+        }
+        existingGames.add(nombrePartida); 
         return true;
+    }
+
+    private void asignarDificultad(String dificultad) {
+        difficulty = dificultad;
+        if (nombrePartida == null || nombrePartida.isEmpty()) {
+            messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida", "Por favor, escribe un nombre de partida antes de seleccionar dificultad.");
+        } else if (difficulty != null) {
+            messageUtil.show(Alert.AlertType.CONFIRMATION, "Creando partida", "Creando partida " + nombrePartida + " con dificultad " + difficulty);
+            goToGameView();
+        }
+    }
+
+    private void selectDifficulty() {
+        easyModeCard.setOnMouseClicked(event -> asignarDificultad("easy"));
+        mediumModeCard.setOnMouseClicked(event -> asignarDificultad("medium"));
+        hardModeCard.setOnMouseClicked(event -> asignarDificultad("hard"));
+    }
+
+    private void goToGameView() {
+        FlowController.getInstance().goViewInStage("GameView", (Stage) txfNameGame.getScene().getWindow());
     }
 }

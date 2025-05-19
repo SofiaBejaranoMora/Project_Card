@@ -59,7 +59,7 @@ public class CreateGameController extends Controller implements Initializable {
 
         private void updateImage() {
             String imagePath = isFlipped ? frontImagePath : backImagePath;
-            String url = imageUtility.getCardImagePath(imagePath);
+            String url = imageUtility.getCardPath(imagePath);
             if (url != null) {
                 setImage(new Image(url));
             } else {
@@ -152,9 +152,9 @@ public class CreateGameController extends Controller implements Initializable {
 
     private void initialConditionsCards() {
         // Configurar imágenes iniciales (espalda)
-        String easyBackUrl = imageUtility.getCardImagePath(easyModeCard.getBackImagePath());
-        String mediumBackUrl = imageUtility.getCardImagePath(mediumModeCard.getBackImagePath());
-        String hardBackUrl = imageUtility.getCardImagePath(hardModeCard.getBackImagePath());
+        String easyBackUrl = imageUtility.getCardPath(easyModeCard.getBackImagePath());
+        String mediumBackUrl = imageUtility.getCardPath(mediumModeCard.getBackImagePath());
+        String hardBackUrl = imageUtility.getCardPath(hardModeCard.getBackImagePath());
 
         if (easyBackUrl != null) {
             mgvEasyMode.setImage(new Image(easyBackUrl));

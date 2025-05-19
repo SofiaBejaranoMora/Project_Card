@@ -9,19 +9,23 @@ public class ImagesUtil {
      * @param imageName Nombre del archivo (e.g., "stillBack.png").
      * @return URL como String para Image, o null si no se encuentra.
      */
-    public static String getCardPath(String id) {
-        try {
-            String path = BASE_PATH + "ProgramImages/" + id + ".png";
-            if (ImagesUtil.class.getResource(path) == null) {
-            System.err.println("No se encontró la imagen en formato PNG ni JPG: " + path);
-            return null;
+     public static String getCardPath(String id) {
+    try {
+        String[] extensions = {".png", ".jpg"};
+        for (String ext : extensions) {
+            String path = BASE_PATH + "ProgramImages/" + id + ext;
+            if (ImagesUtil.class.getResource(path) != null) {
+                return ImagesUtil.class.getResource(path).toExternalForm();
             }
-            return ImagesUtil.class.getResource(path).toExternalForm();
-        } catch (Exception e) {
-            System.err.println("Error cargando imagen " + id + ": " + e.getMessage());
-            return null;
         }
+        System.err.println("No se encontró la imagen en formato PNG ni JPG: " + id);
+        return null;
+    } catch (Exception e) {
+        System.err.println("Error cargando imagen " + id + ": " + e.getMessage());
+        return null;
     }
+}
+
 
     public static String getUserPath(String userImage) {
         try {
@@ -36,4 +40,6 @@ public class ImagesUtil {
             return null;
         }
     }
+
+
 }

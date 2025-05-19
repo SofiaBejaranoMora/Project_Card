@@ -10,13 +10,14 @@ import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
@@ -33,11 +34,10 @@ public class CreateGameController extends Controller implements Initializable {
     public void initialize() {
     }
 
-    public class CardView extends VBox {
+    public class CardView extends ImageView {
         private boolean isFlipped = false;
         private String frontImagePath;
         private String backImagePath;
-        private ImageView imageView;
         private ImagesUtil imageUtility;
 
         public CardView(String frontImagePath, String backImagePath, ImagesUtil imageUtility) {
@@ -45,16 +45,10 @@ public class CreateGameController extends Controller implements Initializable {
             this.backImagePath = backImagePath;
             this.imageUtility = imageUtility;
 
-            // Configurar VBox para que se comporte como ImageView
-            setMaxSize(150, 200);
-            setMinSize(150, 200);
-
-            // Crear ImageView
-            imageView = new ImageView();
-            imageView.setFitWidth(150);
-            imageView.setFitHeight(200);
-            imageView.setPreserveRatio(true);
-            getChildren().add(imageView);
+            // Configurar tamaño como los ImageView originales
+            setFitWidth(150);
+            setFitHeight(200);
+            setPreserveRatio(true);
 
             // Cargar imagen inicial (espalda)
             updateImage();
@@ -65,7 +59,12 @@ public class CreateGameController extends Controller implements Initializable {
 
         private void updateImage() {
             String imagePath = isFlipped ? frontImagePath : backImagePath;
-            imageView.setImage(new Image(imageUtility.getCardImagePath(imagePath)));
+            String url = imageUtility.getCardImagePath(imagePath);
+            if (url != null) {
+                setImage(new Image(url));
+            } else {
+                System.err.println("No se pudo cargar la imagen para: " + imagePath);
+            }
         }
 
         private void setupHoverEffect() {
@@ -93,9 +92,6 @@ public class CreateGameController extends Controller implements Initializable {
             setOnMouseExited(event -> {
                 setEffect(null);
             });
-
-            // Mantener márgenes del ImageView original
-            HBox.setMargin(this, HBox.getMargin(imageView));
         }
 
         public String getBackImagePath() {
@@ -122,22 +118,53 @@ public class CreateGameController extends Controller implements Initializable {
     @FXML
     private Button btnBack;
 
-    private ImagesUtil imageUtility = new ImagesUtil(); // Ajusta según el constructor de ImagesUtil
+    private ImagesUtil imageUtility = new ImagesUtil();
     private CardView easyModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
     private CardView mediumModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
     private CardView hardModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        configureHBox();
         initialConditionsCards();
         setupCardInteractions();
     }
 
+    private void configureHBox() {
+        // Obtener el HBox que contiene las cartas
+        HBox cardHBox = (HBox) mgvEasyMode.getParent();
+        if (cardHBox != null) {
+            // Centrar las cartas
+            cardHBox.setAlignment(Pos.CENTER);
+            // Asegurar que el HBox use todo el espacio disponible
+            cardHBox.setMaxWidth(Double.MAX_VALUE);
+            HBox.setHgrow(cardHBox, Priority.ALWAYS);
+
+            // Espaciado dinámico basado en el ancho del HBox
+            cardHBox.widthProperty().addListener((obs, old, newVal) -> {
+                double totalWidth = newVal.doubleValue();
+                double cardWidth = 150 * 3; // 3 cartas de 150px
+                double spacing = (totalWidth - cardWidth) / 4; // Espaciado entre y alrededor
+                cardHBox.setSpacing(Math.max(20, spacing)); // Mínimo 20px
+            });
+        }
+    }
+
     private void initialConditionsCards() {
         // Configurar imágenes iniciales (espalda)
-        mgvEasyMode.setImage(new Image(imageUtility.getCardImagePath(easyModeCard.getBackImagePath())));
-        mgvMediumMode.setImage(new Image(imageUtility.getCardImagePath(mediumModeCard.getBackImagePath())));
-        mgvHardMode.setImage(new Image(imageUtility.getCardImagePath(hardModeCard.getBackImagePath())));
+        String easyBackUrl = imageUtility.getCardImagePath(easyModeCard.getBackImagePath());
+        String mediumBackUrl = imageUtility.getCardImagePath(mediumModeCard.getBackImagePath());
+        String hardBackUrl = imageUtility.getCardImagePath(hardModeCard.getBackImagePath());
+
+        if (easyBackUrl != null) {
+            mgvEasyMode.setImage(new Image(easyBackUrl));
+        }
+        if (mediumBackUrl != null) {
+            mgvMediumMode.setImage(new Image(mediumBackUrl));
+        }
+        if (hardBackUrl != null) {
+            mgvHardMode.setImage(new Image(hardBackUrl));
+        }
     }
 
     private void setupCardInteractions() {
@@ -153,6 +180,10 @@ public class CreateGameController extends Controller implements Initializable {
             int index = parent.getChildren().indexOf(imageView);
             parent.getChildren().remove(imageView);
             parent.getChildren().add(index, card);
+            // Copiar propiedades del ImageView original, sin márgenes
+            card.setFitWidth(imageView.getFitWidth());
+            card.setFitHeight(imageView.getFitHeight());
+            card.setPreserveRatio(imageView.isPreserveRatio());
         }
     }
 

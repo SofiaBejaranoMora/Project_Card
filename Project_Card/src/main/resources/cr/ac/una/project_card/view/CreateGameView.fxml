@@ -51,21 +51,25 @@
             <Label styleClass="Label" stylesheets="@Style.css" text="Dificultad" />
             <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <ImageView fx:id="mgvEasyMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
-                        <Insets left="16.0" />
+                        <Insets />
                      </HBox.margin>
                   </ImageView>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <ImageView fx:id="mgvMediumMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
-                        <Insets left="60.0" right="60.0" />
+                        <Insets />
                      </HBox.margin>
                   </ImageView>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <ImageView fx:id="mgvHardMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
-                        <Insets right="16.0" />
+                        <Insets />
                      </HBox.margin>
                   </ImageView>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </children>

@@ -2,6 +2,7 @@ package cr.ac.una.project_card.controller;
 
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.ImagesUtil;
+import cr.ac.una.project_card.util.Mensaje;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,10 +12,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -77,9 +80,10 @@ public class CreateGameController extends Controller implements Initializable {
             glow.setSpread(0.3);
 
             setOnMouseEntered(event -> {
-                if (rotateTransition.getStatus() == Animation.Status.RUNNING) return;
-
                 setEffect(glow);
+                if (rotateTransition.getStatus() == Animation.Status.RUNNING) {
+                    return;
+                }
 
                 rotateTransition.setToAngle(isFlipped ? 0 : 180);
                 rotateTransition.setOnFinished(e -> {
@@ -93,7 +97,7 @@ public class CreateGameController extends Controller implements Initializable {
                 setEffect(null);
             });
         }
-
+        
         public String getBackImagePath() {
             return backImagePath;
         }
@@ -119,9 +123,12 @@ public class CreateGameController extends Controller implements Initializable {
     private Button btnBack;
 
     private ImagesUtil imageUtility = new ImagesUtil();
+    private Mensaje messageUtil=new Mensaje();
     private CardView easyModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
     private CardView mediumModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
     private CardView hardModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
+    
+    private String nombrePartida;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -186,11 +193,20 @@ public class CreateGameController extends Controller implements Initializable {
             card.setPreserveRatio(imageView.isPreserveRatio());
         }
     }
+    
+@FXML
+private void onKeyPressed(KeyEvent event) {
+    if (event.getCode() == KeyCode.ENTER) {
+        nombrePartida= txfNameGame.getText();
 
-    @FXML
-    private void onKeyPressed(KeyEvent event) {
-        // Implementar si necesitas
+        if (nombrePartida.isEmpty()) {
+           messageUtil.show(Alert.AlertType.WARNING, "Nombre Partida", "Por favor, ingresa un nombre antes de seleccionar la dificultad.");
+        } else {
+            messageUtil.show(Alert.AlertType.INFORMATION, "Dificultad", "Ahora selecciona una carta un con click para elegir la dificultad.");
+        }
     }
+}
+
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {

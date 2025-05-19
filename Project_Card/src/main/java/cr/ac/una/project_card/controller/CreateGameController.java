@@ -2,6 +2,8 @@ package cr.ac.una.project_card.controller;
 
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.ImagesUtil;
+import cr.ac.una.project_card.util.Mensaje;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -10,10 +12,12 @@ import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -24,17 +28,15 @@ import javafx.util.Duration;
 public class CreateGameController extends Controller implements Initializable {
 
     private ImagesUtil imageUtility = new ImagesUtil();
+    private Mensaje message = new Mensaje();
     private CardView easyModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
     private CardView mediumModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
     private CardView hardModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
 
     @FXML
     private MFXTextField txfNameGame;
-    @FXML
     private ImageView mgvEasyMode;
-    @FXML
     private ImageView mgvMediumMode;
-    @FXML
     private ImageView mgvHardMode;
     @FXML
     private Button btnBack;
@@ -44,9 +46,24 @@ public class CreateGameController extends Controller implements Initializable {
     private Button btnMediumMode;
     @FXML
     private Button btnHardMode;
+    @FXML
+    private MFXButton btnStartGame;
 
     @FXML
     private void onKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            String nombrePartida = txfNameGame.getText().trim();
+            if (nombrePartida.isEmpty()) {
+                message.show(Alert.AlertType.WARNING, "Nombre Partida", "Por favor, ingresa un nombre antes de seleccionar la dificultad.");
+            } else {
+                if (isNameValid()) {
+                    message.show(Alert.AlertType.INFORMATION, "Dificultad", "Ahora selecciona una carta con un clic para elegir la dificultad.");
+                } else {
+                    message.show(Alert.AlertType.WARNING, "Nombre Partida Inválido", "El nombre de partida ya ha sido seleccionado, intenta de nuevo.");
+                    txfNameGame.clear();
+                }
+            }
+        }
     }
 
     @FXML
@@ -62,8 +79,17 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     @FXML
+    private void onActionBtnStartGame(ActionEvent event) {
+    }
+
+    @FXML
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goView("MenuView");
+    }
+    
+  private boolean isNameValid(){
+        //falta por implementar
+        return true;
     }
   
     private void setupCardInteractions() {

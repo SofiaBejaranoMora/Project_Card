@@ -22,17 +22,65 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-/**
- * FXML Controller class
- *
- * @author ashly
- */
+/** * FXML Controller class * * @author ashly */
 public class CreateGameController extends Controller implements Initializable {
 
+    private ImagesUtil imageUtility = new ImagesUtil();
+    private CardView easyModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
+    private CardView mediumModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
+    private CardView hardModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
+
+    @FXML
+    private MFXTextField txfNameGame;
+    @FXML
+    private ImageView mgvEasyMode;
+    @FXML
+    private ImageView mgvMediumMode;
+    @FXML
+    private ImageView mgvHardMode;
+    @FXML
+    private Button btnBack;
+
+    @FXML
+    private void onKeyPressed(KeyEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnBack(ActionEvent event) {
+        FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
+    }
+  
+    private void setupCardInteractions() {
+        replaceImageViewWithCard(mgvEasyMode, easyModeCard);
+        replaceImageViewWithCard(mgvMediumMode, mediumModeCard);
+        replaceImageViewWithCard(mgvHardMode, hardModeCard);
+    }
+
+    private void replaceImageViewWithCard(ImageView imageView, CardView card) {
+        HBox parent = (HBox) imageView.getParent();
+        if (parent != null) {
+            int index = parent.getChildren().indexOf(imageView);
+            parent.getChildren().remove(imageView);
+            parent.getChildren().add(index, card);
+        }
+    }
+
+    private void initialConditionsCards() {
+        mgvEasyMode.setImage(new Image(imageUtility.getCardPath(easyModeCard.getBackImagePath())));
+        mgvMediumMode.setImage(new Image(imageUtility.getCardPath(mediumModeCard.getBackImagePath())));
+        mgvHardMode.setImage(new Image(imageUtility.getCardPath(hardModeCard.getBackImagePath())));
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        initialConditionsCards();
+        setupCardInteractions();
+    }
+    
     @Override
     public void initialize() {
     }
-
+  
     public class CardView extends VBox {
         private boolean isFlipped = false;
         private String frontImagePath;
@@ -65,7 +113,7 @@ public class CreateGameController extends Controller implements Initializable {
 
         private void updateImage() {
             String imagePath = isFlipped ? frontImagePath : backImagePath;
-            imageView.setImage(new Image(imageUtility.getCardImagePath(imagePath)));
+            imageView.setImage(new Image(imageUtility.getCardPath(imagePath)));
         }
 
         private void setupHoverEffect() {
@@ -111,58 +159,4 @@ public class CreateGameController extends Controller implements Initializable {
         }
     }
 
-    @FXML
-    private MFXTextField txfNameGame;
-    @FXML
-    private ImageView mgvEasyMode;
-    @FXML
-    private ImageView mgvMediumMode;
-    @FXML
-    private ImageView mgvHardMode;
-    @FXML
-    private Button btnBack;
-
-    private ImagesUtil imageUtility = new ImagesUtil(); // Ajusta según el constructor de ImagesUtil
-    private CardView easyModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
-    private CardView mediumModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
-    private CardView hardModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        initialConditionsCards();
-        setupCardInteractions();
-    }
-
-    private void initialConditionsCards() {
-        // Configurar imágenes iniciales (espalda)
-        mgvEasyMode.setImage(new Image(imageUtility.getCardImagePath(easyModeCard.getBackImagePath())));
-        mgvMediumMode.setImage(new Image(imageUtility.getCardImagePath(mediumModeCard.getBackImagePath())));
-        mgvHardMode.setImage(new Image(imageUtility.getCardImagePath(hardModeCard.getBackImagePath())));
-    }
-
-    private void setupCardInteractions() {
-        // Reemplazar ImageView con CardView en el HBox
-        replaceImageViewWithCard(mgvEasyMode, easyModeCard);
-        replaceImageViewWithCard(mgvMediumMode, mediumModeCard);
-        replaceImageViewWithCard(mgvHardMode, hardModeCard);
-    }
-
-    private void replaceImageViewWithCard(ImageView imageView, CardView card) {
-        HBox parent = (HBox) imageView.getParent();
-        if (parent != null) {
-            int index = parent.getChildren().indexOf(imageView);
-            parent.getChildren().remove(imageView);
-            parent.getChildren().add(index, card);
-        }
-    }
-
-    @FXML
-    private void onKeyPressed(KeyEvent event) {
-        // Implementar si necesitas
-    }
-
-    @FXML
-    private void onActionBtnBack(ActionEvent event) {
-        FlowController.getInstance().goViewInStage("MenuView", (Stage) btnBack.getScene().getWindow());
-    }
 }

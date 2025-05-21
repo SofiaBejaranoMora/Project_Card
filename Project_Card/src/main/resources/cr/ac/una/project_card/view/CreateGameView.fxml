@@ -55,19 +55,19 @@
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <Button id="MenuSessionAndAdjust" fx:id="btnEasyMode" mnemonicParsing="false" onAction="#onActionBtnEasyMode" stylesheets="@Style.css">
                      <graphic>
-                        <ImageView fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="mgvEasyMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <Button id="MenuSessionAndAdjust" fx:id="btnMediumMode" mnemonicParsing="false" onAction="#onActionBtnMediumMode" stylesheets="@Style.css">
                      <graphic>
-                        <ImageView fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="mgvMediumMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <Button id="MenuSessionAndAdjust" fx:id="btnHardMode" mnemonicParsing="false" onAction="#onActionBtnHardMode" stylesheets="@Style.css">
                      <graphic>
-                        <ImageView fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="mgvHardMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />

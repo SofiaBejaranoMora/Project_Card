@@ -35,8 +35,11 @@ public class CreateGameController extends Controller implements Initializable {
 
     @FXML
     private MFXTextField txfNameGame;
+    @FXML
     private ImageView mgvEasyMode;
+    @FXML
     private ImageView mgvMediumMode;
+    @FXML
     private ImageView mgvHardMode;
     @FXML
     private Button btnBack;
@@ -93,17 +96,18 @@ public class CreateGameController extends Controller implements Initializable {
     }
   
     private void setupCardInteractions() {
-        replaceImageViewWithCard(mgvEasyMode, easyModeCard);
-        replaceImageViewWithCard(mgvMediumMode, mediumModeCard);
-        replaceImageViewWithCard(mgvHardMode, hardModeCard);
+        setupHoverEffect(btnEasyMode, mgvEasyMode, easyModeCard);
+        setupHoverEffect(btnMediumMode, mgvMediumMode, mediumModeCard);
+        setupHoverEffect(btnHardMode, mgvHardMode, hardModeCard);
     }
 
-    private void replaceImageViewWithCard(ImageView imageView, CardView card) {
-        HBox parent = (HBox) imageView.getParent();
-        if (parent != null) {
-            int index = parent.getChildren().indexOf(imageView);
-            parent.getChildren().remove(imageView);
-            parent.getChildren().add(index, card);
+    private void updateCardImage(ImageView imageView, CardView card) {
+        String imagePath = card.isFlipped() ? card.getFrontImagePath() : card.getBackImagePath();
+        String url = imageUtility.getCardPath(imagePath);
+        if (url != null) {
+            imageView.setImage(new Image(url));
+        } else {
+            System.err.println("No se pudo cargar la imagen para: " + imagePath);
         }
     }
 
@@ -115,15 +119,55 @@ public class CreateGameController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       //initialConditionsCards();
-       //setupCardInteractions();
+       initialConditionsCards();
+       setupCardInteractions();
     }
     
     @Override
     public void initialize() {
     }
 
-    public class CardView extends ImageView {
+  
+
+    private void setupHoverEffect(Button button, ImageView imageView, CardView card) {
+        RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), button);
+        rotateTransition.setAxis(Rotate.Y_AXIS);
+        rotateTransition.setDuration(Duration.millis(500));
+
+        DropShadow glow = new DropShadow();
+        glow.setColor(Color.YELLOW);
+        glow.setRadius(10);
+        glow.setSpread(0.3);
+
+        button.setOnMouseEntered(event -> {
+            button.setEffect(glow);
+            if (rotateTransition.getStatus() == Animation.Status.RUNNING) {
+                return;
+            }
+
+            rotateTransition.setToAngle(card.isFlipped() ? 0 : 180);
+            rotateTransition.setOnFinished(e -> {
+                card.toggleFlipped();
+                updateCardImage(imageView, card);
+            });
+            rotateTransition.play();
+        });
+
+        button.setOnMouseExited(event -> button.setEffect(null));
+    }
+
+    private void updateImage(ImageView imageView, CardView card) {
+        String imagePath = card.isFlipped() ? card.getFrontImagePath() : card.getBackImagePath();
+        String url = imageUtility.getCardPath(imagePath);
+        if (url != null) {
+            imageView.setImage(new Image(url));
+        } else {
+            System.err.println("No se pudo cargar la imagen para: " + imagePath);
+        }
+    }
+    
+    public class CardView {
+
         private boolean isFlipped = false;
         private String frontImagePath;
         private String backImagePath;
@@ -133,48 +177,14 @@ public class CreateGameController extends Controller implements Initializable {
             this.frontImagePath = frontImagePath;
             this.backImagePath = backImagePath;
             this.imageUtility = imageUtility;
-
-            setFitWidth(150);
-            setFitHeight(200);
-            setPreserveRatio(true);
-
-            updateImage();
-            setupHoverEffect();
         }
 
-        private void updateImage() {
-            String imagePath = isFlipped ? frontImagePath : backImagePath;
-            String url = imageUtility.getCardPath(imagePath);
-            if (url != null) {
-                setImage(new Image(url));
-            } else {
-                System.err.println("No se pudo cargar la imagen para: " + imagePath);
-            }
+        public void toggleFlipped() {
+            isFlipped = !isFlipped;
         }
 
-        private void setupHoverEffect() {
-            RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), this);
-            rotateTransition.setAxis(Rotate.Y_AXIS);
-
-            DropShadow glow = new DropShadow();
-            glow.setColor(Color.YELLOW);
-            glow.setRadius(10);
-            glow.setSpread(0.3);
-
-            setOnMouseEntered(event -> {
-                setEffect(glow);
-                if (rotateTransition.getStatus() == Animation.Status.RUNNING) {
-                    return;
-                }
-                rotateTransition.setToAngle(isFlipped ? 0 : 180);
-                rotateTransition.setOnFinished(e -> {
-                    isFlipped = !isFlipped;
-                    updateImage();
-                });
-                rotateTransition.play();
-            });
-
-            setOnMouseExited(event -> setEffect(null));
+        public boolean isFlipped() {
+            return isFlipped;
         }
 
         public String getBackImagePath() {
@@ -183,10 +193,6 @@ public class CreateGameController extends Controller implements Initializable {
 
         public String getFrontImagePath() {
             return frontImagePath;
-        }
-
-        public boolean isFlipped() {
-            return isFlipped;
         }
     }
 }

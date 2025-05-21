@@ -5,6 +5,8 @@ module cr.ac.una.project_card {
     requires java.base;
     requires java.logging;
     requires MaterialFX;
+    requires java.sql;
+    requires jakarta.persistence;
 
     opens cr.ac.una.project_card.controller to javafx.fxml;
     opens cr.ac.una.project_card to javafx.graphics;

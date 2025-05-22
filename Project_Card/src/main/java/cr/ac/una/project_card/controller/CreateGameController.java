@@ -34,6 +34,9 @@ public class CreateGameController extends Controller implements Initializable {
     private CardView easyModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
     private CardView mediumModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
     private CardView hardModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
+    private Set<String> existingGames = new HashSet<>();
+    private String nameGame;
+    private String difficulty;
 
     @FXML
     private MFXTextField txfNameGame;
@@ -54,20 +57,23 @@ public class CreateGameController extends Controller implements Initializable {
     @FXML
     private MFXButton btnStartGame;
 
-    private String nameGame;
-    private String difficulty;
-    private Set<String> existingGames = new HashSet<>();
-
     @FXML
     private void onKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             String nameGame = txfNameGame.getText().trim();
             nameGame = txfNameGame.getText().trim();
             if (nameGame.isEmpty()) {
-                message.show(Alert.AlertType.WARNING, "Error", "Por favor, ingresa un nombre de partida.");
+                message.show(Alert.AlertType.WARNING, "Nombre de partida", "Por favor, ingresa un nombre de partida.");
             } else if (!isNameValid()) {
                 message.show(Alert.AlertType.WARNING, "Nombre Inválido", "El nombre de partida ya ha sido seleccionado, intenta de nuevo.");
                 txfNameGame.clear();
+            } else {
+                if (difficulty != null) {
+                    message.show(Alert.AlertType.INFORMATION, "Nombre de partida", "Partida " + nameGame + ". Usa 'Empezar' para comenzar el juego.");
+                    btnStartGame.setVisible(true);
+                } else {
+                    message.show(Alert.AlertType.INFORMATION, "Nombre de partida", "Partida " + nameGame + "  creada. Selecciona la dificultad.");
+                }
             }
         }
     }
@@ -110,28 +116,25 @@ public class CreateGameController extends Controller implements Initializable {
         difficulty = dificultad;
         nameGame = txfNameGame.getText().trim();
         if (nameGame.isEmpty()) {
-            message.show(Alert.AlertType.WARNING, "Error", "Por favor, ingresa un nombre de partida antes de seleccionar dificultad.");
-            difficulty = null; // No asignar hasta que haya nombre
-            btnStartGame.setDisable(true);
+            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + "  asignada. Dale un nombre a la partida.");
         } else {
-            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Usa 'Iniciar' para comenzar.");
-            btnStartGame.setDisable(false);
+            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Usa 'Empezar' para comenzar el juego.");
+            btnStartGame.setVisible(true);
         }
     }
 
     private void validatingDataBeforeStart() {
         nameGame = txfNameGame.getText().trim();
         if (nameGame.isEmpty() && difficulty == null) {
-            message.show(Alert.AlertType.WARNING, "Error", "Por favor, ingresa un nombre de partida y selecciona una dificultad.");
+            message.show(Alert.AlertType.WARNING, "Campos vacios", "Por favor, ingresa un nombre de partida y selecciona una dificultad.");
         } else if (nameGame.isEmpty()) {
-            message.show(Alert.AlertType.WARNING, "Error", "Por favor, ingresa un nombre de partida.");
+            message.show(Alert.AlertType.WARNING, "Nombre de partida", "Por favor, ingresa un nombre de partida.");
         } else if (difficulty == null) {
-            message.show(Alert.AlertType.WARNING, "Error", "Por favor, selecciona una dificultad.");
+            message.show(Alert.AlertType.WARNING, "Dificultad", "Por favor, selecciona una dificultad.");
         } else if (!isNameValid()) {
             message.show(Alert.AlertType.WARNING, "Nombre Inválido", "El nombre de partida ya ha sido seleccionado, intenta de nuevo.");
             txfNameGame.clear();
             difficulty = null;
-            btnStartGame.setDisable(true); //Mal posicionando
             List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
             for (CardView card : allCards) {
                 if (card.getIsSelected()) {
@@ -206,7 +209,6 @@ public class CreateGameController extends Controller implements Initializable {
                 }
                 button.setEffect(null);
                 difficulty = null;
-                btnStartGame.setDisable(true);
             } else {
                 // Deseleccionar todas las demás cartas
                 for (CardView otherCard : allCards) {
@@ -260,6 +262,8 @@ public class CreateGameController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
+        initialConditionsCards();
+        setupCardInteractions();
     }
     
     public class CardView {

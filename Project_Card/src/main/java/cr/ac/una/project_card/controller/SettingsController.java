@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 /** * FXML Controller class * * @author ashly */
 public class SettingsController extends Controller implements Initializable {
@@ -24,6 +23,8 @@ public class SettingsController extends Controller implements Initializable {
     private Button btnWoodBackground;
     @FXML
     private Button btnBack;
+    @FXML
+    private Button btnChooseBack;
 
     @FXML
     private void onActionBtnNomalCards(ActionEvent event) {
@@ -45,6 +46,10 @@ public class SettingsController extends Controller implements Initializable {
     private void onActionBtnWoodBackground(ActionEvent event) {
     }
     
+    @FXML
+    private void onActionBtnChooseBack(ActionEvent event) {
+    }
+
        @FXML
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goView("MenuView");

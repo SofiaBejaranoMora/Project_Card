@@ -60,21 +60,8 @@ public class CreateGameController extends Controller implements Initializable {
     @FXML
     private void onKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            String nameGame = txfNameGame.getText().trim();
             nameGame = txfNameGame.getText().trim();
-            if (nameGame.isEmpty()) {
-                message.show(Alert.AlertType.WARNING, "Nombre de partida", "Por favor, ingresa un nombre de partida.");
-            } else if (!isNameValid()) {
-                message.show(Alert.AlertType.WARNING, "Nombre Inválido", "El nombre de partida ya ha sido seleccionado, intenta de nuevo.");
-                txfNameGame.clear();
-            } else {
-                if (difficulty != null) {
-                    message.show(Alert.AlertType.INFORMATION, "Nombre de partida", "Partida " + nameGame + ". Usa 'Empezar' para comenzar el juego.");
-                    btnStartGame.setVisible(true);
-                } else {
-                    message.show(Alert.AlertType.INFORMATION, "Nombre de partida", "Partida " + nameGame + "  creada. Selecciona la dificultad.");
-                }
-            }
+            validatingDataBeforeStart();
         }
     }
 
@@ -95,7 +82,10 @@ public class CreateGameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnStartGame(ActionEvent event) {
-        validatingDataBeforeStart();
+        if(validatingDataBeforeStart()){
+            existingGames.add(nameGame);
+        }
+        
         FlowController.getInstance().goView("GameView"); //El onAction lleva las vistas las operaciónes previas son las que debe pasar acá
     }
 
@@ -108,7 +98,6 @@ public class CreateGameController extends Controller implements Initializable {
         if (existingGames.contains(nameGame)) {
             return false;
         }
-        existingGames.add(nameGame);
         return true;
     }
 
@@ -122,15 +111,17 @@ public class CreateGameController extends Controller implements Initializable {
             btnStartGame.setVisible(true);
         }
     }
-
-    private void validatingDataBeforeStart() {
-        nameGame = txfNameGame.getText().trim();
+    
+    private boolean validatingDataBeforeStart(){
         if (nameGame.isEmpty() && difficulty == null) {
             message.show(Alert.AlertType.WARNING, "Campos vacios", "Por favor, ingresa un nombre de partida y selecciona una dificultad.");
+            return false;
         } else if (nameGame.isEmpty()) {
             message.show(Alert.AlertType.WARNING, "Nombre de partida", "Por favor, ingresa un nombre de partida.");
+            return false;
         } else if (difficulty == null) {
             message.show(Alert.AlertType.WARNING, "Dificultad", "Por favor, selecciona una dificultad.");
+            return false;
         } else if (!isNameValid()) {
             message.show(Alert.AlertType.WARNING, "Nombre Inválido", "El nombre de partida ya ha sido seleccionado, intenta de nuevo.");
             txfNameGame.clear();
@@ -144,14 +135,14 @@ public class CreateGameController extends Controller implements Initializable {
                         updateCardImage(getImageViewByCard(card), card, false);
                     }
                     getButtonByCard(card).setEffect(null);
+                    return false;
                 }
             }
-        } else {
-            message.show(Alert.AlertType.CONFIRMATION, "Creando partida", "Creando partida " + nameGame + " con dificultad " + difficulty);
-            return;
         }
+      return true;
     }
 
+    
     private void setupCardInteractions() {
         List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
         setupHoverEffect(btnEasyMode, mgvEasyMode, easyModeCard, allCards);

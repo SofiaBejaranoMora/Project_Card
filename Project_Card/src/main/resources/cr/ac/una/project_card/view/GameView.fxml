@@ -7,11 +7,11 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.GameController">
+<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.GameController">
    <children>
       <VBox alignment="TOP_CENTER" layoutY="4.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -64,31 +64,1110 @@
                   </Button>
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0" spacing="3.0">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
+                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="85.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </HBox>
-            <HBox prefHeight="79.0" prefWidth="600.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
-                  <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="100.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children></VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="15.0" prefWidth="70.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             <HBox id="GameHBox" alignment="CENTER" prefHeight="45.0" prefWidth="720.0" stylesheets="@Style.css">
@@ -98,18 +1177,6 @@
                         <VBox prefHeight="30.0" prefWidth="30.0">
                            <children>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="SettingsIcon" />
-                           </children>
-                        </VBox>
-                     </graphic>
-                     <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
-                     </HBox.margin>
-                  </MFXButton>
-                  <MFXButton id="GameButton" fx:id="btnCards" onAction="#onActionBtnCards" stylesheets="@Style.css" text="Cartas">
-                     <graphic>
-                        <VBox prefHeight="30.0" prefWidth="30.0">
-                           <children>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="CardsIcon" />
                            </children>
                         </VBox>
                      </graphic>

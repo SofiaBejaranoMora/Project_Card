@@ -9,9 +9,9 @@ public class ImagesUtil {
      * @param imageName Nombre del archivo (e.g., "stillBack.png").
      * @return URL como String para Image, o null si no se encuentra.
      */
-    public static String getCardPath(String id) {
+    public static String getCardDifficultPath(String id) {
         try {
-            String path = BASE_PATH + "ProgramImages/" + id + ".png";
+            String path = BASE_PATH + "ProgramImages/Cards/" + id + ".png";
             if (ImagesUtil.class.getResource(path) == null) {
                 System.err.println("No se encontró la imagen en formato PNG ni JPG: " + id);
                 return null;

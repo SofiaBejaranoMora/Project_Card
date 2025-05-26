@@ -32,9 +32,9 @@ public class CreateGameController extends Controller implements Initializable {
 
     private ImagesUtil imageUtility = new ImagesUtil();
     private Mensaje message = new Mensaje();
-    private CardView easyModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
-    private CardView mediumModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
-    private CardView hardModeCard = new CardView("temporaryIshakan", "temporaryIshakan", imageUtility);
+    private CardView easyModeCard = new CardView("1", "4", imageUtility);
+    private CardView mediumModeCard = new CardView("2", "4", imageUtility);
+    private CardView hardModeCard = new CardView("2", "4", imageUtility);
     private Set<String> existingGames = new HashSet<>();
     private String nameGame;
     private String difficulty;
@@ -155,9 +155,13 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     private void initialConditionsCards() {
-        mgvEasyMode.setImage(new Image(imageUtility.getCardPath(easyModeCard.getBackImagePath())));
-        mgvMediumMode.setImage(new Image(imageUtility.getCardPath(mediumModeCard.getBackImagePath())));
-        mgvHardMode.setImage(new Image(imageUtility.getCardPath(hardModeCard.getBackImagePath())));
+        mgvEasyMode.setImage(new Image(imageUtility.getCardDifficultPath(easyModeCard.getBackImagePath())));
+        mgvMediumMode.setImage(new Image(imageUtility.getCardDifficultPath(mediumModeCard.getBackImagePath())));
+        mgvHardMode.setImage(new Image(imageUtility.getCardDifficultPath(hardModeCard.getBackImagePath())));
+        mgvEasyMode.setRotate(180);
+        mgvMediumMode.setRotate(180);
+        mgvHardMode.setRotate(180);
+      
     }
 
     private ImageView getImageViewByCard(CardView card) {
@@ -193,7 +197,7 @@ public class CreateGameController extends Controller implements Initializable {
 
         // Verifica si la animación está corriendo antes de iniciar una nueva
         if (card.rotateTransition.getStatus() != Animation.Status.RUNNING) {
-            card.rotateTransition.setToAngle(card.isFlipped() ? 0 : 180);
+            card.rotateTransition.setToAngle(card.isFlipped() ? 180 : 0);
             card.rotateTransition.play();
         }
     }
@@ -314,7 +318,7 @@ public class CreateGameController extends Controller implements Initializable {
         }
         public void updateImageView(ImageView imageView) {
             String imagePath = isFlipped ? frontImagePath : backImagePath;
-            String url = imageUtility.getCardPath(imagePath);
+            String url = imageUtility.getCardDifficultPath(imagePath);
 
             if (url != null) {
                 imageView.setImage(new Image(url));

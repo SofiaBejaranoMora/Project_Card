@@ -27,7 +27,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
-/** * FXML Controller class * * @author ashly */
+/**
+ * FXML Controller class
+ *
+ * @author ashly
+ */
 public class CreateGameController extends Controller implements Initializable {
 
     private ImagesUtil imageUtility = new ImagesUtil();
@@ -48,8 +52,6 @@ public class CreateGameController extends Controller implements Initializable {
     @FXML
     private ImageView mgvHardMode;
     @FXML
-    private Button btnBack;
-    @FXML
     private Button btnEasyMode;
     @FXML
     private Button btnMediumMode;
@@ -58,10 +60,35 @@ public class CreateGameController extends Controller implements Initializable {
     @FXML
     private MFXButton btnStartGame;
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        initialConditionsCards();
+        setupCardInteractions();
+        // Inicializar el botón como no visible
+        btnStartGame.setVisible(false);
+        // Añadir listener al campo de texto para actualizar visibilidad del botón
+        txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
+            nameGame = newValue.trim();
+            updateStartButtonVisibility();
+        });
+    }
+
+    @Override
+    public void initialize() {
+        initialConditionsCards();
+        setupCardInteractions();
+        btnStartGame.setVisible(false);
+        txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
+            nameGame = newValue.trim();
+            updateStartButtonVisibility();
+        });
+    }
+
     @FXML
     private void onKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             nameGame = txfNameGame.getText().trim();
+            updateStartButtonVisibility();
             validatingDataBeforeStart();
         }
     }
@@ -83,11 +110,10 @@ public class CreateGameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnStartGame(ActionEvent event) {
-        if(validatingDataBeforeStart()){
+        if (validatingDataBeforeStart()) {
             existingGames.add(nameGame);
+            FlowController.getInstance().goView("GameView");
         }
-        
-        FlowController.getInstance().goView("GameView"); //El onAction lleva las vistas las operaciónes previas son las que debe pasar acá
     }
 
     @FXML
@@ -95,58 +121,92 @@ public class CreateGameController extends Controller implements Initializable {
         FlowController.getInstance().goView("MenuView");
     }
 
-    private boolean isNameValid() {
-        if (existingGames.contains(nameGame)) {
+    private boolean isNameValid(String name) {
+        if (name.isEmpty()) {
+            return false;
+        }
+        if (existingGames.contains(name)) {
             return false;
         }
         return true;
     }
 
+    private void updateStartButtonVisibility() {
+        btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null && isNameValid(nameGame));
+        System.out.println("Start button visible: " + btnStartGame.isVisible() + ", nameGame: " + nameGame + ", difficulty: " + difficulty);
+    }
+
     private void signDifficulty(String dificultad) {
         difficulty = dificultad;
         nameGame = txfNameGame.getText().trim();
-        if (nameGame.isEmpty()) {
-            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + "  asignada. Dale un nombre a la partida.");
-        } else {
-            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Usa 'Empezar' para comenzar el juego.");
-            btnStartGame.setVisible(true);
+        CardView selectedCard = getCardByDifficulty(dificultad);
+        if (selectedCard != null) {
+            selectedCard.setSelected(true);
+            Button button = getButtonByCard(selectedCard);
+            ImageView imageView = getImageViewByCard(selectedCard);
+            if (selectedCard.isFlipped()) {
+                rollCard(button, imageView, selectedCard);
+            }
+            applyGlowEffect(button);
+            List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
+            allCards.forEach(otherCard -> {
+                if (otherCard != selectedCard) {
+                    otherCard.setSelected(false);
+                    if (!otherCard.isFlipped()) {
+                        rollCard(getButtonByCard(otherCard), getImageViewByCard(otherCard), otherCard);
+                    }
+                    removeGlowEffect(getButtonByCard(otherCard));
+                }
+            });
         }
+        if (nameGame.isEmpty()) {
+            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Por favor, ingresa un nombre para la partida.");
+        } else if (!isNameValid(nameGame)) {
+            message.show(Alert.AlertType.WARNING, "Nombre no válido", "El nombre de la partida ya está en uso. Por favor, elige otro nombre.");
+        } else {
+            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Presiona 'Empezar' para iniciar el juego.");
+        }
+        updateStartButtonVisibility();
     }
-    
-    private void predeterminedValues(){
+
+    private void predeterminedValues() {
         txfNameGame.clear();
+        nameGame = "";
         difficulty = null;
         List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
         for (CardView card : allCards) {
             if (card.getIsSelected()) {
                 card.setSelected(false);
-                if (card.isFlipped()) {
-                    card.setIsFlipped(false);
-                    card.updateImageView(getImageViewByCard(card));
+                Button button = getButtonByCard(card);
+                ImageView imageView = getImageViewByCard(card);
+                removeGlowEffect(button);
+                if (!card.isFlipped()) {
+                    rollCard(button, imageView, card);
                 }
-                getButtonByCard(card).setEffect(null);
             }
         }
+        updateStartButtonVisibility();
     }
-    
-    private boolean validatingDataBeforeStart(){
+
+    private boolean validatingDataBeforeStart() {
+        nameGame = txfNameGame.getText().trim();
         if (nameGame.isEmpty() && difficulty == null) {
-            message.show(Alert.AlertType.WARNING, "Campos vacios", "Por favor, ingresa un nombre de partida y selecciona una dificultad.");
+            message.show(Alert.AlertType.WARNING, "Campos requeridos", "Por favor, ingresa un nombre para la partida y selecciona una dificultad.");
             return false;
         } else if (nameGame.isEmpty()) {
-            message.show(Alert.AlertType.WARNING, "Nombre de partida", "Por favor, ingresa un nombre de partida.");
+            message.show(Alert.AlertType.WARNING, "Nombre requerido", "Por favor, ingresa un nombre para la partida.");
             return false;
         } else if (difficulty == null) {
-            message.show(Alert.AlertType.WARNING, "Dificultad", "Por favor, selecciona una dificultad.");
+            message.show(Alert.AlertType.WARNING, "Dificultad requerida", "Por favor, selecciona una dificultad.");
             return false;
-        } else if (!isNameValid()) {
-            message.show(Alert.AlertType.WARNING, "Nombre Inválido", "El nombre de partida ya ha sido seleccionado, intenta de nuevo.");
-            predeterminedValues();//reestablece los valores
+        } else if (!isNameValid(nameGame)) {
+            message.show(Alert.AlertType.WARNING, "Nombre no válido", "El nombre de la partida ya está en uso. Por favor, elige otro nombre.");
+            predeterminedValues();
             return false;
         }
-      return true;
+        return true;
     }
-  
+
     private void setupCardInteractions() {
         List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
         setupCardEffects(btnEasyMode, mgvEasyMode, easyModeCard, allCards);
@@ -161,30 +221,51 @@ public class CreateGameController extends Controller implements Initializable {
         mgvEasyMode.setRotate(180);
         mgvMediumMode.setRotate(180);
         mgvHardMode.setRotate(180);
-      
     }
 
     private ImageView getImageViewByCard(CardView card) {
-        if (card == easyModeCard) return mgvEasyMode;
-        if (card == mediumModeCard) return mgvMediumMode;
-        if (card == hardModeCard) return mgvHardMode;
+        if (card == easyModeCard) {
+            return mgvEasyMode;
+        }
+        if (card == mediumModeCard) {
+            return mgvMediumMode;
+        }
+        if (card == hardModeCard) {
+            return mgvHardMode;
+        }
         return null;
     }
 
     private Button getButtonByCard(CardView card) {
-        if (card == easyModeCard) return btnEasyMode;
-        if (card == mediumModeCard) return btnMediumMode;
-        if (card == hardModeCard) return btnHardMode;
+        if (card == easyModeCard) {
+            return btnEasyMode;
+        }
+        if (card == mediumModeCard) {
+            return btnMediumMode;
+        }
+        if (card == hardModeCard) {
+            return btnHardMode;
+        }
         return null;
     }
-    
-    
+
+    private CardView getCardByDifficulty(String difficulty) {
+        switch (difficulty.toLowerCase()) {
+            case "easy":
+                return easyModeCard;
+            case "medium":
+                return mediumModeCard;
+            case "hard":
+                return hardModeCard;
+            default:
+                return null;
+        }
+    }
+
     private void rollCard(Button actualButton, ImageView imageView, CardView card) {
         if (card.rotateTransition == null) {
             card.initializeRotation(imageView);
         }
-
-        // Verifica si la animación está corriendo antes de iniciar una nueva
         if (card.rotateTransition.getStatus() != Animation.Status.RUNNING) {
             card.rotateTransition.setToAngle(card.isFlipped() ? 180 : 0);
             card.rotateTransition.play();
@@ -192,39 +273,61 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     private void setupCardEffects(Button button, ImageView imageView, CardView card, List<CardView> allCards) {
-        // Gira la carta cuando el mouse pasa sobre ella
         button.setOnMouseEntered(event -> {
-            rollCard(button, imageView, card); // Gira la carta en hover
-        });
-
-        // Evento de clic para manejar la selección y deselección
-        button.setOnMouseClicked(event -> {
-            if (card.getIsSelected()) {
-                // Si ya está seleccionada, la deseleccionamos
-                card.setSelected(false);
-            } else {
-                // Deseleccionar cualquier carta previamente seleccionada
-                allCards.forEach(otherCard -> otherCard.setSelected(false));
-
-                // Seleccionar la nueva carta
-                card.setSelected(true);
+            if (!card.getIsSelected()) {
+                rollCard(button, imageView, card);
             }
         });
-    }  
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        initialConditionsCards();
-        setupCardInteractions();
+
+        button.setOnMouseClicked(event -> {
+            if (card.getIsSelected()) {
+                card.setSelected(false);
+                button.setFocusTraversable(false);
+                removeGlowEffect(button);
+                difficulty = null;
+                System.out.println("Card deselected: " + card.getFrontImagePath());
+            } else {
+                allCards.forEach(otherCard -> {
+                    if (otherCard != card) {
+                        otherCard.setSelected(false);
+                        removeGlowEffect(getButtonByCard(otherCard));
+                    }
+                });
+                card.setSelected(true);
+                if (card.isFlipped()) {
+                    rollCard(button, imageView, card);
+                }
+                applyGlowEffect(button);
+                button.setFocusTraversable(true);
+                button.requestFocus();
+                System.out.println("Card selected: " + card.getFrontImagePath() + ", Glow applied: " + (button.getEffect() != null));
+            }
+            event.consume();
+        });
     }
 
-    @Override
-    public void initialize() {
-        initialConditionsCards();
-        setupCardInteractions();
+    private void applyGlowEffect(Button button) {
+        DropShadow glow = new DropShadow();
+        glow.setColor(Color.BLUE);
+        glow.setRadius(30.0);
+        glow.setSpread(0.5);
+        button.setEffect(glow);
+        button.setStyle("-fx-border-color: blue; -fx-border-width: 3; -fx-border-radius: 5;");
+        button.applyCss();
+        button.layout();
+        System.out.println("Applying glow to button: " + button.getId() + ", Effect: " + button.getEffect());
     }
-    
+
+    private void removeGlowEffect(Button button) {
+        button.setEffect(null);
+        button.setStyle("");
+        button.applyCss();
+        button.layout();
+        System.out.println("Removed glow from button: " + button.getId());
+    }
+
     public class CardView {
+
         private boolean isFlipped = false;
         private boolean isSelected;
         private String frontImagePath;
@@ -263,21 +366,22 @@ public class CreateGameController extends Controller implements Initializable {
         public void setSelected(boolean selected) {
             this.isSelected = selected;
         }
-        
+
         public void toggleFlipped() {
             isFlipped = !isFlipped;
         }
+
         public void updateImageView(ImageView imageView) {
             String imagePath = isFlipped ? frontImagePath : backImagePath;
             String url = imageUtility.getCardDifficultPath(imagePath);
-
             if (url != null) {
                 imageView.setImage(new Image(url));
+                System.out.println("Updated image for card: " + frontImagePath + ", Flipped: " + isFlipped + ", Image: " + url);
             } else {
                 System.err.println("No se pudo cargar la imagen para: " + imagePath);
             }
         }
-        
+
         public void initializeRotation(ImageView imageView) {
             rotateTransition = new RotateTransition(Duration.millis(500), imageView);
             rotateTransition.setAxis(Rotate.Y_AXIS);

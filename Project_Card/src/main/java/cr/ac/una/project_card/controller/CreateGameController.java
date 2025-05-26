@@ -1,6 +1,5 @@
 package cr.ac.una.project_card.controller;
 
-import cr.ac.una.project_card.model.Card;
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.ImagesUtil;
 import cr.ac.una.project_card.util.Mensaje;
@@ -29,6 +28,7 @@ import javafx.util.Duration;
 
 /**
  * FXML Controller class
+ *
  * @author ashly
  */
 public class CreateGameController extends Controller implements Initializable {
@@ -41,6 +41,7 @@ public class CreateGameController extends Controller implements Initializable {
     private Set<String> existingGames = new HashSet<>();
     private String nameGame;
     private String difficulty;
+    private boolean lastNameValid = true;
 
     @FXML
     private MFXTextField txfNameGame;
@@ -66,7 +67,15 @@ public class CreateGameController extends Controller implements Initializable {
         btnStartGame.setVisible(false);
         txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
             nameGame = newValue.trim();
+            boolean isValid = isNameValid(nameGame);
+            if (!isValid && !nameGame.isEmpty() && lastNameValid) {
+                message.show(Alert.AlertType.WARNING, "Nombre no válido", "Ese nombre de partida ya está en uso. Por favor, elige otro.");
+                lastNameValid = false;
+            } else if (isValid) {
+                lastNameValid = true;
+            }
             updateStartButtonVisibility();
+            System.out.println("Name changed: " + nameGame + ", Valid: " + isValid);
         });
     }
 
@@ -77,7 +86,15 @@ public class CreateGameController extends Controller implements Initializable {
         btnStartGame.setVisible(false);
         txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
             nameGame = newValue.trim();
+            boolean isValid = isNameValid(nameGame);
+            if (!isValid && !nameGame.isEmpty() && lastNameValid) {
+                message.show(Alert.AlertType.WARNING, "Nombre no válido", "Ese nombre de partida ya está en uso. Por favor, elige otro.");
+                lastNameValid = false;
+            } else if (isValid) {
+                lastNameValid = true;
+            }
             updateStartButtonVisibility();
+            System.out.println("Name changed: " + nameGame + ", Valid: " + isValid);
         });
     }
 
@@ -160,9 +177,11 @@ public class CreateGameController extends Controller implements Initializable {
         if (nameGame.isEmpty()) {
             message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Por favor, ingresa un nombre para la partida.");
         } else if (!isNameValid(nameGame)) {
-            message.show(Alert.AlertType.WARNING, "Nombre no válido", "El nombre de la partida ya está en uso. Por favor, elige otro nombre.");
+            message.show(Alert.AlertType.WARNING, "Nombre no válido", "Ese nombre de partida ya está en uso. Por favor, elige otro.");
+            lastNameValid = false;
         } else {
             message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Presiona 'Empezar' para iniciar el juego.");
+            lastNameValid = true;
         }
         updateStartButtonVisibility();
     }
@@ -184,6 +203,7 @@ public class CreateGameController extends Controller implements Initializable {
             }
         }
         updateStartButtonVisibility();
+        lastNameValid = true;
     }
 
     private boolean validatingDataBeforeStart() {
@@ -198,7 +218,7 @@ public class CreateGameController extends Controller implements Initializable {
             message.show(Alert.AlertType.WARNING, "Dificultad requerida", "Por favor, selecciona una dificultad.");
             return false;
         } else if (!isNameValid(nameGame)) {
-            message.show(Alert.AlertType.WARNING, "Nombre no válido", "El nombre de la partida ya está en uso. Por favor, elige otro nombre.");
+            message.show(Alert.AlertType.WARNING, "Nombre no válido", "Ese nombre de partida ya está en uso. Por favor, elige otro.");
             predeterminedValues();
             return false;
         }
@@ -225,25 +245,41 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     private ImageView getImageViewByCard(CardView card) {
-        if (card == easyModeCard) return mgvEasyMode;
-        if (card == mediumModeCard) return mgvMediumMode;
-        if (card == hardModeCard) return mgvHardMode;
+        if (card == easyModeCard) {
+            return mgvEasyMode;
+        }
+        if (card == mediumModeCard) {
+            return mgvMediumMode;
+        }
+        if (card == hardModeCard) {
+            return mgvHardMode;
+        }
         return null;
     }
 
     private Button getButtonByCard(CardView card) {
-        if (card == easyModeCard) return btnEasyMode;
-        if (card == mediumModeCard) return btnMediumMode;
-        if (card == hardModeCard) return btnHardMode;
+        if (card == easyModeCard) {
+            return btnEasyMode;
+        }
+        if (card == mediumModeCard) {
+            return btnMediumMode;
+        }
+        if (card == hardModeCard) {
+            return btnHardMode;
+        }
         return null;
     }
 
     private CardView getCardByDifficulty(String difficulty) {
         switch (difficulty.toLowerCase()) {
-            case "easy": return easyModeCard;
-            case "medium": return mediumModeCard;
-            case "hard": return hardModeCard;
-            default: return null;
+            case "easy":
+                return easyModeCard;
+            case "medium":
+                return mediumModeCard;
+            case "hard":
+                return hardModeCard;
+            default:
+                return null;
         }
     }
 
@@ -319,6 +355,7 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     public class CardView {
+
         private boolean isFlipped = false;
         private boolean isSelected;
         private String frontImagePath;
@@ -331,7 +368,7 @@ public class CreateGameController extends Controller implements Initializable {
             this.backImagePath = backImagePath;
             this.imageUtility = imageUtility;
             this.isSelected = false;
-            this.isFlipped = false;
+            this.isFlipped = true; // Start face-down
         }
 
         public void setIsFlipped(boolean isFlipped) {

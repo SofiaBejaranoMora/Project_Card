@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.Card;
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.ImagesUtil;
 import cr.ac.una.project_card.util.Mensaje;
@@ -67,17 +68,17 @@ public class CreateGameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnEasyMode(ActionEvent event) {
-        asignarDificultad("easy");
+        signDifficulty("easy");
     }
 
     @FXML
     private void onActionBtnMediumMode(ActionEvent event) {
-        asignarDificultad("medium");
+        signDifficulty("medium");
     }
 
     @FXML
     private void onActionBtnHardMode(ActionEvent event) {
-        asignarDificultad("hard");
+        signDifficulty("hard");
     }
 
     @FXML
@@ -101,7 +102,7 @@ public class CreateGameController extends Controller implements Initializable {
         return true;
     }
 
-    private void asignarDificultad(String dificultad) {
+    private void signDifficulty(String dificultad) {
         difficulty = dificultad;
         nameGame = txfNameGame.getText().trim();
         if (nameGame.isEmpty()) {
@@ -109,6 +110,22 @@ public class CreateGameController extends Controller implements Initializable {
         } else {
             message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Usa 'Empezar' para comenzar el juego.");
             btnStartGame.setVisible(true);
+        }
+    }
+    
+    private void predeterminedValues(){
+        txfNameGame.clear();
+        difficulty = null;
+        List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
+        for (CardView card : allCards) {
+            if (card.getIsSelected()) {
+                card.setSelected(false);
+                if (card.isFlipped()) {
+                    card.setIsFlipped(false);
+                    card.updateImageView(getImageViewByCard(card));
+                }
+                getButtonByCard(card).setEffect(null);
+            }
         }
     }
     
@@ -124,107 +141,19 @@ public class CreateGameController extends Controller implements Initializable {
             return false;
         } else if (!isNameValid()) {
             message.show(Alert.AlertType.WARNING, "Nombre Inválido", "El nombre de partida ya ha sido seleccionado, intenta de nuevo.");
-            txfNameGame.clear();
-            difficulty = null;
-            List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
-            for (CardView card : allCards) {
-                if (card.getIsSelected()) {
-                    card.setSelected(false);
-                    if (card.isFlipped()) {
-                        card.setIsFlipped(false);
-                        updateCardImage(getImageViewByCard(card), card, false);
-                    }
-                    getButtonByCard(card).setEffect(null);
-                    return false;
-                }
-            }
+            predeterminedValues();//reestablece los valores
+            return false;
         }
       return true;
     }
-
-    
+  
     private void setupCardInteractions() {
         List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
-        setupHoverEffect(btnEasyMode, mgvEasyMode, easyModeCard, allCards);
-        setupHoverEffect(btnMediumMode, mgvMediumMode, mediumModeCard, allCards);
-        setupHoverEffect(btnHardMode, mgvHardMode, hardModeCard, allCards);
+        setupCardEffects(btnEasyMode, mgvEasyMode, easyModeCard, allCards);
+        setupCardEffects(btnMediumMode, mgvMediumMode, mediumModeCard, allCards);
+        setupCardEffects(btnHardMode, mgvHardMode, hardModeCard, allCards);
     }
 
-    private void updateCardImage(ImageView imageView, CardView card, boolean showFront) {
-        String imagePath = showFront ? card.getFrontImagePath() : card.getBackImagePath();
-        String url = imageUtility.getCardPath(imagePath);
-        if (url != null) {
-            imageView.setImage(new Image(url));
-        } else {
-            System.err.println("No se pudo cargar la imagen para: " + imagePath);
-        }
-    }
-
-    private void setupHoverEffect(Button button, ImageView imageView, CardView card, List<CardView> allCards) {
-        RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), imageView);
-        rotateTransition.setAxis(Rotate.Y_AXIS);
-
-        DropShadow glow = new DropShadow();
-        glow.setColor(Color.YELLOW);
-        glow.setRadius(10);
-        glow.setSpread(0.3);
-
-        // Efecto al pasar el mouse, solo si la carta NO está seleccionada
-        button.setOnMouseEntered(event -> {
-            if (!card.getIsSelected() && rotateTransition.getStatus() != Animation.Status.RUNNING) {
-                button.setEffect(glow);
-                rotateTransition.setToAngle(card.isFlipped() ? 0 : 180);
-                rotateTransition.setOnFinished(e -> {
-                    card.toggleFlipped();
-                    updateCardImage(imageView, card, card.isFlipped());
-                });
-                rotateTransition.play();
-            }
-        });
-
-        // Quitar el efecto solo si la carta NO está seleccionada
-        button.setOnMouseExited(event -> {
-            if (!card.getIsSelected()) {
-                button.setEffect(null);
-            }
-        });
-
-        // Evento de clic para selección/deselección
-        button.setOnMouseClicked(event -> {
-            if (card.getIsSelected()) {
-                // Deseleccionar la carta actual
-                card.setSelected(false);
-                if (card.isFlipped()) {
-                    card.toggleFlipped();
-                    updateCardImage(imageView, card, false);
-                }
-                button.setEffect(null);
-                difficulty = null;
-            } else {
-                // Deseleccionar todas las demás cartas
-                for (CardView otherCard : allCards) {
-                    if (otherCard != card && otherCard.getIsSelected()) {
-                        otherCard.setSelected(false);
-                        if (otherCard.isFlipped()) {
-                            otherCard.toggleFlipped();
-                            updateCardImage(getImageViewByCard(otherCard), otherCard, false);
-                        }
-                        getButtonByCard(otherCard).setEffect(null);
-                    }
-                }
-
-                // Seleccionar la nueva carta y mantenerla volteada y con brillo
-                card.setSelected(true);
-                if (!card.isFlipped()) {
-                    card.toggleFlipped();
-                    updateCardImage(imageView, card, true);
-                }
-                button.setEffect(glow); // Mantener brillo permanentemente
-                asignarDificultad(card == easyModeCard ? "easy" : card == mediumModeCard ? "medium" : "hard");
-            }
-        });
-    }
-    
     private void initialConditionsCards() {
         mgvEasyMode.setImage(new Image(imageUtility.getCardPath(easyModeCard.getBackImagePath())));
         mgvMediumMode.setImage(new Image(imageUtility.getCardPath(mediumModeCard.getBackImagePath())));
@@ -245,6 +174,89 @@ public class CreateGameController extends Controller implements Initializable {
         return null;
     }
     
+    private void applyGlowEffect(Button button, boolean enable) {
+        if (enable) {
+            DropShadow glow = new DropShadow();
+            glow.setColor(Color.YELLOW);
+            glow.setRadius(10);
+            glow.setSpread(0.3);
+            button.setEffect(glow); // Aplica el brillo
+        } else {
+            button.setEffect(null); // Elimina el brillo si no está activado
+        }
+    }
+    
+    private void rollCard(Button actualButton, ImageView imageView, CardView card, List<CardView> allCards) {
+        if (card.rotateTransition == null) {
+            card.initializeRotation(imageView);
+        }
+
+        // Verifica si la animación está corriendo antes de iniciar una nueva
+        if (card.rotateTransition.getStatus() != Animation.Status.RUNNING) {
+            card.rotateTransition.setToAngle(card.isFlipped() ? 0 : 180);
+            card.rotateTransition.play();
+        }
+    }
+
+    private void setupCardEffects(Button button, ImageView imageView, CardView card, List<CardView> allCards) {
+        // Rotar la carta al pasar el mouse, solo si no está seleccionada
+        button.setOnMouseEntered(event -> {
+            if (!card.getIsSelected()) {
+                rollCard(button, imageView, card, allCards);
+                applyGlowEffect(button, true);
+            }
+        });
+
+        // Quitar brillo al salir del hover si la carta NO está seleccionada
+        button.setOnMouseExited(event -> {
+            if (!card.getIsSelected()) {
+                applyGlowEffect(button, false);
+            }
+        });
+
+        // Evento de clic para selección/deselección de cartas
+        button.setOnMouseClicked(event -> {
+            if (card.getIsSelected()) {
+                // Deseleccionar la carta actual
+                card.setSelected(false);
+                if (card.isFlipped()) {
+                    card.toggleFlipped();
+                    card.updateImageView(imageView);
+                }
+                applyGlowEffect(button, false);
+                difficulty = null;
+            } else {
+                // Deseleccionar todas las demás cartas antes de seleccionar la nueva
+                for (CardView otherCard : allCards) {
+                    if (otherCard != card && otherCard.getIsSelected()) {
+                        otherCard.setSelected(false);
+                        if (otherCard.isFlipped()) {
+                            otherCard.toggleFlipped();
+                            otherCard.updateImageView(getImageViewByCard(otherCard));
+                        }
+                        applyGlowEffect(getButtonByCard(otherCard), false);
+                    }
+                }
+
+                // Seleccionar la nueva carta y aplicar efectos visuales
+                card.setSelected(true);
+                if (!card.isFlipped()) {
+                    card.toggleFlipped();
+                    card.updateImageView(imageView);
+                }
+                applyGlowEffect(button, true); // Aplicar brillo
+
+                // Definir la dificultad según la carta seleccionada
+                signDifficulty(
+                        card == easyModeCard ? "easy"
+                                : card == mediumModeCard ? "medium"
+                                        : "hard"
+                );
+            }
+        });
+    }
+  
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initialConditionsCards();
@@ -262,6 +274,7 @@ public class CreateGameController extends Controller implements Initializable {
         private boolean isSelected;
         private String frontImagePath;
         private String backImagePath;
+        private RotateTransition rotateTransition;
         private ImagesUtil imageUtility;
 
         public CardView(String frontImagePath, String backImagePath, ImagesUtil imageUtility) {
@@ -298,6 +311,26 @@ public class CreateGameController extends Controller implements Initializable {
         
         public void toggleFlipped() {
             isFlipped = !isFlipped;
+        }
+        public void updateImageView(ImageView imageView) {
+            String imagePath = isFlipped ? frontImagePath : backImagePath;
+            String url = imageUtility.getCardPath(imagePath);
+
+            if (url != null) {
+                imageView.setImage(new Image(url));
+            } else {
+                System.err.println("No se pudo cargar la imagen para: " + imagePath);
+            }
+        }
+        
+        public void initializeRotation(ImageView imageView) {
+            rotateTransition = new RotateTransition(Duration.millis(500), imageView);
+            rotateTransition.setAxis(Rotate.Y_AXIS);
+            rotateTransition.setToAngle(isFlipped ? 180 : 0);
+            rotateTransition.setOnFinished(e -> {
+                toggleFlipped();
+                updateImageView(imageView); // Actualiza la imagen directamente
+            });
         }
     }
 }

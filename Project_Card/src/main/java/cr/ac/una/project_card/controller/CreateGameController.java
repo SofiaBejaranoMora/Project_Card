@@ -34,7 +34,7 @@ public class CreateGameController extends Controller implements Initializable {
     private Mensaje message = new Mensaje();
     private CardView easyModeCard = new CardView("1", "4", imageUtility);
     private CardView mediumModeCard = new CardView("2", "4", imageUtility);
-    private CardView hardModeCard = new CardView("2", "4", imageUtility);
+    private CardView hardModeCard = new CardView("3", "4", imageUtility);
     private Set<String> existingGames = new HashSet<>();
     private String nameGame;
     private String difficulty;
@@ -178,19 +178,8 @@ public class CreateGameController extends Controller implements Initializable {
         return null;
     }
     
-    private void applyGlowEffect(Button button, boolean enable) {
-        if (enable) {
-            DropShadow glow = new DropShadow();
-            glow.setColor(Color.YELLOW);
-            glow.setRadius(10);
-            glow.setSpread(0.3);
-            button.setEffect(glow); // Aplica el brillo
-        } else {
-            button.setEffect(null); // Elimina el brillo si no está activado
-        }
-    }
     
-    private void rollCard(Button actualButton, ImageView imageView, CardView card, List<CardView> allCards) {
+    private void rollCard(Button actualButton, ImageView imageView, CardView card) {
         if (card.rotateTransition == null) {
             card.initializeRotation(imageView);
         }
@@ -203,63 +192,25 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     private void setupCardEffects(Button button, ImageView imageView, CardView card, List<CardView> allCards) {
-        // Rotar la carta al pasar el mouse, solo si no está seleccionada
+        // Gira la carta cuando el mouse pasa sobre ella
         button.setOnMouseEntered(event -> {
-            if (!card.getIsSelected()) {
-                rollCard(button, imageView, card, allCards);
-                applyGlowEffect(button, true);
-            }
+            rollCard(button, imageView, card); // Gira la carta en hover
         });
 
-        // Quitar brillo al salir del hover si la carta NO está seleccionada
-        button.setOnMouseExited(event -> {
-            if (!card.getIsSelected()) {
-                applyGlowEffect(button, false);
-            }
-        });
-
-        // Evento de clic para selección/deselección de cartas
+        // Evento de clic para manejar la selección y deselección
         button.setOnMouseClicked(event -> {
             if (card.getIsSelected()) {
-                // Deseleccionar la carta actual
+                // Si ya está seleccionada, la deseleccionamos
                 card.setSelected(false);
-                if (card.isFlipped()) {
-                    card.toggleFlipped();
-                    card.updateImageView(imageView);
-                }
-                applyGlowEffect(button, false);
-                difficulty = null;
             } else {
-                // Deseleccionar todas las demás cartas antes de seleccionar la nueva
-                for (CardView otherCard : allCards) {
-                    if (otherCard != card && otherCard.getIsSelected()) {
-                        otherCard.setSelected(false);
-                        if (otherCard.isFlipped()) {
-                            otherCard.toggleFlipped();
-                            otherCard.updateImageView(getImageViewByCard(otherCard));
-                        }
-                        applyGlowEffect(getButtonByCard(otherCard), false);
-                    }
-                }
+                // Deseleccionar cualquier carta previamente seleccionada
+                allCards.forEach(otherCard -> otherCard.setSelected(false));
 
-                // Seleccionar la nueva carta y aplicar efectos visuales
+                // Seleccionar la nueva carta
                 card.setSelected(true);
-                if (!card.isFlipped()) {
-                    card.toggleFlipped();
-                    card.updateImageView(imageView);
-                }
-                applyGlowEffect(button, true); // Aplicar brillo
-
-                // Definir la dificultad según la carta seleccionada
-                signDifficulty(
-                        card == easyModeCard ? "easy"
-                                : card == mediumModeCard ? "medium"
-                                        : "hard"
-                );
             }
         });
-    }
-  
+    }  
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

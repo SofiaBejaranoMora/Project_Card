@@ -53,19 +53,19 @@
             <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button id="SystemButton" fx:id="btnEasyMode" mnemonicParsing="false" onAction="#onActionBtnEasyMode" stylesheets="@Style.css">
+                  <Button id="SystemButton" fx:id="btnEasyMode" mnemonicParsing="false" onAction="#onActionBtnEasyMode" styleClass="card-button" stylesheets="@Style.css">
                      <graphic>
                         <ImageView fx:id="mgvEasyMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button id="SystemButton" fx:id="btnMediumMode" mnemonicParsing="false" onAction="#onActionBtnMediumMode" stylesheets="@Style.css">
+                  <Button id="SystemButton" fx:id="btnMediumMode" mnemonicParsing="false" onAction="#onActionBtnMediumMode" styleClass="card-button" stylesheets="@Style.css">
                      <graphic>
                         <ImageView fx:id="mgvMediumMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button id="SystemButton" fx:id="btnHardMode" mnemonicParsing="false" onAction="#onActionBtnHardMode" stylesheets="@Style.css">
+                  <Button id="SystemButton" fx:id="btnHardMode" mnemonicParsing="false" onAction="#onActionBtnHardMode" styleClass="card-button" stylesheets="@Style.css">
                      <graphic>
                         <ImageView fx:id="mgvHardMode" fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                      </graphic>

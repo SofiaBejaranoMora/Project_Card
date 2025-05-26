@@ -29,7 +29,6 @@ import javafx.util.Duration;
 
 /**
  * FXML Controller class
- *
  * @author ashly
  */
 public class CreateGameController extends Controller implements Initializable {
@@ -64,9 +63,7 @@ public class CreateGameController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initialConditionsCards();
         setupCardInteractions();
-        // Inicializar el botón como no visible
         btnStartGame.setVisible(false);
-        // Añadir listener al campo de texto para actualizar visibilidad del botón
         txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
             nameGame = newValue.trim();
             updateStartButtonVisibility();
@@ -152,8 +149,9 @@ public class CreateGameController extends Controller implements Initializable {
             allCards.forEach(otherCard -> {
                 if (otherCard != selectedCard) {
                     otherCard.setSelected(false);
+                    ImageView otherImageView = getImageViewByCard(otherCard);
                     if (!otherCard.isFlipped()) {
-                        rollCard(getButtonByCard(otherCard), getImageViewByCard(otherCard), otherCard);
+                        rollCard(getButtonByCard(otherCard), otherImageView, otherCard);
                     }
                     removeGlowEffect(getButtonByCard(otherCard));
                 }
@@ -221,44 +219,31 @@ public class CreateGameController extends Controller implements Initializable {
         mgvEasyMode.setRotate(180);
         mgvMediumMode.setRotate(180);
         mgvHardMode.setRotate(180);
+        easyModeCard.setIsFlipped(true);
+        mediumModeCard.setIsFlipped(true);
+        hardModeCard.setIsFlipped(true);
     }
 
     private ImageView getImageViewByCard(CardView card) {
-        if (card == easyModeCard) {
-            return mgvEasyMode;
-        }
-        if (card == mediumModeCard) {
-            return mgvMediumMode;
-        }
-        if (card == hardModeCard) {
-            return mgvHardMode;
-        }
+        if (card == easyModeCard) return mgvEasyMode;
+        if (card == mediumModeCard) return mgvMediumMode;
+        if (card == hardModeCard) return mgvHardMode;
         return null;
     }
 
     private Button getButtonByCard(CardView card) {
-        if (card == easyModeCard) {
-            return btnEasyMode;
-        }
-        if (card == mediumModeCard) {
-            return btnMediumMode;
-        }
-        if (card == hardModeCard) {
-            return btnHardMode;
-        }
+        if (card == easyModeCard) return btnEasyMode;
+        if (card == mediumModeCard) return btnMediumMode;
+        if (card == hardModeCard) return btnHardMode;
         return null;
     }
 
     private CardView getCardByDifficulty(String difficulty) {
         switch (difficulty.toLowerCase()) {
-            case "easy":
-                return easyModeCard;
-            case "medium":
-                return mediumModeCard;
-            case "hard":
-                return hardModeCard;
-            default:
-                return null;
+            case "easy": return easyModeCard;
+            case "medium": return mediumModeCard;
+            case "hard": return hardModeCard;
+            default: return null;
         }
     }
 
@@ -267,7 +252,7 @@ public class CreateGameController extends Controller implements Initializable {
             card.initializeRotation(imageView);
         }
         if (card.rotateTransition.getStatus() != Animation.Status.RUNNING) {
-            card.rotateTransition.setToAngle(card.isFlipped() ? 180 : 0);
+            card.rotateTransition.setToAngle(card.isFlipped() ? 0 : 180);
             card.rotateTransition.play();
         }
     }
@@ -285,11 +270,18 @@ public class CreateGameController extends Controller implements Initializable {
                 button.setFocusTraversable(false);
                 removeGlowEffect(button);
                 difficulty = null;
+                if (!card.isFlipped()) {
+                    rollCard(button, imageView, card);
+                }
                 System.out.println("Card deselected: " + card.getFrontImagePath());
             } else {
                 allCards.forEach(otherCard -> {
                     if (otherCard != card) {
                         otherCard.setSelected(false);
+                        ImageView otherImageView = getImageViewByCard(otherCard);
+                        if (!otherCard.isFlipped()) {
+                            rollCard(getButtonByCard(otherCard), otherImageView, otherCard);
+                        }
                         removeGlowEffect(getButtonByCard(otherCard));
                     }
                 });
@@ -300,7 +292,7 @@ public class CreateGameController extends Controller implements Initializable {
                 applyGlowEffect(button);
                 button.setFocusTraversable(true);
                 button.requestFocus();
-                System.out.println("Card selected: " + card.getFrontImagePath() + ", Glow applied: " + (button.getEffect() != null));
+                System.out.println("Card selected: " + card.getFrontImagePath() + ", Glow applied: " + (button.getEffect() != null) + ", Flipped: " + card.isFlipped());
             }
             event.consume();
         });
@@ -327,7 +319,6 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     public class CardView {
-
         private boolean isFlipped = false;
         private boolean isSelected;
         private String frontImagePath;
@@ -372,7 +363,7 @@ public class CreateGameController extends Controller implements Initializable {
         }
 
         public void updateImageView(ImageView imageView) {
-            String imagePath = isFlipped ? frontImagePath : backImagePath;
+            String imagePath = isFlipped ? backImagePath : frontImagePath;
             String url = imageUtility.getCardDifficultPath(imagePath);
             if (url != null) {
                 imageView.setImage(new Image(url));

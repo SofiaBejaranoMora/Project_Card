@@ -3,7 +3,10 @@
     -fx-ligthblue-background-color: #99ccff;
     -fx-white-text-color: #fff;
     -fx-black-text-color: #000;
-    -fx-global-font: url("../resources/Program/FredokaOne-Regular.ttf");
+}
+
+.root {
+    -fx-font-family: "Fredoka One";
 }
 
 .SystemBackground {
@@ -13,8 +16,8 @@
     -fx-background-position: center center;
 }
 
-.BackIcon {
-    -fx-image: url("../resources/ProgramImages/BackIcon.png");
+.btnExit > ImageView {
+    -fx-image: url("../resources/ProgramImages/ExitIcon.png");
 }
 
 .WebIcon {
@@ -29,24 +32,32 @@
     -fx-image: url("../resources/ProgramImages/MinimizeScreenIcon.png");
 }
 
-.SettingsIcon {
+.btnBackG > VBox > ImageView {
+    -fx-image: url("../resources/ProgramImages/BackIcon.png");
+}
+
+.btnSettings > VBox > ImageView {
     -fx-image: url("../resources/ProgramImages/SettingsIcon.png");
 }
 
-.CardsIcon {
-    -fx-image: url("../resources/ProgramImages/CardsIcon.png");
-}
-
-.CluesIcon {
+.btnClues > VBox >  ImageView {
     -fx-image: url("../resources/ProgramImages/CluesIcon.png");
 }
 
-.UndoIcon {
+.btnUndo > VBox >  ImageView {
     -fx-image: url("../resources/ProgramImages/UndoIcon.png");
 }
 
-.ExitIcon {
-    -fx-image: url("../resources/ProgramImages/ExitIcon.png");
+.btnBack > ImageView {
+    -fx-image: url("../resources/ProgramImages/ReturnIcon.png");
+}
+
+.btnEdit > ImageView{
+    -fx-image: url("../resources/ProgramImages/EditIcon.png");
+}
+
+.btnHelp > ImageView{
+    -fx-image: url("../resources/ProgramImages/HelpIcon.png");
 }
 
 #GameHBox {
@@ -100,7 +111,7 @@
     -fx-scale-y: 1.1;
 }
 
-#MenuSessionAndAdjust {
+#SystemButton {
     -fx-background-color: transparent;
     -fx-border-color: -fx-black-text-color;
     -fx-border-width: 3;
@@ -108,7 +119,15 @@
     -fx-font-size: 14px;
     -fx-text-fill: -fx-black-text-color;
     -fx-font-weight: bold;
-    -fx-padding: 3px;
+    -fx-padding: 1px;
+}
+
+#SystemHeadLabel {
+    -fx-font-size: 25px;
+    -fx-text-fill: -fx-black-text-color;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(153, 153, 153, 1), 5, 0, 0, 1);
 }
 
 .Label {
@@ -120,6 +139,7 @@
 }
 
 .TextField {
+    -mfx-main: -fx-black-text-color;
     -fx-background-color: transparent;
     -fx-border-color: -fx-black-text-color;
     -fx-border-width: 3;

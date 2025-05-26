@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.UserStatisticController">
+   <children>
+      <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" styleClass="SystemBackground" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="114.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button id="SystemButton" fx:id="btnBack" mnemonicParsing="false" onAction="#onActionBtnBack" styleClass="btnBack" stylesheets="@Style.css">
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Label id="SystemHeadLabel" stylesheets="@Style.css" text="Estadísticas de Usuario:" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="114.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="lablUser">
+                           <HBox.margin>
+                              <Insets right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <ImageView fx:id="mgvUserPhoto" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                           </graphic>
+                        </Label>
+                     </children></HBox>
+               </children>
+            </HBox>
+            <TabPane prefHeight="200.0" prefWidth="200.0" styleClass="tab-header-area" stylesheets="@Style.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+               <tabs>
+                  <Tab text="Estadísticas por Partida">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER" layoutX="250.0" layoutY="35.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="95.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="95.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <PieChart fx:id="pctGamesData" prefHeight="125.0" prefWidth="314.0" HBox.hgrow="ALWAYS" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="95.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label id="SystemHeadLabel" text="Porcentaje de Victorias" />
+                                                      <HBox alignment="CENTER" prefHeight="35.0" prefWidth="300.0">
+                                                         <children>
+                                                            <Label id="SystemHeadLabel" fx:id="lblVictories" text="0" />
+                                                            <Label styleClass="Label" text="\%" />
+                                                         </children>
+                                                      </HBox>
+                                                      <Label fx:id="lblNote" styleClass="Label" text="Nota: " />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <Label styleClass="Label" text="Partidas Jugadas" />
+                                    <BarChart fx:id="bctPlayGames">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Estadíticas por Puntos">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="95.0" prefWidth="200.0">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="95.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label id="SystemHeadLabel" text="Puntos Acomulados" />
+                                                      <HBox alignment="CENTER" prefHeight="35.0" prefWidth="300.0">
+                                                         <children>
+                                                            <Label id="SystemHeadLabel" fx:id="lblAcomulatePoints" text="0" />
+                                                            <Label styleClass="Label" text="pts" />
+                                                         </children>
+                                                      </HBox>
+                                                      <Label fx:id="lblNoteAcomulatePoints" styleClass="Label" text="Nota: " />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="95.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label id="SystemHeadLabel" text="Mejor Puntuación obt" />
+                                                      <HBox alignment="CENTER" prefHeight="35.0" prefWidth="300.0">
+                                                         <children>
+                                                            <Label id="SystemHeadLabel" fx:id="lblBestPuntuation" text="0" />
+                                                            <Label styleClass="Label" text="pts" />
+                                                         </children>
+                                                      </HBox>
+                                                      <Label fx:id="lblNoteBestPuntuation" styleClass="Label" text="Nota: " />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <Label styleClass="Label" text="Promedio de Puntos por Partida" />
+                                    <BarChart fx:id="bctAveragePoints">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

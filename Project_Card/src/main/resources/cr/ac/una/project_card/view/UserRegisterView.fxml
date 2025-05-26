@@ -19,12 +19,12 @@
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button id="MenuSessionAndAdjust" fx:id="btnBack" mnemonicParsing="false" onAction="#onActionBtnBack" stylesheets="@Style.css">
+                        <Button id="SystemButton" fx:id="btnBack" mnemonicParsing="false" onAction="#onActionBtnBack" styleClass="btnBack" stylesheets="@Style.css">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
                            <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="ExitIcon" />
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
                            </graphic>
                         </Button>
                      </children>
@@ -37,7 +37,17 @@
                         <Insets bottom="5.0" />
                      </HBox.margin>
                   </VBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button id="SystemButton" fx:id="btnHelp" mnemonicParsing="false" onAction="#onActionBtnHelp" styleClass="btnHelp" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="5.0" top="5.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                           </graphic>
+                        </Button>
+                     </children></HBox>
                </children>
                <VBox.margin>
                   <Insets top="5.0" />
@@ -55,6 +65,14 @@
                         <Insets left="20.0" right="30.0" />
                      </HBox.margin>
                   </MFXTextField>
+                  <Button id="SystemButton" fx:id="btnEdit" mnemonicParsing="false" onAction="#onActionBtnEdit" styleClass="btnEdit" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets right="30.0" />
+                     </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                  </Button>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

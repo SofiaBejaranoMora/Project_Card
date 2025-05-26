@@ -31,8 +31,6 @@ public class GameController extends Controller implements Initializable {
     @FXML
     private MFXButton btnSettings;
     @FXML
-    private MFXButton btnCards;
-    @FXML
     private MFXButton btnClues;
     @FXML
     private MFXButton btnUndo;
@@ -49,10 +47,6 @@ public class GameController extends Controller implements Initializable {
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
         FlowController.getInstance().goView("SettingsView");
-    }
-
-    @FXML
-    private void onActionBtnCards(ActionEvent event) {
     }
 
     @FXML

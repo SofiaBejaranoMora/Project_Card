@@ -8,9 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import static javafx.application.Application.launch;
+import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 
 /**
  * JavaFX App
@@ -22,8 +23,11 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FlowController.getInstance().InitializeFlow(stage, null);
+        Font.loadFont(App.class.getResourceAsStream("/cr/ac/una/project_card/resources/ProgramFonts/FredokaOne-Regular.ttf"), 12);
         scene = new Scene(loadFXML("PrincipalView"), 600, 400);
         MFXThemeManager.addOn(scene,Themes.DEFAULT,Themes.LEGACY);
+        stage.setTitle("Solitario WiashlyCreations");
+        stage.getIcons().add(new Image(getClass().getResource("/cr/ac/una/project_card/resources/ProgramImages/CardsIcon.png").toExternalForm()));
         stage.setScene(scene);
         stage.show();
         FlowController.getInstance().goView("MenuView");

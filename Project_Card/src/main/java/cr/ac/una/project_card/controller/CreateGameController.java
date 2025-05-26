@@ -284,7 +284,7 @@ public class CreateGameController extends Controller implements Initializable {
             rotateTransition.setToAngle(isFlipped ? 180 : 0);
             rotateTransition.setOnFinished(e -> {
                 toggleFlipped();
-                updateImageView(imageView); // Actualiza la imagen directamente
+                updateImageView(imageView);
             });
         }
     }

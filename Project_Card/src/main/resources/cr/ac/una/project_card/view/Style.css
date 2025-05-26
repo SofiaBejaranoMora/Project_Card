@@ -188,14 +188,11 @@
 .tab-pane .tab:selected .tab-label {
      -fx-text-fill: black;
 }
-.card-button:selected {
-    -fx-effect: dropshadow(gaussian, #4CAF50, 30, 0.9, 0, 0);
-    -fx-border-color: #FFFFFF;
-    -fx-border-width: 2;
-    -fx-border-radius: 8;
-}
+
 .card-button:hover {
     -fx-effect: dropshadow(gaussian, #FFD700, 20, 0.7, 0, 0);
     -fx-cursor: hand;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 

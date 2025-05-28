@@ -7,24 +7,25 @@ package cr.ac.una.project_card.model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.util.List;
 
-/**
- *
- * @author sofia
- */
 @Entity
-@Table(name = "ACHIEVEMENT")
+@Table(name = "ACHIEVEMENT", schema = "PRO")
 @NamedQueries({
     @NamedQuery(name = "Achievement.findAll", query = "SELECT a FROM Achievement a"),
-    @NamedQuery(name = "Achievement.findByAchId", query = "SELECT a FROM Achievement a WHERE a.achId = :achId"),
-    @NamedQuery(name = "Achievement.findByAchName", query = "SELECT a FROM Achievement a WHERE a.achName = :achName"),
+    @NamedQuery(name = "Achievement.findById", query = "SELECT a FROM Achievement a WHERE a.id = :id"),
+    @NamedQuery(name = "Achievement.findByName", query = "SELECT a FROM Achievement a WHERE a.name = :name"),
     @NamedQuery(name = "Achievement.findByAchImagename", query = "SELECT a FROM Achievement a WHERE a.achImagename = :achImagename"),
     @NamedQuery(name = "Achievement.findByAchDescription", query = "SELECT a FROM Achievement a WHERE a.achDescription = :achDescription"),
     @NamedQuery(name = "Achievement.findByAchAmount", query = "SELECT a FROM Achievement a WHERE a.achAmount = :achAmount"),
@@ -35,105 +36,122 @@ public class Achievement implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @SequenceGenerator(name = "ACHIEVEMENT_ACH_ID_GENERATOR", sequenceName = "pro.Achievement_seq02", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ACHIEVEMENT_ACH_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "ACH_ID")
-    private BigDecimal achId;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "ACH_NAME")
-    private String achName;
+    private String name;
     @Basic(optional = false)
     @Column(name = "ACH_IMAGENAME")
-    private String achImagename;
+    private String imageName;
     @Basic(optional = false)
     @Column(name = "ACH_DESCRIPTION")
-    private String achDescription;
+    private String description;
     @Basic(optional = false)
     @Column(name = "ACH_AMOUNT")
-    private BigInteger achAmount;
+    private Long amount;
     @Basic(optional = false)
     @Column(name = "ACH_TYPE")
-    private String achType;
-    @Basic(optional = false)
+    private String type;
+    @Version
     @Column(name = "ACH_VERSION")
-    private BigInteger achVersion;
+    private Long version;
+    @ManyToMany(mappedBy = "achievements", fetch = FetchType.LAZY)
+    private List<Player> players;
 
     public Achievement() {
     }
 
-    public Achievement(BigDecimal achId) {
-        this.achId = achId;
+    public Achievement(Long id) {
+        this.id = id;
     }
 
-    public Achievement(BigDecimal achId, String achName, String achImagename, String achDescription, BigInteger achAmount, String achType, BigInteger achVersion) {
-        this.achId = achId;
-        this.achName = achName;
-        this.achImagename = achImagename;
-        this.achDescription = achDescription;
-        this.achAmount = achAmount;
-        this.achType = achType;
-        this.achVersion = achVersion;
+    public Achievement(AchievementDto achievementDto) {
+        this.id = achievementDto.getId();
+        update(achievementDto);
     }
 
-    public BigDecimal getAchId() {
-        return achId;
+    public void update(AchievementDto achievementDto) {
+        this.id = achievementDto.getId();
+        this.name = achievementDto.getName();
+        this.imageName = achievementDto.getImageName();
+        this.description = achievementDto.getDescription();
+        this.amount = achievementDto.getAmount();
+        this.type = achievementDto.getType();
+        this.version = achievementDto.getVersion();
     }
 
-    public void setAchId(BigDecimal achId) {
-        this.achId = achId;
+    public Long getId() {
+        return id;
     }
 
-    public String getAchName() {
-        return achName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setAchName(String achName) {
-        this.achName = achName;
+    public String getName() {
+        return name;
     }
 
-    public String getAchImagename() {
-        return achImagename;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setAchImagename(String achImagename) {
-        this.achImagename = achImagename;
+    public String getImageName() {
+        return imageName;
     }
 
-    public String getAchDescription() {
-        return achDescription;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
-    public void setAchDescription(String achDescription) {
-        this.achDescription = achDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public BigInteger getAchAmount() {
-        return achAmount;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setAchAmount(BigInteger achAmount) {
-        this.achAmount = achAmount;
+    public Long getAmount() {
+        return amount;
     }
 
-    public String getAchType() {
-        return achType;
+    public void setAmount(Long achAmount) {
+        this.amount = achAmount;
     }
 
-    public void setAchType(String achType) {
-        this.achType = achType;
+    public String getType() {
+        return type;
     }
 
-    public BigInteger getAchVersion() {
-        return achVersion;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setAchVersion(BigInteger achVersion) {
-        this.achVersion = achVersion;
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (achId != null ? achId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -144,7 +162,7 @@ public class Achievement implements Serializable {
             return false;
         }
         Achievement other = (Achievement) object;
-        if ((this.achId == null && other.achId != null) || (this.achId != null && !this.achId.equals(other.achId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -152,7 +170,7 @@ public class Achievement implements Serializable {
 
     @Override
     public String toString() {
-        return "cr.ac.una.project_card.model.Achievement[ achId=" + achId + " ]";
+        return "cr.ac.una.project_card.model.Achievement[ achId=" + id + " ]";
     }
-    
+
 }

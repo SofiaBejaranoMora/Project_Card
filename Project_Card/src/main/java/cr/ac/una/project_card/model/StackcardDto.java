@@ -8,69 +8,55 @@ import java.util.List;
 import java.util.Objects;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
 
-public class CardDto {
-    
+public class StackcardDto {
+
     private StringProperty id;
-    private StringProperty number;
-    private StringProperty type;
-    private List<Game> games;
-    private List<Stackcardxcard> stackCardxCards;
+    private StringProperty rowCardNumber;
+    private Game game;
     private Long version;
+    private List<Stackcardxcard> stackCardxCards;
 
-    public CardDto() {
+    public StackcardDto() {
         this.id = new SimpleStringProperty("");
-        this.number = new SimpleStringProperty("");
-        this.type = new SimpleStringProperty("");
+        this.rowCardNumber = new SimpleStringProperty("");
     }
 
-    public CardDto(Card card) {
+    public StackcardDto(Stackcard stackcard) {
         this();
-        this.id.set(card.getId().toString());
-        this.number.set(card.getNumber().toString());
-        this.type.set(card.getType());
-        this.version= card.getId();
+        this.id.set(stackcard.getId().toString());
+        this.rowCardNumber.set(stackcard.getRowCardNumber().toString());
+        this.version = stackcard.getVersion();
     }
 
     public Long getId() {
-        if (this.id.get() != null && !this.id.get().isBlank()) {
-            return Long.valueOf(this.id.get());
-        } else {
-            return null;
+        if (this.id.get() != null & !this.id.get().isBlank()) {
+            return Long.valueOf(id.get());
         }
+        return null;
     }
 
     public void setId(Long id) {
         this.id.set(id.toString());
     }
 
-    public Long getNumber() {
-        if (this.number.get() != null && !this.number.get().isBlank()) {
-            return Long.valueOf(this.number.get());
-        } else {
-            return null;
+    public Long getRowCardNumber() {
+        if (this.rowCardNumber.get() != null & !this.rowCardNumber.get().isBlank()) {
+            return Long.valueOf(rowCardNumber.get());
         }
+        return null;
     }
 
-    public void setNumber(Long number) {
-        this.number.set(number.toString());
+    public void setRowCardNumber(Long rowCardNumber) {
+        this.rowCardNumber.set(rowCardNumber.toString());
     }
 
-    public String getType() {
-        return type.get();
+    public Game getGame() {
+        return game;
     }
 
-    public void setType(String type) {
-        this.type.set(type);
-    }
-
-    public List<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(List<Game> games) {
-        this.games = games;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public List<Stackcardxcard> getStackCardxCards() {
@@ -91,13 +77,13 @@ public class CardDto {
 
     @Override
     public String toString() {
-        return "CardDto{" + "number=" + number + ", type=" + type + '}';
+        return "StackcardDto{" + "rowCardNumber=" + rowCardNumber + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 47 * hash + Objects.hashCode(this.id);
+        int hash = 3;
+        hash = 61 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -112,7 +98,8 @@ public class CardDto {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final CardDto other = (CardDto) obj;
+        final StackcardDto other = (StackcardDto) obj;
         return Objects.equals(this.id, other.id);
     }
+
 }

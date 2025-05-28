@@ -4,12 +4,14 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>cr.ac.una.project_card.model.Rowcards</class>
     <class>cr.ac.una.project_card.model.Gamexcard</class>
-    <class>cr.ac.una.project_card.model.Achievement</class>
-    <class>cr.ac.una.project_card.model.Player</class>
     <class>cr.ac.una.project_card.model.Playerxachievement</class>
     <class>cr.ac.una.project_card.model.Card</class>
     <class>cr.ac.una.project_card.model.Game</class>
     <class>cr.ac.una.project_card.model.Rowcardsxcard</class>
+    <class>cr.ac.una.project_card.model.Achievement</class>
+    <class>cr.ac.una.project_card.model.Stackcard</class>
+    <class>cr.ac.una.project_card.model.Stackcardxcard</class>
+    <class>cr.ac.una.project_card.model.PlayerReal</class>
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521/XEPDB1"/>
       <property name="jakarta.persistence.jdbc.user" value="pro"/>

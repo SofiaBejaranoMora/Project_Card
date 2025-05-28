@@ -1,135 +1,177 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package cr.ac.una.project_card.model;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.util.List;
 
 /**
  *
  * @author sofia
  */
+
 @Entity
-@Table(name = "GAME")
+@Table(name = "GAME", schema = "PRO")
 @NamedQueries({
     @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"),
     @NamedQuery(name = "Game.findByGamId", query = "SELECT g FROM Game g WHERE g.gamId = :gamId"),
     @NamedQuery(name = "Game.findByGamTime", query = "SELECT g FROM Game g WHERE g.gamTime = :gamTime"),
     @NamedQuery(name = "Game.findByGamScore", query = "SELECT g FROM Game g WHERE g.gamScore = :gamScore"),
     @NamedQuery(name = "Game.findByGamVersion", query = "SELECT g FROM Game g WHERE g.gamVersion = :gamVersion"),
-    @NamedQuery(name = "Game.findByGamPlanId", query = "SELECT g FROM Game g WHERE g.gamPlanId = :gamPlanId"),
-    @NamedQuery(name = "Game.findByGamWon", query = "SELECT g FROM Game g WHERE g.gamWon = :gamWon"),
+    @NamedQuery(name = "Game.findByGamHaswon", query = "SELECT g FROM Game g WHERE g.gamHaswon = :gamHaswon"),
     @NamedQuery(name = "Game.findByGamDifficulty", query = "SELECT g FROM Game g WHERE g.gamDifficulty = :gamDifficulty")})
 public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+     @SequenceGenerator(name = "GAME_GAM_ID_GENERATOR", sequenceName = "pro.Game_seq03", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GAME_GAM_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "GAM_ID")
-    private BigDecimal gamId;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "GAM_TIME")
-    private BigInteger gamTime;
+    private Long time;
     @Basic(optional = false)
     @Column(name = "GAM_SCORE")
-    private BigInteger gamScore;
-    @Basic(optional = false)
+    private Long score;
+    @Version
     @Column(name = "GAM_VERSION")
-    private BigInteger gamVersion;
-    @Column(name = "GAM_PLAN_ID")
-    private BigInteger gamPlanId;
-    @Column(name = "GAM_WON")
-    private String gamWon;
+    private Long version;
+    @Basic(optional = false)
+    @Column(name = "GAM_HASWON")
+    private String hasWon;
     @Basic(optional = false)
     @Column(name = "GAM_DIFFICULTY")
-    private BigInteger gamDifficulty;
+    private Long difficulty;
+    @JoinTable(name = "GAMEXCARD", joinColumns = {
+        @JoinColumn(name = "GXC_GAM_ID", referencedColumnName = "GAM_ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "GXC_CAR_ID", referencedColumnName = "CAR_ID")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Card> cards;
+    @JoinColumn(name = "GAM_PLAN_ID", referencedColumnName = "PLA_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Player player;
+    @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
+    private List<Stackcard> stackCards;
 
     public Game() {
     }
 
-    public Game(BigDecimal gamId) {
-        this.gamId = gamId;
+    public Game(Long id) {
+        this.id = id;
     }
 
-    public Game(BigDecimal gamId, BigInteger gamTime, BigInteger gamScore, BigInteger gamVersion, BigInteger gamDifficulty) {
-        this.gamId = gamId;
-        this.gamTime = gamTime;
-        this.gamScore = gamScore;
-        this.gamVersion = gamVersion;
-        this.gamDifficulty = gamDifficulty;
+    public Game(GameDto gameDto) {
+        this.id = gameDto.getId();
+        update(gameDto);
     }
 
-    public BigDecimal getGamId() {
-        return gamId;
+    public void update(GameDto gameDto) {
+        this.id = gameDto.getId();
+        this.time = gameDto.getTime();
+        this.score = gameDto.getScore();
+        String hasWon = gameDto.getHasWon();
+        if (hasWon.equalsIgnoreCase("T") || hasWon.equalsIgnoreCase("F") || hasWon.equalsIgnoreCase("N")) {
+            this.hasWon = gameDto.getHasWon();
+        }
+        this.difficulty = gameDto.getDifficulty();
+        this.version = gameDto.getVersion();
     }
 
-    public void setGamId(BigDecimal gamId) {
-        this.gamId = gamId;
+    public Long getId() {
+        return id;
     }
 
-    public BigInteger getGamTime() {
-        return gamTime;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setGamTime(BigInteger gamTime) {
-        this.gamTime = gamTime;
+    public Long getTime() {
+        return time;
     }
 
-    public BigInteger getGamScore() {
-        return gamScore;
+    public void setTime(Long time) {
+        this.time = time;
     }
 
-    public void setGamScore(BigInteger gamScore) {
-        this.gamScore = gamScore;
+    public Long getScore() {
+        return score;
     }
 
-    public BigInteger getGamVersion() {
-        return gamVersion;
+    public void setScore(Long score) {
+        this.score = score;
     }
 
-    public void setGamVersion(BigInteger gamVersion) {
-        this.gamVersion = gamVersion;
+    public Long getVersion() {
+        return version;
     }
 
-    public BigInteger getGamPlanId() {
-        return gamPlanId;
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
-    public void setGamPlanId(BigInteger gamPlanId) {
-        this.gamPlanId = gamPlanId;
+    public String getHasWon() {
+        return hasWon;
     }
 
-    public String getGamWon() {
-        return gamWon;
+    public void setHasWon(String hasWon) {
+        this.hasWon = hasWon;
     }
 
-    public void setGamWon(String gamWon) {
-        this.gamWon = gamWon;
+    public Long getDifficulty() {
+        return difficulty;
     }
 
-    public BigInteger getGamDifficulty() {
-        return gamDifficulty;
+    public void setDifficulty(Long difficulty) {
+        this.difficulty = difficulty;
     }
 
-    public void setGamDifficulty(BigInteger gamDifficulty) {
-        this.gamDifficulty = gamDifficulty;
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public List<Stackcard> getStackCards() {
+        return stackCards;
+    }
+
+    public void setStackCards(List<Stackcard> stackCards) {
+        this.stackCards = stackCards;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (gamId != null ? gamId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -140,7 +182,7 @@ public class Game implements Serializable {
             return false;
         }
         Game other = (Game) object;
-        if ((this.gamId == null && other.gamId != null) || (this.gamId != null && !this.gamId.equals(other.gamId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -148,7 +190,7 @@ public class Game implements Serializable {
 
     @Override
     public String toString() {
-        return "cr.ac.una.project_card.model.Game[ gamId=" + gamId + " ]";
+        return "cr.ac.una.project_card.model.Game[ gamId=" + id + " ]";
     }
-    
+
 }

@@ -7,20 +7,28 @@ package cr.ac.una.project_card.model;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.util.List;
 
 /**
  *
  * @author sofia
  */
 @Entity
-@Table(name = "PLAYER")
+@Table(name = "PLAYER", schema = "PRO")
 @NamedQueries({
     @NamedQuery(name = "Player.findAll", query = "SELECT p FROM Player p"),
     @NamedQuery(name = "Player.findByPlaId", query = "SELECT p FROM Player p WHERE p.plaId = :plaId"),
@@ -28,97 +36,128 @@ import java.math.BigInteger;
     @NamedQuery(name = "Player.findByPlaAccumulatedpoint", query = "SELECT p FROM Player p WHERE p.plaAccumulatedpoint = :plaAccumulatedpoint"),
     @NamedQuery(name = "Player.findByPlaCardstyle", query = "SELECT p FROM Player p WHERE p.plaCardstyle = :plaCardstyle"),
     @NamedQuery(name = "Player.findByPlaVersion", query = "SELECT p FROM Player p WHERE p.plaVersion = :plaVersion"),
-    @NamedQuery(name = "Player.findByPlaBackground", query = "SELECT p FROM Player p WHERE p.plaBackground = :plaBackground")})
+    @NamedQuery(name = "Player.findByPlaCardbackimagename", query = "SELECT p FROM Player p WHERE p.plaCardbackimagename = :plaCardbackimagename")})
 public class Player implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @SequenceGenerator(name = "PLAYER_PLA_ID_GENERATOR", sequenceName = "pro.Player_seq01", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PLAYER_PLA_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "PLA_ID")
-    private BigDecimal plaId;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "PLA_NAME")
-    private String plaName;
+    private String name;
     @Column(name = "PLA_ACCUMULATEDPOINT")
-    private BigInteger plaAccumulatedpoint;
+    private Long accumulatedPoint;
     @Basic(optional = false)
     @Column(name = "PLA_CARDSTYLE")
-    private BigInteger plaCardstyle;
-    @Basic(optional = false)
+    private Long cardStyle;
+    @Version
     @Column(name = "PLA_VERSION")
-    private BigInteger plaVersion;
+    private Long version;
     @Basic(optional = false)
-    @Column(name = "PLA_BACKGROUND")
-    private String plaBackground;
+    @Column(name = "PLA_CARDBACKIMAGENAME")
+    private String cardBackImageName;
+    @JoinTable(name = "PLAYERXACHIEVEMENT", joinColumns = {
+        @JoinColumn(name = "PXA_PLA_ID", referencedColumnName = "PLA_ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "PXA_ACH_ID", referencedColumnName = "ACH_ID")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Achievement> achievements;
+    @OneToMany(mappedBy = "player", fetch = FetchType.LAZY)
+    private List<Game> games;
 
     public Player() {
     }
 
-    public Player(BigDecimal plaId) {
-        this.plaId = plaId;
+    public Player(Long id) {
+        this.id = id;
     }
 
-    public Player(BigDecimal plaId, String plaName, BigInteger plaCardstyle, BigInteger plaVersion, String plaBackground) {
-        this.plaId = plaId;
-        this.plaName = plaName;
-        this.plaCardstyle = plaCardstyle;
-        this.plaVersion = plaVersion;
-        this.plaBackground = plaBackground;
+    public Player(PlayerDto playerDto) {
+        this.id = playerDto.getId();
+        update(playerDto);
     }
 
-    public BigDecimal getPlaId() {
-        return plaId;
+    public void update(PlayerDto playerDto) {
+        this.id = playerDto.getId();
+        this.name = playerDto.getName();
+        this.accumulatedPoint = playerDto.getAccumulatedPoint();
+        this.cardStyle = playerDto.getCardStyle();
+        this.cardBackImageName = playerDto.getCardBackImageName();
+        this.version = playerDto.getVersion();
     }
 
-    public void setPlaId(BigDecimal plaId) {
-        this.plaId = plaId;
+    public Long getId() {
+        return id;
     }
 
-    public String getPlaName() {
-        return plaName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setPlaName(String plaName) {
-        this.plaName = plaName;
+    public String getName() {
+        return name;
     }
 
-    public BigInteger getPlaAccumulatedpoint() {
-        return plaAccumulatedpoint;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setPlaAccumulatedpoint(BigInteger plaAccumulatedpoint) {
-        this.plaAccumulatedpoint = plaAccumulatedpoint;
+    public Long getAccumulatedpoint() {
+        return accumulatedPoint;
     }
 
-    public BigInteger getPlaCardstyle() {
-        return plaCardstyle;
+    public void setAccumulatedpoint(Long accumulatedPoint) {
+        this.accumulatedPoint = accumulatedPoint;
     }
 
-    public void setPlaCardstyle(BigInteger plaCardstyle) {
-        this.plaCardstyle = plaCardstyle;
+    public Long getCardstyle() {
+        return cardStyle;
     }
 
-    public BigInteger getPlaVersion() {
-        return plaVersion;
+    public void setCardstyle(Long cardStyle) {
+        this.cardStyle = cardStyle;
     }
 
-    public void setPlaVersion(BigInteger plaVersion) {
-        this.plaVersion = plaVersion;
+    public Long getVersion() {
+        return version;
     }
 
-    public String getPlaBackground() {
-        return plaBackground;
+    public void setVersion(Long version) {
+        this.version = version;
     }
 
-    public void setPlaBackground(String plaBackground) {
-        this.plaBackground = plaBackground;
+    public String getCardBackImageName() {
+        return cardBackImageName;
+    }
+
+    public void setCardBackImageName(String cardBackImageName) {
+        this.cardBackImageName = cardBackImageName;
+    }
+
+    public List<Achievement> getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(List<Achievement> achievements) {
+        this.achievements = achievements;
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (plaId != null ? plaId.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -129,7 +168,7 @@ public class Player implements Serializable {
             return false;
         }
         Player other = (Player) object;
-        if ((this.plaId == null && other.plaId != null) || (this.plaId != null && !this.plaId.equals(other.plaId))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -137,7 +176,7 @@ public class Player implements Serializable {
 
     @Override
     public String toString() {
-        return "cr.ac.una.project_card.model.Player[ plaId=" + plaId + " ]";
+        return "cr.ac.una.project_card.model.Player[ plaId=" + id + " ]";
     }
-    
+
 }

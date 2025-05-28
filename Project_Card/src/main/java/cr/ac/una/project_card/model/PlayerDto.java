@@ -114,6 +114,38 @@ public class PlayerDto {
         this.gameList = gameList;
     }
 
+    public StringProperty getNameProperty() {
+        return name;
+    }
+
+    public void setNameProperty(StringProperty name) {
+        this.name = name;
+    }
+
+    public StringProperty getAccumulatedPointProperty() {
+        return accumulatedPoint;
+    }
+
+    public void setAccumulatedPointProperty(StringProperty accumulatedPoint) {
+        this.accumulatedPoint = accumulatedPoint;
+    }
+
+    public StringProperty getCardStyleProperty() {
+        return cardStyle;
+    }
+
+    public void setCardStyleProperty(StringProperty cardStyle) {
+        this.cardStyle = cardStyle;
+    }
+
+    public StringProperty getCardBackImageNameProperty() {
+        return cardBackImageName;
+    }
+
+    public void setCardBackImageNameProperty(StringProperty cardBackImageName) {
+        this.cardBackImageName = cardBackImageName;
+    }
+
     @Override
     public String toString() {
         return "PlayerDto{" + "name=" + name + ", accumulatedPoint=" + accumulatedPoint + ", cardStyle=" + cardStyle + ", cardBackImageName=" + cardBackImageName + '}';

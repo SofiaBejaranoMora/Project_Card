@@ -8,15 +8,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.SettingsController">
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.SettingsController">
    <children>
-      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" styleClass="SystemBackground" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" layoutX="7.0" prefHeight="400.0" prefWidth="600.0" styleClass="SystemBackground" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="13.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button id="SystemButton" fx:id="btnBack" mnemonicParsing="false" onAction="#onActionBtnBack" styleClass="btnBack" stylesheets="@Style.css">
+                        <Button id="SystemButton" fx:id="btnBack" mnemonicParsing="false" onAction="#onActionBtnBack" styleClass="btnBack">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
                            </graphic>
@@ -26,79 +26,58 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Label id="MenuLabel" stylesheets="@Style.css" text="Ajustes" HBox.hgrow="ALWAYS" />
+                  <Label id="MenuLabel" text="Ajustes" HBox.hgrow="ALWAYS" />
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="5.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label styleClass="Label" stylesheets="@Style.css" text="Diseños de Cartas" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
+            <Label styleClass="Label" text="Diseño de Cartas" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnNomalCards" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionBtnNomalCards" styleClass="SettingsPhotos" stylesheets="@Style.css" text="Normal" HBox.hgrow="ALWAYS">
+                  <Button id="SystemButton" fx:id="btnNormalMass" mnemonicParsing="false" onAction="#onActionBtnNormalMass">
                      <graphic>
-                        <ImageView fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="170.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="NormalMass" />
                      </graphic>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnMandalaCards" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionBtnMandalaCards" styleClass="SettingsPhotos" stylesheets="@Style.css" text="Mandalas" HBox.hgrow="ALWAYS">
+                  <Button id="SystemButton" fx:id="btnMandalaMass" mnemonicParsing="false" onAction="#onActionBtnMandalaMass">
                      <graphic>
-                        <ImageView fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="170.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="MandalaMass" />
                      </graphic>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnGlorianCards" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionBtnGlorianCards" styleClass="SettingsPhotos" stylesheets="@Style.css" text="Victorianas" HBox.hgrow="ALWAYS">
+                  <Button id="SystemButton" fx:id="btnVictorianMass" mnemonicParsing="false" onAction="#onActionBtnVictoriaMass">
                      <graphic>
-                        <ImageView fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="170.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="VictorianMass" />
                      </graphic>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnChooseBack" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionBtnChooseBack" styleClass="SettingsPhotos" stylesheets="@Style.css" text="Personalizar" HBox.hgrow="ALWAYS">
+                  <Button id="SystemButton" fx:id="btnPersonalizeBack" mnemonicParsing="false" onAction="#onActionBtnPersonalizeBack">
                      <graphic>
-                        <ImageView fitHeight="100.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="170.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="PersonalizeMass" />
                      </graphic>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-            <Label styleClass="Label" stylesheets="@Style.css" text="Diseños de Fondos" />
+            <Label styleClass="Label" text="Diseño de Fondos" VBox.vgrow="ALWAYS" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnNormalBackground" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionBtnNormalBackground" styleClass="SettingsPhotos" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
+                  <Button id="SystemButton" fx:id="btnGrassBackground" mnemonicParsing="false" onAction="#onActionBtnGrassBackground">
                      <graphic>
-                        <ImageView fitHeight="90.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" styleClass="GrassBackground" />
                      </graphic>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnWoodBackground" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionBtnWoodBackground" styleClass="SettingsPhotos" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
+                  <Button id="SystemButton" fx:id="btnWoodBackground" mnemonicParsing="false" onAction="#onActionBtnWoodBackground">
                      <graphic>
-                        <ImageView fitHeight="90.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="170.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" styleClass="WoodBackground" />
                      </graphic>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
    </children>

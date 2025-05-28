@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.Mensaje;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -83,6 +84,8 @@ public class UserRegisterController extends Controller implements Initializable 
                 lblCurrentPoints.setText("0");
                 btnStartSession.setVisible(false);
                 btnCloseSession.setVisible(true);
+                currentName = name;
+                AppContext.getInstance().set(currentName, "CurrentUser");
                 
             } catch (IOException e) {
                 message.showModal(Alert.AlertType.ERROR, "Imagen de usuario", getStage(), "Error al guardar la imagen: " + e.getMessage());
@@ -110,9 +113,9 @@ public class UserRegisterController extends Controller implements Initializable 
         if (oldFile.exists()) {
             boolean renamed = oldFile.renameTo(newFile);
             if (renamed) {
-                message.showConfirmation("Imagen de usuario", getStage(), "Imagen renombrada correctamente");
+                message.showConfirmation("Nombre de usuario", getStage(), "Nombre de usuario renombrado correctamente");
             } else {
-                message.showModal(Alert.AlertType.ERROR, "Imagen de usuario", getStage(), "Error al renombrar la imagen");
+                message.showModal(Alert.AlertType.ERROR, "Nombre de usuario", getStage(), "Error al renombrar el usuario");
             }
         }
     }

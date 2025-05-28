@@ -16,6 +16,30 @@
     -fx-background-position: center center;
 }
 
+.NormalMass {
+    -fx-image: url("../resources/ProgramImages/1.png");
+}
+
+.MandalaMass {
+    -fx-image: url("../resources/ProgramImages/2.png");
+}
+
+.VictorianMass {
+    -fx-image: url("../resources/ProgramImages/3.png");
+}
+
+.PersonalizeMass {
+    -fx-image: url("../resources/ProgramImages/4.png");
+}
+
+.GrassBackground {
+    -fx-image: url("../resources/ProgramImages/GrassBackground.jpg");
+}
+
+.WoodBackground {
+    -fx-image: url("../resources/ProgramImages/WoodBackground.jpg");
+}
+
 .btnExit > ImageView {
     -fx-image: url("../resources/ProgramImages/ExitIcon.png");
 }
@@ -119,7 +143,7 @@
     -fx-font-size: 14px;
     -fx-text-fill: -fx-black-text-color;
     -fx-font-weight: bold;
-    -fx-padding: 1px;
+    -fx-padding: 3px;
 }
 
 #SystemHeadLabel {

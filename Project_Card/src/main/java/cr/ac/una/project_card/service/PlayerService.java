@@ -4,6 +4,8 @@
  */
 package cr.ac.una.project_card.service;
 
+import cr.ac.una.project_card.model.Achievement;
+import cr.ac.una.project_card.model.AchievementDto;
 import cr.ac.una.project_card.model.Game;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.Player;
@@ -28,6 +30,29 @@ public class PlayerService {
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
    
+        public Respuesta getPlayerId(Long id) {
+        try {
+            Query qryPlayer = em.createNamedQuery("Player.findById", Player.class);
+            qryPlayer.setParameter("id", id);
+            Player player=(Player) qryPlayer.getSingleResult();
+            PlayerDto playerDto = new PlayerDto(player);
+            for (Game game : player.getGames()) {
+                playerDto.getGameList().add(new GameDto(game));
+            }
+            for (Achievement achievement : player.getAchievements()) {
+                playerDto.getAchievementList().add(new AchievementDto(achievement));
+            }
+                return new Respuesta(true, " ", " ", "Jugador", playerDto);
+        } catch (NoResultException ex) {
+            return new Respuesta(false, "No existe un jugador con las credenciales ingresadas.", "getPlayerId NoResultException");
+        } catch (NonUniqueResultException ex) {
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Ocurrio un error al consultar el jugador.", ex);
+            return new Respuesta(false, "Ocurrio un error al consultar el jugador.", "getEmpleado NonUniqueResultException");
+        } catch (Exception ex) {
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error obteniendo el jugador  [" + id + "]", ex);
+            return new Respuesta(false, "Error obtener el jugador.", "getPlayerId " + ex.getMessage());
+        }
+    }
 
     public Respuesta SavePlayer(PlayerDto playerDto) {
         try {
@@ -44,7 +69,7 @@ public class PlayerService {
             } else {
                 Query query = em.createNamedQuery("Player.findByName");
                 query.setParameter("name", playerDto.getName());
-                List<Player> playerList = query.getResultList();
+                List<Player> playerList = query.getResultList();//qryUsuario.getResultList()-> este para mas de un registro, y el que puse es para solo un unico registro
                 if (playerList != null) {
                     et.rollback();
                     return new Respuesta(false, "El nombre del jugador ya existe.", "", "Jugador ",null);

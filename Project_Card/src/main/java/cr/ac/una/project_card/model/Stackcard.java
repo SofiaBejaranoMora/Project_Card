@@ -72,7 +72,6 @@ public class Stackcard implements Serializable {
         this.id = stackcardDto.getId();
         this.version = stackcardDto.getVersion();
         this.rowCardNumber = stackcardDto.getRowCardNumber();
-        this.game = stackcardDto.getGame();
     }
 
     public Long getId() {

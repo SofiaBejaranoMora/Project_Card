@@ -13,7 +13,7 @@ public class StackcardDto {
 
     public StringProperty id;
     public StringProperty rowCardNumber;
-    private Game game;
+    private GameDto game;
     private Long version;
     private List<StackcardxcardDto> stackCardxCards;
 
@@ -51,11 +51,11 @@ public class StackcardDto {
         this.rowCardNumber.set(rowCardNumber.toString());
     }
 
-    public Game getGame() {
+    public GameDto getGame() {
         return game;
     }
 
-    public void setGame(Game game) {
+    public void setGame(GameDto game) {
         this.game = game;
     }
 

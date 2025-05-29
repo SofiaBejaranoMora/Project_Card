@@ -17,8 +17,8 @@ public class PlayerDto {
     public StringProperty cardStyle;
     public StringProperty cardBackImageName;
     private Long version;
-    private List<Achievement> achievementList;
-    private List<Game> gameList;
+    private List<AchievementDto> achievementList;
+    private List<GameDto> gameList;
 
     public PlayerDto() {
         this.id = new SimpleStringProperty("");
@@ -106,19 +106,19 @@ public class PlayerDto {
         this.version = version;
     }
 
-    public List<Achievement> getAchievementList() {
+    public List<AchievementDto> getAchievementList() {
         return achievementList;
     }
 
-    public void setAchievementList(List<Achievement> achievementList) {
+    public void setAchievementList(List<AchievementDto> achievementList) {
         this.achievementList = achievementList;
     }
 
-    public List<Game> getGameList() {
+    public List<GameDto> getGameList() {
         return gameList;
     }
 
-    public void setGameList(List<Game> gameList) {
+    public void setGameList(List<GameDto> gameList) {
         this.gameList = gameList;
     }
 

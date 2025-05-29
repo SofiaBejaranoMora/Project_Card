@@ -21,7 +21,7 @@ public class GameDto {
     public StringProperty hasWon;
     public StringProperty difficulty;
     private List<CardDto> cards;
-    private Player player; //Cambiar a playerDto
+    private PlayerDto player; 
     private List<StackcardDto> stackCards;
     private Long version;
     
@@ -111,11 +111,11 @@ public class GameDto {
         this.cards = cards;
     }
 
-    public Player getPlayer() {
+    public PlayerDto getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(PlayerDto player) {
         this.player = player;
     }
 

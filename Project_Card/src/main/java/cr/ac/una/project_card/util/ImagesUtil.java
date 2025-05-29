@@ -23,6 +23,20 @@ public class ImagesUtil {
         }
     }
 
+        public static String getBackCardPath(String id) {
+        try {
+            String path = BASE_PATH + "ProgramImages/Cards/Backs" + id + ".png";
+            if (ImagesUtil.class.getResource(path) == null) {
+                System.err.println("No se encontró la imagen en formato PNG ni JPG: " + id);
+                return null;
+            }
+            return ImagesUtil.class.getResource(path).toExternalForm();
+        } catch (Exception e) {
+            System.err.println("Error cargando imagen " + id + ": " + e.getMessage());
+            return null;
+        }
+    }
+    
     public static String getUserPath(String userImage) {
         try {
             String path = BASE_PATH + userImage + ".png";

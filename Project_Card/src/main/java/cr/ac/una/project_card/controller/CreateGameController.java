@@ -1,5 +1,7 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.PlayerDto;
+import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.ImagesUtil;
 import cr.ac.una.project_card.util.Mensaje;
@@ -35,12 +37,15 @@ public class CreateGameController extends Controller implements Initializable {
 
     private ImagesUtil imageUtility = new ImagesUtil();
     private Mensaje message = new Mensaje();
-    private CardView easyModeCard = new CardView("1", "4", imageUtility);
-    private CardView mediumModeCard = new CardView("2", "4", imageUtility);
-    private CardView hardModeCard = new CardView("3", "4", imageUtility);
+    private PlayerDto player;
+    private String style;
+    private CardView easyModeCard = new CardView("1", 1 + style, imageUtility);
+    private CardView mediumModeCard = new CardView("2", 2 + style, imageUtility);
+    private CardView hardModeCard = new CardView("3", 3 + style, imageUtility);
     private Set<String> existingGames = new HashSet<>();
     private String nameGame;
     private String difficulty;
+
     private boolean lastNameValid = true;
 
     @FXML
@@ -62,28 +67,23 @@ public class CreateGameController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initialConditionsCards();
-        setupCardInteractions();
-        btnStartGame.setVisible(false);
-        txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
-            nameGame = newValue.trim();
-            boolean isValid = isNameValid(nameGame);
-            if (!isValid && !nameGame.isEmpty() && lastNameValid) {
-                message.show(Alert.AlertType.WARNING, "Nombre no válido", "Ese nombre de partida ya está en uso. Por favor, elige otro.");
-                lastNameValid = false;
-            } else if (isValid) {
-                lastNameValid = true;
-            }
-            updateStartButtonVisibility();
-            System.out.println("Name changed: " + nameGame + ", Valid: " + isValid);
-        });
+
     }
 
     @Override
     public void initialize() {
+        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
+        if (player != null) {
+            if (player.getCardStyle() == 1) {
+                style = "N";
+            } else if (player.getCardStyle() == 2) {
+                style = "M";
+            } else {
+                style = "V";
+            }
+        } else style = "N";
         initialConditionsCards();
         setupCardInteractions();
-        btnStartGame.setVisible(false);
         txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
             nameGame = newValue.trim();
             boolean isValid = isNameValid(nameGame);
@@ -96,7 +96,7 @@ public class CreateGameController extends Controller implements Initializable {
             updateStartButtonVisibility();
             System.out.println("Name changed: " + nameGame + ", Valid: " + isValid);
         });
-    }
+}
 
     @FXML
     private void onKeyPressed(KeyEvent event) {
@@ -233,9 +233,9 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     private void initialConditionsCards() {
-        mgvEasyMode.setImage(new Image(imageUtility.getCardDifficultPath(easyModeCard.getBackImagePath())));
-        mgvMediumMode.setImage(new Image(imageUtility.getCardDifficultPath(mediumModeCard.getBackImagePath())));
-        mgvHardMode.setImage(new Image(imageUtility.getCardDifficultPath(hardModeCard.getBackImagePath())));
+        mgvEasyMode.setImage(new Image(imageUtility.getBackCardPath(easyModeCard.getBackImagePath())));
+        mgvMediumMode.setImage(new Image(imageUtility.getBackCardPath(mediumModeCard.getBackImagePath())));
+        mgvHardMode.setImage(new Image(imageUtility.getBackCardPath(hardModeCard.getBackImagePath())));
         mgvEasyMode.setRotate(180);
         mgvMediumMode.setRotate(180);
         mgvHardMode.setRotate(180);

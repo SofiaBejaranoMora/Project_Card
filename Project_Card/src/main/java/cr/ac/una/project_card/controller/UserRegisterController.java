@@ -96,7 +96,7 @@ public class UserRegisterController extends Controller implements Initializable 
                 Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
                 if (answer.getEstado()) {
                     this.player = (PlayerDto) answer.getResultado("Jugador");
-                    AppContext.getInstance().set(currentName, "CurrentUser");
+                    AppContext.getInstance().set("CurrentUser", player);
                     message.showModal(Alert.AlertType.INFORMATION, "Guardar Jugador", getStage(), "El jugador se guardo correctamente");
                 }else {
                     message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());

@@ -15,7 +15,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <MFXButton id="SystemButton" fx:id="btnSettings" onAction="#onActionBtnSettings" stylesheets="@Style.css" text=" . . . " VBox.vgrow="ALWAYS">
                            <VBox.margin>
@@ -59,7 +59,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
-                  <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Button id="SystemButton" fx:id="btnExit" mnemonicParsing="false" onAction="#onActionBtnExit" styleClass="btnExit" stylesheets="@Style.css">
                            <graphic>

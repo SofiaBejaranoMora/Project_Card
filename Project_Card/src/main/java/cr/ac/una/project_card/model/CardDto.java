@@ -15,8 +15,8 @@ public class CardDto {
     public StringProperty id;
     public StringProperty number;
     public StringProperty type;
-    private List<Game> games;
-    private List<Stackcardxcard> stackCardxCards;
+    private List<GameDto> games;
+    private List<StackcardxcardDto> stackCardxCards;
     private Long version;
 
     public CardDto() {
@@ -65,19 +65,19 @@ public class CardDto {
         this.type.set(type);
     }
 
-    public List<Game> getGames() {
+    public List<GameDto> getGames() {
         return games;
     }
 
-    public void setGames(List<Game> games) {
+    public void setGames(List<GameDto> games) {
         this.games = games;
     }
 
-    public List<Stackcardxcard> getStackCardxCards() {
+    public List<StackcardxcardDto> getStackCardxCards() {
         return stackCardxCards;
     }
 
-    public void setStackCardxCards(List<Stackcardxcard> stackCardxCards) {
+    public void setStackCardxCards(List<StackcardxcardDto> stackCardxCards) {
         this.stackCardxCards = stackCardxCards;
     }
 

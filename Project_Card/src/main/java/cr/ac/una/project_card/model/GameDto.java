@@ -20,9 +20,9 @@ public class GameDto {
     public StringProperty score;
     public StringProperty hasWon;
     public StringProperty difficulty;
-    private List<Card> cards;
+    private List<CardDto> cards;
     private Player player; //Cambiar a playerDto
-    private List<Stackcard> stackCards;
+    private List<StackcardDto> stackCards;
     private Long version;
     
     public GameDto() {
@@ -103,11 +103,11 @@ public class GameDto {
         this.difficulty.set(difficulty.toString());
     }
 
-    public List<Card> getCards() {
+    public List<CardDto> getCards() {
         return cards;
     }
 
-    public void setCards(List<Card> cards) {
+    public void setCards(List<CardDto> cards) {
         this.cards = cards;
     }
 
@@ -119,11 +119,11 @@ public class GameDto {
         this.player = player;
     }
 
-    public List<Stackcard> getStackCards() {
+    public List<StackcardDto> getStackCards() {
         return stackCards;
     }
 
-    public void setStackCards(List<Stackcard> stackCards) {
+    public void setStackCards(List<StackcardDto> stackCards) {
         this.stackCards = stackCards;
     }
 

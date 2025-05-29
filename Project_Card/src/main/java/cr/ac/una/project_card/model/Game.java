@@ -88,7 +88,7 @@ public class Game implements Serializable {
         this.id = gameDto.getId();
         this.time = gameDto.getTime();
         this.score = gameDto.getScore();
-        String hasWon = gameDto.getHasWon();
+        this.hasWon = gameDto.getHasWon();
         if (hasWon.equalsIgnoreCase("T") || hasWon.equalsIgnoreCase("F") || hasWon.equalsIgnoreCase("N")) {
             this.hasWon = gameDto.getHasWon();
         }

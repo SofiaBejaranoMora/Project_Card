@@ -13,8 +13,8 @@ public class StackcardxcardDto {
     public StringProperty id;
     public BooleanProperty isFaceUp;
     private Long version;
-    private Card card;
-    private Stackcard stackCard;
+    private CardDto card;
+    private StackcardDto stackCard;
 
     public StackcardxcardDto() {
         this.id =  new SimpleStringProperty("");
@@ -56,19 +56,19 @@ public class StackcardxcardDto {
         this.version = version;
     }
 
-    public Card getCard() {
+    public CardDto  getCard() {
         return card;
     }
 
-    public void setCard(Card card) {
+    public void setCard(CardDto  card) {
         this.card = card;
     }
 
-    public Stackcard getStackCard() {
+    public StackcardDto  getStackCard() {
         return stackCard;
     }
 
-    public void setStackCard(Stackcard stackCard) {
+    public void setStackCard(StackcardDto stackCard) {
         this.stackCard = stackCard;
     }
 

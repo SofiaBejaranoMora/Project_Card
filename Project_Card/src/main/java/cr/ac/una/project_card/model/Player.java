@@ -33,9 +33,9 @@ import java.util.List;
 @Table(name = "PLAYER", schema = "PRO")
 @NamedQueries({
     @NamedQuery(name = "Player.findAll", query = "SELECT p FROM Player p"),
-    /*@NamedQuery(name = "Player.findByPlaId", query = "SELECT p FROM Player p WHERE p.plaId = :plaId"),
-    @NamedQuery(name = "Player.findByPlaName", query = "SELECT p FROM Player p WHERE p.plaName = :plaName"),
-    @NamedQuery(name = "Player.findByPlaAccumulatedpoint", query = "SELECT p FROM Player p WHERE p.plaAccumulatedpoint = :plaAccumulatedpoint"),
+    @NamedQuery(name = "Player.findById", query = "SELECT p FROM Player p WHERE p.id = :id"),
+    @NamedQuery(name = "Player.findByName", query = "SELECT p FROM Player p WHERE p.name = :name"),
+    /*@NamedQuery(name = "Player.findByPlaAccumulatedpoint", query = "SELECT p FROM Player p WHERE p.plaAccumulatedpoint = :plaAccumulatedpoint"),
     @NamedQuery(name = "Player.findByPlaCardstyle", query = "SELECT p FROM Player p WHERE p.plaCardstyle = :plaCardstyle"),
     @NamedQuery(name = "Player.findByPlaVersion", query = "SELECT p FROM Player p WHERE p.plaVersion = :plaVersion"),
     @NamedQuery(name = "Player.findByPlaCardbackimagename", query = "SELECT p FROM Player p WHERE p.plaCardbackimagename = :plaCardbackimagename")*/})

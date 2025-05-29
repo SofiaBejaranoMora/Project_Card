@@ -15,7 +15,7 @@ public class StackcardDto {
     public StringProperty rowCardNumber;
     private Game game;
     private Long version;
-    private List<Stackcardxcard> stackCardxCards;
+    private List<StackcardxcardDto> stackCardxCards;
 
     public StackcardDto() {
         this.id = new SimpleStringProperty("");
@@ -59,11 +59,11 @@ public class StackcardDto {
         this.game = game;
     }
 
-    public List<Stackcardxcard> getStackCardxCards() {
+    public List<StackcardxcardDto> getStackCardxCards() {
         return stackCardxCards;
     }
 
-    public void setStackCardxCards(List<Stackcardxcard> stackCardxCards) {
+    public void setStackCardxCards(List<StackcardxcardDto> stackCardxCards) {
         this.stackCardxCards = stackCardxCards;
     }
 

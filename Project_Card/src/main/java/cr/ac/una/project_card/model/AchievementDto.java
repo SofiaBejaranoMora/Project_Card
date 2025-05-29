@@ -15,7 +15,7 @@ public class AchievementDto {
     public StringProperty amount;
     public StringProperty type;
     private Long version;
-    private List<Player> playerList;
+    private List<PlayerDto> players;
 
     public AchievementDto() {
         this.id = new SimpleStringProperty("");
@@ -99,12 +99,12 @@ public class AchievementDto {
         this.version = version;
     }
 
-    public List<Player> getPlayerList() {
-        return playerList;
+    public List<PlayerDto> getPlayes() {
+        return players;
     }
 
-    public void setPlayerList(List<Player> playerList) {
-        this.playerList = playerList;
+    public void setPlayers(List<PlayerDto> players) {
+        this.players = players;
     }
 
     @Override

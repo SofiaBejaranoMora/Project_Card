@@ -4,6 +4,8 @@
  */
 package cr.ac.una.project_card.model;
 
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,12 +33,12 @@ import java.util.List;
 @Table(name = "PLAYER", schema = "PRO")
 @NamedQueries({
     @NamedQuery(name = "Player.findAll", query = "SELECT p FROM Player p"),
-    @NamedQuery(name = "Player.findByPlaId", query = "SELECT p FROM Player p WHERE p.plaId = :plaId"),
+    /*@NamedQuery(name = "Player.findByPlaId", query = "SELECT p FROM Player p WHERE p.plaId = :plaId"),
     @NamedQuery(name = "Player.findByPlaName", query = "SELECT p FROM Player p WHERE p.plaName = :plaName"),
     @NamedQuery(name = "Player.findByPlaAccumulatedpoint", query = "SELECT p FROM Player p WHERE p.plaAccumulatedpoint = :plaAccumulatedpoint"),
     @NamedQuery(name = "Player.findByPlaCardstyle", query = "SELECT p FROM Player p WHERE p.plaCardstyle = :plaCardstyle"),
     @NamedQuery(name = "Player.findByPlaVersion", query = "SELECT p FROM Player p WHERE p.plaVersion = :plaVersion"),
-    @NamedQuery(name = "Player.findByPlaCardbackimagename", query = "SELECT p FROM Player p WHERE p.plaCardbackimagename = :plaCardbackimagename")})
+    @NamedQuery(name = "Player.findByPlaCardbackimagename", query = "SELECT p FROM Player p WHERE p.plaCardbackimagename = :plaCardbackimagename")*/})
 public class Player implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -23,9 +23,9 @@ import java.io.Serializable;
 @Table(name = "STACKCARDXCARD", schema = "PRO")
 @NamedQueries({
     @NamedQuery(name = "Stackcardxcard.findAll", query = "SELECT s FROM Stackcardxcard s"),
-    @NamedQuery(name = "Stackcardxcard.findBySxcId", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcId = :sxcId"),
+    /*@NamedQuery(name = "Stackcardxcard.findBySxcId", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcId = :sxcId"),
     @NamedQuery(name = "Stackcardxcard.findBySxcIsfaceup", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcIsfaceup = :sxcIsfaceup"),
-    @NamedQuery(name = "Stackcardxcard.findBySxcVersion", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcVersion = :sxcVersion")})
+    @NamedQuery(name = "Stackcardxcard.findBySxcVersion", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcVersion = :sxcVersion")*/})
 public class Stackcardxcard implements Serializable {
 
     private static final long serialVersionUID = 1L;

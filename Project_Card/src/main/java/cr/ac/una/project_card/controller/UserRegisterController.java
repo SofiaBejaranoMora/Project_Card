@@ -1,8 +1,11 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.PlayerDto;
+import cr.ac.una.project_card.service.PlayerService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.Mensaje;
+import cr.ac.una.project_card.util.Respuesta;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.io.File;
@@ -23,13 +26,17 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-/** * FXML Controller class * * @author ashly */
+/**
+ * * FXML Controller class * * @author ashly
+ */
 public class UserRegisterController extends Controller implements Initializable {
 
     private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/";
     Mensaje message = new Mensaje();
+    private PlayerDto player;
+
     private File selectedFile;
-    private String currentName = "";    
+    private String currentName = "";
     @FXML
     private ImageView mgvUserPhoto;
     @FXML
@@ -68,11 +75,10 @@ public class UserRegisterController extends Controller implements Initializable 
     private void onActionBtnStartSession(ActionEvent event) {
         if (selectedFile != null) {
             String name = txfUserName.getText().trim();
-            if (name.isEmpty()) {
+            if (name.isBlank()) {
                 message.showModal(Alert.AlertType.ERROR, "Nombre de usuario", getStage(), "El nombre de usuario está vacío.");
                 return;
             }
-
             try {
                 String savePath = saveRoute + name + ".png";
                 Path destination = Path.of(savePath);
@@ -80,13 +86,22 @@ public class UserRegisterController extends Controller implements Initializable 
                 Files.createDirectories(destination.getParent());
                 Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
 
-                message.showConfirmation("Inicio de sesión", getStage(), "'Sesión creada con éxito, disfrute del juego.");
+                message.showConfirmation("Inicio de sesión", getStage(), "'Sesión creada con éxito, disfrute del juego.");// modificar por que aca tira que se guardo correctamente aun que en la base no sea asi 
                 lblCurrentPoints.setText("0");
                 btnStartSession.setVisible(false);
                 btnCloseSession.setVisible(true);
-                currentName = name;
-                AppContext.getInstance().set(currentName, "CurrentUser");
-                
+                //agregar el usuario 
+                player = new PlayerDto(name, 0L, 1L, "adefesf");
+                PlayerService playerService = new PlayerService();
+                Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
+                if (answer.getEstado()) {
+                    this.player = (PlayerDto) answer.getResultado("Jugador");
+                    AppContext.getInstance().set(currentName, "CurrentUser");
+                    message.showModal(Alert.AlertType.INFORMATION, "Guardar Jugador", getStage(), "El jugador se guardo correctamente");
+                }else {
+                    message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
+                }
+
             } catch (IOException e) {
                 message.showModal(Alert.AlertType.ERROR, "Imagen de usuario", getStage(), "Error al guardar la imagen: " + e.getMessage());
             }
@@ -129,10 +144,10 @@ public class UserRegisterController extends Controller implements Initializable 
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goView("MenuView");
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        player = new PlayerDto();
     }
 
     @Override

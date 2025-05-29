@@ -11,8 +11,8 @@ import javafx.beans.property.StringProperty;
 
 public class StackcardDto {
 
-    private StringProperty id;
-    private StringProperty rowCardNumber;
+    public StringProperty id;
+    public StringProperty rowCardNumber;
     private Game game;
     private Long version;
     private List<Stackcardxcard> stackCardxCards;

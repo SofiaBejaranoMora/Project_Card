@@ -12,9 +12,9 @@ import javafx.collections.FXCollections;
 
 public class CardDto {
     
-    private StringProperty id;
-    private StringProperty number;
-    private StringProperty type;
+    public StringProperty id;
+    public StringProperty number;
+    public StringProperty type;
     private List<Game> games;
     private List<Stackcardxcard> stackCardxCards;
     private Long version;

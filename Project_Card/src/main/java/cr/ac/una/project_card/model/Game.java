@@ -30,12 +30,12 @@ import java.util.List;
 @Table(name = "GAME", schema = "PRO")
 @NamedQueries({
     @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"),
-    @NamedQuery(name = "Game.findByGamId", query = "SELECT g FROM Game g WHERE g.gamId = :gamId"),
+   /* @NamedQuery(name = "Game.findByGamId", query = "SELECT g FROM Game g WHERE g.gamId = :gamId"),
     @NamedQuery(name = "Game.findByGamTime", query = "SELECT g FROM Game g WHERE g.gamTime = :gamTime"),
     @NamedQuery(name = "Game.findByGamScore", query = "SELECT g FROM Game g WHERE g.gamScore = :gamScore"),
     @NamedQuery(name = "Game.findByGamVersion", query = "SELECT g FROM Game g WHERE g.gamVersion = :gamVersion"),
     @NamedQuery(name = "Game.findByGamHaswon", query = "SELECT g FROM Game g WHERE g.gamHaswon = :gamHaswon"),
-    @NamedQuery(name = "Game.findByGamDifficulty", query = "SELECT g FROM Game g WHERE g.gamDifficulty = :gamDifficulty")})
+    @NamedQuery(name = "Game.findByGamDifficulty", query = "SELECT g FROM Game g WHERE g.gamDifficulty = :gamDifficulty")*/})
 public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;

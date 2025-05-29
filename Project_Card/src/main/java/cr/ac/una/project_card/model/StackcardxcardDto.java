@@ -10,8 +10,8 @@ import javafx.beans.property.StringProperty;
 
 public class StackcardxcardDto {
 
-    private StringProperty id;
-    private BooleanProperty isFaceUp;
+    public StringProperty id;
+    public BooleanProperty isFaceUp;
     private Long version;
     private Card card;
     private Stackcard stackCard;

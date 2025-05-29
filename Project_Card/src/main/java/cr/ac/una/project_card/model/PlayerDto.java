@@ -11,11 +11,11 @@ import javafx.beans.property.StringProperty;
  */
 public class PlayerDto {
 
-    private StringProperty id;
-    private StringProperty name;
-    private StringProperty accumulatedPoint;
-    private StringProperty cardStyle;
-    private StringProperty cardBackImageName;
+    public StringProperty id;
+    public StringProperty name;
+    public StringProperty accumulatedPoint;
+    public StringProperty cardStyle;
+    public StringProperty cardBackImageName;
     private Long version;
     private List<Achievement> achievementList;
     private List<Game> gameList;
@@ -26,6 +26,14 @@ public class PlayerDto {
         this.accumulatedPoint = new SimpleStringProperty("");
         this.cardStyle = new SimpleStringProperty("");
         this.cardBackImageName = new SimpleStringProperty("");
+    }
+
+    public PlayerDto(String name, Long accumulatedPoint, Long cardStyle, String cardBackImageName) {
+        this();
+        this.name.set(name);
+        this.accumulatedPoint.set(accumulatedPoint.toString());
+        this.cardStyle.set(cardStyle.toString());
+        this.cardBackImageName.set(cardBackImageName);
     }
 
     public PlayerDto(Player player) {
@@ -39,7 +47,7 @@ public class PlayerDto {
     }
 
     public Long getId() {
-        if (this.id.get() != null && !this.id.get().isBlank()) {
+        if (this.id.get() != null && !this.id.get().isBlank()) { // linea de error
             return Long.valueOf(this.id.get());
         } else {
             return null;
@@ -59,7 +67,7 @@ public class PlayerDto {
     }
 
     public Long getAccumulatedPoint() {
-         if (this.accumulatedPoint.get() != null && !this.accumulatedPoint.get().isBlank()) {
+        if (this.accumulatedPoint.get() != null && !this.accumulatedPoint.get().isBlank()) {
             return Long.valueOf(this.accumulatedPoint.get());
         } else {
             return null;
@@ -67,11 +75,11 @@ public class PlayerDto {
     }
 
     public void setAccumulatedPoint(Long accumulatedPoint) {
-       this.accumulatedPoint.set(accumulatedPoint.toString());
+        this.accumulatedPoint.set(accumulatedPoint.toString());
     }
 
     public Long getCardStyle() {
-         if (this.cardStyle.get() != null && !this.cardStyle.get().isBlank()) {
+        if (this.cardStyle.get() != null && !this.cardStyle.get().isBlank()) {
             return Long.valueOf(this.cardStyle.get());
         } else {
             return null;
@@ -172,5 +180,5 @@ public class PlayerDto {
         final PlayerDto other = (PlayerDto) obj;
         return Objects.equals(this.id, other.id);
     }
-    
+
 }

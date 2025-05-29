@@ -26,10 +26,10 @@ import java.util.List;
 @Table(name = "CARD", schema = "PRO")
 @NamedQueries({
     @NamedQuery(name = "Card.findAll", query = "SELECT c FROM Card c"),
-    @NamedQuery(name = "Card.findByCarId", query = "SELECT c FROM Card c WHERE c.carId = :carId"),
+    /*@NamedQuery(name = "Card.findByCarId", query = "SELECT c FROM Card c WHERE c.carId = :carId"),
     @NamedQuery(name = "Card.findByCarNumber", query = "SELECT c FROM Card c WHERE c.carNumber = :carNumber"),
     @NamedQuery(name = "Card.findByCarType", query = "SELECT c FROM Card c WHERE c.carType = :carType"),
-    @NamedQuery(name = "Card.findByCarVersion", query = "SELECT c FROM Card c WHERE c.carVersion = :carVersion")})
+    @NamedQuery(name = "Card.findByCarVersion", query = "SELECT c FROM Card c WHERE c.carVersion = :carVersion")*/})
 public class Card implements Serializable {
 
     private static final long serialVersionUID = 1L;

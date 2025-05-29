@@ -8,12 +8,12 @@ import javafx.beans.property.StringProperty;
 
 public class AchievementDto {
 
-    private StringProperty id;
-    private StringProperty name;
-    private StringProperty imageName;
-    private StringProperty description;
-    private StringProperty amount;
-    private StringProperty type;
+    public StringProperty id;
+    public StringProperty name;
+    public StringProperty imageName;
+    public StringProperty description;
+    public StringProperty amount;
+    public StringProperty type;
     private Long version;
     private List<Player> playerList;
 

@@ -31,9 +31,9 @@ import java.util.List;
 @Table(name = "STACKCARD", schema = "PRO")
 @NamedQueries({
     @NamedQuery(name = "Stackcard.findAll", query = "SELECT s FROM Stackcard s"),
-    @NamedQuery(name = "Stackcard.findByStaId", query = "SELECT s FROM Stackcard s WHERE s.staId = :staId"),
+    /*@NamedQuery(name = "Stackcard.findByStaId", query = "SELECT s FROM Stackcard s WHERE s.staId = :staId"),
     @NamedQuery(name = "Stackcard.findByStaVersion", query = "SELECT s FROM Stackcard s WHERE s.staVersion = :staVersion"),
-    @NamedQuery(name = "Stackcard.findByStaRowcardnumber", query = "SELECT s FROM Stackcard s WHERE s.staRowcardnumber = :staRowcardnumber")})
+    @NamedQuery(name = "Stackcard.findByStaRowcardnumber", query = "SELECT s FROM Stackcard s WHERE s.staRowcardnumber = :staRowcardnumber")*/})
 public class Stackcard implements Serializable {
 
     private static final long serialVersionUID = 1L;

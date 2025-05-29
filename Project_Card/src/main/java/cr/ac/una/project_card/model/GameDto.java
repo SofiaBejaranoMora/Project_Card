@@ -15,11 +15,11 @@ import javafx.beans.property.StringProperty;
  */
 public class GameDto {
 
-    private StringProperty id;
-    private StringProperty time;
-    private StringProperty score;
-    private StringProperty hasWon;
-    private StringProperty difficulty;
+    public StringProperty id;
+    public StringProperty time;
+    public StringProperty score;
+    public StringProperty hasWon;
+    public StringProperty difficulty;
     private List<Card> cards;
     private Player player; //Cambiar a playerDto
     private List<Stackcard> stackCards;

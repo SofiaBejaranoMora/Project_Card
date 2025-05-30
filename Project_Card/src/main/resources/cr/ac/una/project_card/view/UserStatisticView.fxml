@@ -82,10 +82,10 @@
                                     <Label styleClass="Label" text="Partidas Jugadas" />
                                     <BarChart fx:id="bctPlayGames">
                                       <xAxis>
-                                        <CategoryAxis side="Categoría" />
+                                        <CategoryAxis side="BOTTOM" />
                                       </xAxis>
                                       <yAxis>
-                                        <NumberAxis side="Cantidad" />
+                                        <NumberAxis side="LEFT" />
                                       </yAxis>
                                     </BarChart>
                                  </children>

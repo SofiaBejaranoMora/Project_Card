@@ -5,6 +5,7 @@ import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
 import io.github.palexdev.materialfx.utils.FXCollectors;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +19,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.TextAlignment;
 
 /** * * @author ashly */
 public class UserStatisticController extends Controller implements Initializable {
@@ -45,7 +47,7 @@ public class UserStatisticController extends Controller implements Initializable
     @FXML
     private Label lblNoteBestPuntuation;
     @FXML
-    private BarChart<?, ?> bctAveragePoints;
+    private BarChart<String, Number> bctAveragePoints;
     
     //PlayerDto
     PlayerDto player;
@@ -53,35 +55,55 @@ public class UserStatisticController extends Controller implements Initializable
     
    
     private void configurePastelGraphic() {
-        pieChartData.clear(); // Limpia la lista antes de agregar nuevos datos
+        pieChartData.clear();
+        double accumulatedPoints = player.getAccumulatedPoint() != null ? player.getAccumulatedPoint().doubleValue() : 0;
+        int gameCount = 0;
         for (GameDto game : player.getGameList()) {
-            double percentage = (game.getScore() / player.getAccumulatedPoint()) * 100; // Porcentaje
-            String nombreJuego="nombre de juego";
+            double score = game.getScore() != null ? game.getScore().doubleValue() : 0;
+            double percentage = accumulatedPoints > 0 ? (score / accumulatedPoints) * 100 : 0;
+            String nombreJuego = "Juego " + (gameCount + 1); // Placeholder dinámico
             pieChartData.add(new PieChart.Data(nombreJuego, percentage));
+            gameCount++;
         }
-        pctGamesData.setData(pieChartData); // Asigna los datos al PieChart
+        pctGamesData.setData(pieChartData);
     }
     
-    private void configureVictoriesPercentage(){
-        Integer totalWons=0;
-        for(GameDto game: player.getGameList()){
-            if(game.getHasWon().equals("S")){//creo que es asi
-                totalWons++;
+    private void configureVictoriesPercentage() {
+        int totalWons = 0;
+        int totalGames = 0;
+
+        if (player != null && player.getGameList() != null) {
+            totalGames = player.getGameList().size();
+
+            for (GameDto game : player.getGameList()) {
+                if ("S".equals(game.getHasWon())) {
+                    totalWons++;
+                }
             }
         }
-        Integer percentage = (totalWons / player.getGameList().size()) * 100;
-        String percentageStr=percentage.toString();
-        lblVictories.setText(percentageStr);
-        
-        //una notita
+
+        double percentage = 0;
+        if (totalGames > 0) {
+            percentage = (totalWons * 100.0) / totalGames;
+        }
+
+        if (totalGames > 0) {
+            lblVictories.setText(String.format("%.1f%%", percentage));
+        } else {
+            lblVictories.setText("0%");
+        }
+
         String nota;
-        if (percentage >= 80) {
+        if (totalGames == 0) {
+            nota = "No hay juegos registrados.";
+        } else if (percentage >= 80) {
             nota = "¡Excelente desempeño!";
         } else if (percentage >= 50) {
             nota = "Buen trabajo, sigue mejorando.";
         } else {
             nota = "Puedes hacerlo mejor, sigue practicando.";
         }
+
         lblNote.setText(nota);
     }
    
@@ -90,21 +112,25 @@ public class UserStatisticController extends Controller implements Initializable
         int playedGames = 0;
         int notPlayedGames = 0;
 
-        for (GameDto game : player.getGameList()) {
-            if (game.getTime() > 0) {
-                playedGames++;
-            } else {
-                notPlayedGames++;
+        if (player != null && player.getGameList() != null) {
+            for (GameDto game : player.getGameList()) {
+                if (game.getTime() > 0) {
+                    playedGames++;
+                } else {
+                    notPlayedGames++;
+                }
             }
         }
 
-        // Crear una serie de datos
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         series.setName("Estado de Juegos");
-        series.getData().add(new XYChart.Data<>("Jugados", playedGames));
-        series.getData().add(new XYChart.Data<>("No Jugados", notPlayedGames));
+        if (playedGames == 0 && notPlayedGames == 0) {
+            series.getData().add(new XYChart.Data<>("Sin juegos", 0));
+        } else {
+            series.getData().add(new XYChart.Data<>("Jugados", playedGames));
+            series.getData().add(new XYChart.Data<>("No Jugados", notPlayedGames));
+        }
 
-        // Limpiar el gráfico y agregar la serie
         bctPlayGames.getData().clear();
         bctPlayGames.getData().add(series);
     }
@@ -116,19 +142,101 @@ public class UserStatisticController extends Controller implements Initializable
     }
     
     private void configureAcumulatePoints() {
-        lblAcomulatePoints.setText(player.getAccumulatedPoint().toString());//solo pone los puntos acumulados
+        Long totalPoints = (player != null && player.getAccumulatedPoint() != null) ? player.getAccumulatedPoint() : 0L;
+        lblAcomulatePoints.setText(totalPoints.toString());
+
+        String note;
+        if (player == null) {
+            note = "No hay datos del jugador.";
+        } else if (totalPoints >= 1000) {
+            note = "¡Increíble! Estás en la élite";
+        } else if (totalPoints >= 500) {
+            note = "Vas bien, sigue acumulando";
+        } else {
+            note = "¡No te rindas! A por más puntos";
+        }
+        lblNoteAcomulatePoints.setText(note);
+    }
+    
+    private void configureBestPuntuation() {
+        double bestPuntuation = 0;
+        if (player != null && player.getGameList() != null) {
+            for (GameDto game : player.getGameList()) {
+                Long score = game.getScore() != null ? game.getScore() : 0L;
+                if (score > bestPuntuation) {
+                    bestPuntuation = score;
+                }
+            }
+        }
+        String bestPuntuationStr = String.format("%.2f", bestPuntuation);
+        lblBestPuntuation.setText(bestPuntuationStr);
+
+        String nota;
+        if (player == null || player.getGameList() == null || player.getGameList().isEmpty()) {
+            nota = "No hay juegos registrados.";
+        } else if (bestPuntuation >= 80) {
+            nota = "¡Impresionante! Estás en otro nivel.";
+        } else if (bestPuntuation >= 50) {
+            nota = "Buen trabajo, pero puedes superarte aún más.";
+        } else {
+            nota = "No te rindas, sigue practicando. ¡La próxima vez será mejor!";
+        }
+        lblNoteBestPuntuation.setText(nota);
+    }
+    
+    private void configureAveragePoints() {
+        double totalScore = 0;
+        int gameCount = 0;
+
+        XYChart.Series<String, Number> scoreSeries = new XYChart.Series<>();
+        scoreSeries.setName("Puntajes por Juego");
+        XYChart.Series<String, Number> averageSeries = new XYChart.Series<>();
+
+        if (player != null && player.getGameList() != null) {
+            for (GameDto game : player.getGameList()) {
+                Long score = game.getScore() != null ? game.getScore() : 0L;
+                String gameName = "Juego " + (gameCount + 1);
+                scoreSeries.getData().add(new XYChart.Data<>(gameName, score));
+                totalScore += score;
+                gameCount++;
+            }
+        }
+
+        double average = gameCount > 0 ? totalScore / gameCount : 0;
+        averageSeries.setName("Promedio: " + String.format("%.1f", average));
+
+        if (gameCount == 0) {
+            scoreSeries.getData().add(new XYChart.Data<>("Sin juegos", 0));
+            averageSeries.getData().add(new XYChart.Data<>("Sin juegos", 0));
+        } else {
+            for (int i = 0; i < gameCount; i++) {
+                averageSeries.getData().add(new XYChart.Data<>(scoreSeries.getData().get(i).getXValue(), average));
+            }
+        }
+
+        bctAveragePoints.getData().clear();
+        bctAveragePoints.getData().addAll(scoreSeries, averageSeries);
     }
 
     
-    
-    
+    private void configureSecondTab(){
+        configureAcumulatePoints();
+        configureBestPuntuation();
+        configureAveragePoints();
+    }
     @FXML
     private void onActionBtnBack(ActionEvent event) {
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //TODO
+        if (player == null) {
+            player = new PlayerDto();
+            // Opcional: Inicializar con una lista vacía para evitar null
+            player.setGameList(new ArrayList<>());
+        }
+        configureFirstTab();
+        configureSecondTab();
     }
     
     @Override

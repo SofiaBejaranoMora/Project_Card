@@ -31,7 +31,7 @@ public class SettingsController extends Controller implements Initializable {
     private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/Cards/";
     Mensaje message = new Mensaje();
     private File selectedFile;
-    private PlayerDto player =  (PlayerDto) AppContext.getInstance().get("CurrentUser");
+    private PlayerDto player;
     
     @FXML
     private AnchorPane root;
@@ -68,70 +68,58 @@ public class SettingsController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnNormalMass(ActionEvent event) {
-        if(selectedFile != null) {
-            if (player.getName().isBlank()) {
-                message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
-                return;
-            }
+        if (player == null) {
+            message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
+            return;
+        }
 
-            player.setCardStyle(Long.valueOf(1));
-            PlayerService playerService = new PlayerService();
-            Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
-            if (answer.getEstado()) {
-                this.player = (PlayerDto) answer.getResultado("Jugador");
-                AppContext.getInstance().set("CurrentUser", player);
-                message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
-            }else {
-                message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
-            }
+        player.setCardStyle(Long.valueOf(1));
+        PlayerService playerService = new PlayerService();
+        Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
+        if (answer.getEstado()) {
+            this.player = (PlayerDto) answer.getResultado("Jugador");
+            AppContext.getInstance().set("CurrentUser", player);
+            message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
         } else {
-            message.showModal(Alert.AlertType.WARNING, "Selección de espalda", getStage(), "No hay imagen seleccionada para guardar.");
+            message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
         }
     }
 
     @FXML
     private void onActionBtnMandalaMass(ActionEvent event) {
-        if(selectedFile != null) {
-            if (player.getName().isBlank()) {
-                message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
-                return;
-            }
+        if (player == null) {
+            message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
+            return;
+        }
 
-            player.setCardStyle(Long.valueOf(2));
-            PlayerService playerService = new PlayerService();
-            Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
-            if (answer.getEstado()) {
-                this.player = (PlayerDto) answer.getResultado("Jugador");
-                AppContext.getInstance().set("CurrentUser", player);
-                message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
-            }else {
-                message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
-            }
+        player.setCardStyle(Long.valueOf(2));
+        PlayerService playerService = new PlayerService();
+        Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
+        if (answer.getEstado()) {
+            this.player = (PlayerDto) answer.getResultado("Jugador");
+            AppContext.getInstance().set("CurrentUser", player);
+            message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
         } else {
-            message.showModal(Alert.AlertType.WARNING, "Selección de espalda", getStage(), "No hay imagen seleccionada para guardar.");
+            message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
         }
     }
 
     @FXML
     private void onActionBtnVictoriaMass(ActionEvent event) {
-        if(selectedFile != null) {
-            if (player.getName().isBlank()) {
-                message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
-                return;
-            }
+        if (player == null) {
+            message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
+            return;
+        }
 
-            player.setCardStyle(Long.valueOf(3));
-            PlayerService playerService = new PlayerService();
-            Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
-            if (answer.getEstado()) {
-                this.player = (PlayerDto) answer.getResultado("Jugador");
-                AppContext.getInstance().set("CurrentUser", player);
-                message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
-            }else {
-                message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
-            }
+        player.setCardStyle(Long.valueOf(3));
+        PlayerService playerService = new PlayerService();
+        Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
+        if (answer.getEstado()) {
+            this.player = (PlayerDto) answer.getResultado("Jugador");
+            AppContext.getInstance().set("CurrentUser", player);
+            message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
         } else {
-            message.showModal(Alert.AlertType.WARNING, "Selección de espalda", getStage(), "No hay imagen seleccionada para guardar.");
+            message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
         }
     }
 
@@ -152,7 +140,7 @@ public class SettingsController extends Controller implements Initializable {
     
     private void savePersonalizedBack() {
         if(selectedFile != null) {
-            if (player.getName().isBlank()) {
+            if (player == null) {
                 message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
                 return;
             }
@@ -212,17 +200,17 @@ public class SettingsController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    }    
+
+    @Override
+    public void initialize() {
         fitCards(btnNormalMass);
         fitCards(btnMandalaMass);
         fitCards(btnVictorianMass);
         fitCards(btnPersonalizeBack);
         fitBackgrounds(btnGrassBackground);
         fitBackgrounds(btnWoodBackground);
-    }    
-
-    @Override
-    public void initialize() {
-        
+        player =  (PlayerDto) AppContext.getInstance().get("CurrentUser");
     }
 
 }

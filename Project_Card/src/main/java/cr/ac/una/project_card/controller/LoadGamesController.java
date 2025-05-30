@@ -1,5 +1,7 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.GameDto;
+import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.Mensaje;
@@ -23,7 +25,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class LoadGamesController extends Controller implements Initializable {
 
     private Mensaje message = new Mensaje();
-    private List<String> saveGames = new ArrayList();
+    private PlayerDto player;
+    private List<GameDto> saveGames = new ArrayList();
     private ObservableList<String> observableSaveGames = FXCollections.observableArrayList();
     
     @FXML
@@ -58,7 +61,8 @@ public class LoadGamesController extends Controller implements Initializable {
             message.showModal(Alert.AlertType.ERROR, "Cargando partidas guardadas", getStage(), "Favor de revisar el inicio de sesión para cargar partidas anteriores.");
         } else {
             
-            observableSaveGames.setAll(saveGames);
+            saveGames.addAll(player.getGameList());
+            observableSaveGames.setAll(saveGames.toString());
             cmnSaveGames.setCellValueFactory(new PropertyValueFactory<>("name"));
             tbvSaveGames.setItems(observableSaveGames);
         }
@@ -71,7 +75,7 @@ public class LoadGamesController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-    
+        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
     }
 
 }

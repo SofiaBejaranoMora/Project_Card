@@ -73,40 +73,21 @@ public class UserRegisterController extends Controller implements Initializable 
 
     @FXML
     private void onActionBtnStartSession(ActionEvent event) {
-        if (selectedFile != null) {
-            String name = txfUserName.getText().trim();
-            if (name.isBlank()) {
-                message.showModal(Alert.AlertType.ERROR, "Nombre de usuario", getStage(), "El nombre de usuario está vacío.");
-                return;
-            }
-            try {
-                String savePath = saveRoute + name + ".png";
-                Path destination = Path.of(savePath);
-
-                Files.createDirectories(destination.getParent());
-                Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
-
-                message.showConfirmation("Inicio de sesión", getStage(), "'Sesión creada con éxito, disfrute del juego.");// modificar por que aca tira que se guardo correctamente aun que en la base no sea asi 
-                lblCurrentPoints.setText("0");
-                btnStartSession.setVisible(false);
-                btnCloseSession.setVisible(true);
-                //agregar el usuario 
-                player = new PlayerDto(name, 0L, 1L, "adefesf");
-                PlayerService playerService = new PlayerService();
-                Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
-                if (answer.getEstado()) {
-                    this.player = (PlayerDto) answer.getResultado("Jugador");
-                    AppContext.getInstance().set("CurrentUser", player);
-                    message.showModal(Alert.AlertType.INFORMATION, "Guardar Jugador", getStage(), "El jugador se guardo correctamente");
-                }else {
-                    message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
-                }
-
-            } catch (IOException e) {
-                message.showModal(Alert.AlertType.ERROR, "Imagen de usuario", getStage(), "Error al guardar la imagen: " + e.getMessage());
-            }
+        message.showConfirmation("Inicio de sesión", getStage(), "'Sesión creada con éxito, disfrute del juego.");// modificar por que aca tira que se guardo correctamente aun que en la base no sea asi 
+        lblCurrentPoints.setText("0");
+        btnStartSession.setVisible(false);
+        btnCloseSession.setVisible(true);
+        currentName = txfUserName.getText().trim();
+        //agregar el usuario 
+        player = new PlayerDto(currentName, 0L, 1L, "adefesf");
+        PlayerService playerService = new PlayerService();
+        Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
+        if (answer.getEstado()) {
+            this.player = (PlayerDto) answer.getResultado("Jugador");
+            AppContext.getInstance().set("CurrentUser", player);
+            message.showModal(Alert.AlertType.INFORMATION, "Guardar Jugador", getStage(), "El jugador se guardo correctamente");
         } else {
-            message.showModal(Alert.AlertType.WARNING, "Imagen de usuario", getStage(), "No hay imagen seleccionada para guardar.");
+            message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
         }
     }
 
@@ -145,6 +126,28 @@ public class UserRegisterController extends Controller implements Initializable 
         FlowController.getInstance().goView("MenuView");
     }
 
+    private void savePorfileImage(){
+        if (selectedFile != null) {
+            String name = txfUserName.getText().trim();
+            if (name.isBlank()) {
+                message.showModal(Alert.AlertType.ERROR, "Nombre de usuario", getStage(), "El nombre de usuario está vacío.");
+                return;
+            }
+            try {
+                String savePath = saveRoute + name + ".png";
+                Path destination = Path.of(savePath);
+
+                Files.createDirectories(destination.getParent());
+                Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+                    } catch (IOException e) {
+                message.showModal(Alert.AlertType.ERROR, "Imagen de usuario", getStage(), "Error al guardar la imagen: " + e.getMessage());
+            }
+        } else {
+            message.showModal(Alert.AlertType.WARNING, "Imagen de usuario", getStage(), "No hay imagen seleccionada para guardar.");
+        }
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         player = new PlayerDto();

@@ -66,7 +66,7 @@ public class PlayerService {
                 et.rollback();
                 return new Respuesta(false, "El nombre del jugador ya existe.", "", "Jugador ", null);
             } else {
-                if (playerDto.getId() != null && playerDto.getId() > 0) {
+                if (playerDto.getName()!= null && playerDto.getName().isBlank()) {
                     player = em.find(Player.class, playerDto.getId());
                     if (player == null) {
                         return new Respuesta(false, "No se encontro el jugador a modificar", "SavePlayer NoResultadoException");

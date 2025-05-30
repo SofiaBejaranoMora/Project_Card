@@ -51,6 +51,8 @@
                            </VBox.margin>
                         </MFXButton>
                         <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
+                        <MFXButton id="MenuButton" fx:id="btnRegisterSession" maxWidth="1.7976931348623157E308" onAction="#OnActionBtnRegisterSession" stylesheets="@Style.css" text="Registrar Sesión" />
+                        <VBox prefHeight="200.0" prefWidth="100.0" />
                         <MFXButton id="MenuButton" fx:id="btnStartSession" maxWidth="1.7976931348623157E308" onAction="#OnActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />

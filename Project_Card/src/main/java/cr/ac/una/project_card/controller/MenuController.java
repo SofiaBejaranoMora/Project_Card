@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.net.URL;
@@ -9,7 +10,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
-/** * FXML Controller class * * @author ashly */
+/**
+ * * FXML Controller class * * @author ashly
+ */
 public class MenuController extends Controller implements Initializable {
 
     @FXML
@@ -24,6 +27,8 @@ public class MenuController extends Controller implements Initializable {
     private MFXButton btnStartSession;
     @FXML
     private Button btnExit;
+    @FXML
+    private MFXButton btnRegisterSession;
 
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
@@ -46,7 +51,14 @@ public class MenuController extends Controller implements Initializable {
     }
 
     @FXML
+    private void OnActionBtnRegisterSession(ActionEvent event) {
+        AppContext.getInstance().set("isRegisterSession", true);
+        FlowController.getInstance().goView("UserSessionView");
+    }
+
+    @FXML
     private void OnActionBtnStartSession(ActionEvent event) {
+        AppContext.getInstance().set("isRegisterSession", false);
         FlowController.getInstance().goView("UserSessionView");
     }
 
@@ -54,15 +66,15 @@ public class MenuController extends Controller implements Initializable {
     private void onActionBtnExit(ActionEvent event) {
         FlowController.getInstance().salir();
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @Override
     public void initialize() {
-        
+
     }
 
 }

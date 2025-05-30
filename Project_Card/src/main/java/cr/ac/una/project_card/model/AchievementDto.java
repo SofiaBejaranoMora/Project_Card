@@ -109,7 +109,7 @@ public class AchievementDto {
 
     @Override
     public String toString() {
-        return "AchievementDto{" + "name=" + name + ", description=" + description + ", type=" + type + '}';
+        return type.toString();
     }
 
     @Override

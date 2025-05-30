@@ -84,14 +84,21 @@
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <StackPane prefHeight="61.0" prefWidth="165.0">
                      <children>
-                        <MFXButton id="MenuButton" fx:id="btnStartSession" onAction="#onActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión">
-                           <StackPane.margin>
-                              <Insets />
-                           </StackPane.margin></MFXButton>
                         <MFXButton id="MenuButton" fx:id="btnCloseSession" onAction="#onActionBtnCloseSession" stylesheets="@Style.css" text="Cerrar Sesión" visible="false">
                            <StackPane.margin>
                               <Insets />
-                           </StackPane.margin></MFXButton>
+                           </StackPane.margin>
+                        </MFXButton>
+                        <MFXButton id="MenuButton" fx:id="btnStartSession" onAction="#onActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión" visible="false">
+                           <StackPane.margin>
+                              <Insets />
+                           </StackPane.margin>
+                        </MFXButton>
+                        <StackPane fx:id="stpRegister" prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <MFXButton id="MenuButton" fx:id="btnRegisterUser" onAction="#onActionRegisterUser" text="Registrar" />
+                           </children>
+                        </StackPane>
                      </children>
                   </StackPane>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />

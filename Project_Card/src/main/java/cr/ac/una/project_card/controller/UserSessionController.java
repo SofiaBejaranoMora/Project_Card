@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -53,8 +54,13 @@ public class UserSessionController extends Controller implements Initializable {
     private Button btnEdit;
     @FXML
     private MFXButton btnChangePhoto;
+    @FXML
+    private StackPane stpRegister;
+    @FXML
+    private MFXButton btnRegisterUser;
 
-    private void onActionBtnChangePhoto(ActionEvent event) {
+    @FXML
+    private void onActionChangePhoto(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar imagen");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
@@ -66,6 +72,10 @@ public class UserSessionController extends Controller implements Initializable {
             Image image = new Image(selectedFile.toURI().toString());
             mgvUserPhoto.setImage(image);
         }
+    }
+
+    @FXML
+    private void onActionRegisterUser(ActionEvent event) {
     }
 
     @FXML

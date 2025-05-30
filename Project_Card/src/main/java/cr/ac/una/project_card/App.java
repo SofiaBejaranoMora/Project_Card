@@ -30,7 +30,7 @@ public class App extends Application {
         stage.getIcons().add(new Image(getClass().getResource("/cr/ac/una/project_card/resources/ProgramImages/CardsIcon.png").toExternalForm()));
         stage.setScene(scene);
         stage.show();
-        FlowController.getInstance().goView("UserRegisterView");
+        FlowController.getInstance().goView("MenuView");
     }
 
     public static void setRoot(String fxml) throws IOException {

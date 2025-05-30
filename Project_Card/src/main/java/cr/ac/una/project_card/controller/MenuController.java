@@ -24,8 +24,6 @@ public class MenuController extends Controller implements Initializable {
     private MFXButton btnStartSession;
     @FXML
     private Button btnExit;
-    @FXML
-    private MFXButton btnRegister;
 
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
@@ -50,11 +48,6 @@ public class MenuController extends Controller implements Initializable {
     @FXML
     private void OnActionBtnStartSession(ActionEvent event) {
         FlowController.getInstance().goView("UserSessionView");
-    }
-
-    @FXML
-    private void OnActionBtnRegister(ActionEvent event) {
-        FlowController.getInstance().goView("UserRegisterView");
     }
 
     @FXML

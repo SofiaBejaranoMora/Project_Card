@@ -57,8 +57,6 @@
                            </VBox.margin>
                         </MFXButton>
                         <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
-                        <MFXButton id="MenuButton" fx:id="btnRegister" maxWidth="1.7976931348623157E308" onAction="#OnActionBtnRegister" stylesheets="@Style.css" text="Registrarse" VBox.vgrow="ALWAYS" />
-                        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                   <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">

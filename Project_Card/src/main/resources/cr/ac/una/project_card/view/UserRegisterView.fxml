@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="cr.ac.una.project_card.controller.UserRegisterViewController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.UserRegisterController">
    <children>
       <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="410.0" prefWidth="610.0" styleClass="SystemBackground" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -19,9 +18,9 @@
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button id="SystemButton" fx:id="btnBack" mnemonicParsing="false" onAction="#onActionBtnBack" styleClass="btnBack" stylesheets="@Style.css">
+                        <Button id="SystemButton" fx:id="btnHelp" mnemonicParsing="false" onAction="#onActionBtnHelp" styleClass="btnHelp" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
                            <HBox.margin>
-                              <Insets left="5.0" />
+                              <Insets left="5.0" top="5.0" />
                            </HBox.margin>
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
@@ -39,7 +38,7 @@
                   </VBox>
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button id="SystemButton" fx:id="btnHelp" mnemonicParsing="false" onAction="#onActionBtnHelp" styleClass="btnHelp" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
+                        <Button id="SystemButton" fx:id="btnOut" mnemonicParsing="false" onAction="#onActionBtnOut" styleClass="btnExit" stylesheets="@Style.css">
                            <HBox.margin>
                               <Insets right="5.0" top="5.0" />
                            </HBox.margin>
@@ -68,12 +67,6 @@
                      </HBox.margin>
                   </MFXTextField>
                   <HBox prefHeight="61.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label styleClass="Label" stylesheets="@Style.css" text="Puntos actuales: " />
-                  <Label fx:id="lblCurrentPoints" styleClass="Label" stylesheets="@Style.css" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

@@ -15,9 +15,9 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <MFXButton id="SystemButton" fx:id="btnSettings" onAction="#onActionBtnSettings" stylesheets="@Style.css" text=" . . . " VBox.vgrow="ALWAYS">
+                        <MFXButton id="SystemButton" fx:id="btnSettings" onAction="#onActionBtnSettings" prefHeight="43.0" prefWidth="47.0" stylesheets="@Style.css" text=" . . . " VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets left="5.0" top="5.0" />
                            </VBox.margin>
@@ -27,41 +27,43 @@
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
-                        <Label id="MenuLabel" stylesheets="@Style.css" text="Menú" VBox.vgrow="ALWAYS">
+                        <Label id="MenuLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" stylesheets="@Style.css" text="Menú" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Label>
                         <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
-                        <MFXButton id="MenuButton" fx:id="btnNew" onAction="#onActionBtnNew" stylesheets="@Style.css" text="Nuevo" VBox.vgrow="ALWAYS">
+                        <MFXButton id="MenuButton" fx:id="btnNew" maxWidth="1.7976931348623157E308" onAction="#onActionBtnNew" stylesheets="@Style.css" text="Nuevo" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </MFXButton>
                         <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
-                        <MFXButton id="MenuButton" fx:id="btnContinue" onAction="#onActionBtnContinue" stylesheets="@Style.css" text="Seguir" VBox.vgrow="ALWAYS">
+                        <MFXButton id="MenuButton" fx:id="btnContinue" maxWidth="1.7976931348623157E308" onAction="#onActionBtnContinue" stylesheets="@Style.css" text="Seguir" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </MFXButton>
                         <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
-                        <MFXButton id="MenuButton" fx:id="btnAchievements" onAction="#onActionBtnAchievements" stylesheets="@Style.css" text="Logros" VBox.vgrow="ALWAYS">
+                        <MFXButton id="MenuButton" fx:id="btnAchievements" maxWidth="1.7976931348623157E308" onAction="#onActionBtnAchievements" stylesheets="@Style.css" text="Logros" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </MFXButton>
                         <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
-                        <MFXButton id="MenuButton" fx:id="btnStartSession" onAction="#OnActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión" VBox.vgrow="ALWAYS">
+                        <MFXButton id="MenuButton" fx:id="btnStartSession" maxWidth="1.7976931348623157E308" onAction="#OnActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </MFXButton>
+                        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
+                        <MFXButton id="MenuButton" fx:id="btnRegister" maxWidth="1.7976931348623157E308" onAction="#OnActionBtnRegister" stylesheets="@Style.css" text="Registrarse" VBox.vgrow="ALWAYS" />
                         <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
-                  <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0">
+                  <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button id="SystemButton" fx:id="btnExit" mnemonicParsing="false" onAction="#onActionBtnExit" styleClass="btnExit" stylesheets="@Style.css">
+                        <Button id="SystemButton" fx:id="btnExit" mnemonicParsing="false" onAction="#onActionBtnExit" prefHeight="49.0" prefWidth="53.0" styleClass="btnExit" stylesheets="@Style.css">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="ExitIcon" />
                            </graphic>

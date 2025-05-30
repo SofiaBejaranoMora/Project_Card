@@ -8,12 +8,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="cr.ac.una.project_card.controller.UserRegisterViewController">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.UserSessionController">
    <children>
-      <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="410.0" prefWidth="610.0" styleClass="SystemBackground" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" styleClass="SystemBackground" stylesheets="@Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" prefHeight="243.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
                <children>
@@ -37,18 +37,7 @@
                         <Insets bottom="5.0" />
                      </HBox.margin>
                   </VBox>
-                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Button id="SystemButton" fx:id="btnHelp" mnemonicParsing="false" onAction="#onActionBtnHelp" styleClass="btnHelp" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets right="5.0" top="5.0" />
-                           </HBox.margin>
-                           <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                           </graphic>
-                        </Button>
-                     </children>
-                  </HBox>
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
                <VBox.margin>
                   <Insets top="5.0" />
@@ -57,16 +46,24 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <HBox prefHeight="61.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" styleClass="Label" stylesheets="@Style.css" text="Nombre de usuario:" HBox.hgrow="ALWAYS">
+                  <Label styleClass="Label" stylesheets="@Style.css" text="Nombre de usuario:" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Label>
                   <MFXTextField fx:id="txfUserName" maxWidth="1.7976931348623157E308" styleClass="TextField" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets left="30.0" right="30.0" />
                      </HBox.margin>
                   </MFXTextField>
+                  <Button id="SystemButton" fx:id="btnEdit" mnemonicParsing="false" onAction="#onActionBtnEdit" styleClass="btnEdit" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                  </Button>
                   <HBox prefHeight="61.0" prefWidth="50.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
@@ -79,13 +76,24 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <MFXButton id="MenuButton" fx:id="btnUploadPhoto" onAction="#onActionBtnUploadPhoto" stylesheets="@Style.css" text="Subir Foto">
+                  <MFXButton id="MenuButton" fx:id="btnChangePhoto" onAction="#onActionChangePhoto" stylesheets="@Style.css" text="Editar Foto">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </MFXButton>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <MFXButton id="MenuButton" fx:id="btnRegister" onAction="#onActionBtnRegister" stylesheets="@Style.css" text="Registrar" />
+                  <StackPane prefHeight="61.0" prefWidth="165.0">
+                     <children>
+                        <MFXButton id="MenuButton" fx:id="btnStartSession" onAction="#onActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión">
+                           <StackPane.margin>
+                              <Insets />
+                           </StackPane.margin></MFXButton>
+                        <MFXButton id="MenuButton" fx:id="btnCloseSession" onAction="#onActionBtnCloseSession" stylesheets="@Style.css" text="Cerrar Sesión" visible="false">
+                           <StackPane.margin>
+                              <Insets />
+                           </StackPane.margin></MFXButton>
+                     </children>
+                  </StackPane>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>

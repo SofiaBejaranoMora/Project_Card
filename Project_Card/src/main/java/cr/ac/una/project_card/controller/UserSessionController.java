@@ -29,22 +29,20 @@ import javafx.stage.Stage;
 /**
  * * FXML Controller class * * @author ashly
  */
-public class UserRegisterController extends Controller implements Initializable {
+public class UserSessionController extends Controller implements Initializable {
 
     private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/";
     Mensaje message = new Mensaje();
     private PlayerDto player;
-
     private File selectedFile;
     private String currentName = "";
+    
     @FXML
     private ImageView mgvUserPhoto;
     @FXML
     private MFXTextField txfUserName;
     @FXML
     private Label lblCurrentPoints;
-    @FXML
-    private MFXButton btnUploadPhoto;
     @FXML
     private MFXButton btnStartSession;
     @FXML
@@ -54,15 +52,14 @@ public class UserRegisterController extends Controller implements Initializable 
     @FXML
     private Button btnEdit;
     @FXML
-    private Button btnHelp;
+    private MFXButton btnChangePhoto;
 
-    @FXML
-    private void onActionBtnUploadPhoto(ActionEvent event) {
+    private void onActionBtnChangePhoto(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar imagen");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
 
-        Stage stage = (Stage) btnUploadPhoto.getScene().getWindow();
+        Stage stage = (Stage) btnChangePhoto.getScene().getWindow();
         selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
@@ -79,7 +76,7 @@ public class UserRegisterController extends Controller implements Initializable 
         btnCloseSession.setVisible(true);
         currentName = txfUserName.getText().trim();
         //agregar el usuario 
-        player = new PlayerDto(currentName, 0L, 1L, "adefesf");
+        player = new PlayerDto(currentName, 0L, 1L, "noimagen");
         PlayerService playerService = new PlayerService();
         Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
         if (answer.getEstado()) {
@@ -117,11 +114,6 @@ public class UserRegisterController extends Controller implements Initializable 
     }
 
     @FXML
-    private void onActionBtnHelp(ActionEvent event) {
-        message.show(Alert.AlertType.INFORMATION, saveRoute, saveRoute);//Hacer la explicación del juego
-    }
-
-    @FXML
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goView("MenuView");
     }
@@ -140,7 +132,7 @@ public class UserRegisterController extends Controller implements Initializable 
                 Files.createDirectories(destination.getParent());
                 Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
 
-                    } catch (IOException e) {
+            } catch (IOException e) {
                 message.showModal(Alert.AlertType.ERROR, "Imagen de usuario", getStage(), "Error al guardar la imagen: " + e.getMessage());
             }
         } else {

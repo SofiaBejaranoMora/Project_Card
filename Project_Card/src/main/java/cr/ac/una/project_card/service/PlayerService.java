@@ -29,12 +29,12 @@ public class PlayerService {
 
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
-   
-        public Respuesta getPlayerId(Long id) {
+
+    public Respuesta getPlayerName(String name) {
         try {
-            Query qryPlayer = em.createNamedQuery("Player.findById", Player.class);
-            qryPlayer.setParameter("id", id);
-            Player player=(Player) qryPlayer.getSingleResult();
+            Query qryPlayer = em.createNamedQuery("Player.findByName", Player.class);
+            qryPlayer.setParameter("name", name);
+            Player player = (Player) qryPlayer.getSingleResult();
             PlayerDto playerDto = new PlayerDto(player);
             for (Game game : player.getGames()) {
                 playerDto.getGameList().add(new GameDto(game));
@@ -42,14 +42,14 @@ public class PlayerService {
             for (Achievement achievement : player.getAchievements()) {
                 playerDto.getAchievementList().add(new AchievementDto(achievement));
             }
-                return new Respuesta(true, " ", " ", "Jugador", playerDto);
+            return new Respuesta(true, " ", " ", "Jugador", playerDto);
         } catch (NoResultException ex) {
-            return new Respuesta(false, "No existe un jugador con las credenciales ingresadas.", "getPlayerId NoResultException");
+            return new Respuesta(false, "No existe un jugador con las credenciales ingresadas.", "getPlayerName NoResultException");
         } catch (NonUniqueResultException ex) {
             Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Ocurrio un error al consultar el jugador.", ex);
-            return new Respuesta(false, "Ocurrio un error al consultar el jugador.", "getEmpleado NonUniqueResultException");
+            return new Respuesta(false, "Ocurrio un error al consultar el jugador.", "getPlayerName NonUniqueResultException");
         } catch (Exception ex) {
-            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error obteniendo el jugador  [" + id + "]", ex);
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error obteniendo el jugador  [" + name + "]", ex);
             return new Respuesta(false, "Error obtener el jugador.", "getPlayerId " + ex.getMessage());
         }
     }
@@ -59,27 +59,27 @@ public class PlayerService {
             et = em.getTransaction();
             et.begin();
             Player player;
-            if (playerDto.getId() != null && playerDto.getId() > 0) {
-                player = em.find(Player.class, playerDto.getId());
-                if (player == null) {
-                    return new Respuesta(false, "No se encontro el jugador a modificar", "SavePlayer NoResultadoException");
-                }
-                player.update(playerDto);
-                player = em.merge(player);
+            Query query = em.createNamedQuery("Player.findByName");
+            query.setParameter("name", playerDto.getName());
+            List<Player> playerList = query.getResultList();//qryUsuario.getResultList()-> este para mas de un registro, y el que puse es para solo un unico registro
+            if (!playerList.isEmpty()) {
+                et.rollback();
+                return new Respuesta(false, "El nombre del jugador ya existe.", "", "Jugador ", null);
             } else {
-                Query query = em.createNamedQuery("Player.findByName");
-                query.setParameter("name", playerDto.getName());
-                List<Player> playerList = query.getResultList();//qryUsuario.getResultList()-> este para mas de un registro, y el que puse es para solo un unico registro
-                if (playerList != null) {
-                    et.rollback();
-                    return new Respuesta(false, "El nombre del jugador ya existe.", "", "Jugador ",null);
+                if (playerDto.getId() != null && playerDto.getId() > 0) {
+                    player = em.find(Player.class, playerDto.getId());
+                    if (player == null) {
+                        return new Respuesta(false, "No se encontro el jugador a modificar", "SavePlayer NoResultadoException");
+                    }
+                    player.update(playerDto);
+                    player = em.merge(player);
                 } else {
                     player = new Player(playerDto);
                     em.persist(player);
                 }
+                et.commit();
+                return new Respuesta(true, "", "", "Jugador", new PlayerDto(player));
             }
-            et.commit();
-            return new Respuesta(true, "", "", "Jugador", new PlayerDto(player));
         } catch (Exception ex) {
             et.rollback();
             Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error guardando el jugador[" + playerDto + "]", ex);

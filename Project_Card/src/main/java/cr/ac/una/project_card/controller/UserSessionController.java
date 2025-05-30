@@ -20,13 +20,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-/** * FXML Controller class * * @author ashly */
-public class UserRegisterController extends Controller implements Initializable {
+/**
+ * * FXML Controller class * * @author ashly
+ */
+public class UserSessionController extends Controller implements Initializable {
 
     private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/";
     Mensaje message = new Mensaje();
@@ -35,35 +38,28 @@ public class UserRegisterController extends Controller implements Initializable 
     private String currentName = "";
     
     @FXML
-    private Button btnOut;
-    @FXML
     private ImageView mgvUserPhoto;
-    @FXML
-    private Button btnHelp;
     @FXML
     private MFXTextField txfUserName;
     @FXML
-    private MFXButton btnUploadPhoto;
+    private Label lblCurrentPoints;
     @FXML
-    private MFXButton btnRegister;
+    private MFXButton btnStartSession;
+    @FXML
+    private MFXButton btnCloseSession;
+    @FXML
+    private Button btnBack;
+    @FXML
+    private Button btnEdit;
+    @FXML
+    private MFXButton btnChangePhoto;
 
-    @FXML
-    private void onActionBtnOut(ActionEvent event) {
-        FlowController.getInstance().salir();
-    }
-
-    @FXML
-    private void onActionBtnHelp(ActionEvent event) {
-        //message.show(Alert.AlertType.INFORMATION, saveRoute, saveRoute);//Hacer la explicación del juego
-    }
-
-    @FXML
-    private void onActionBtnUploadPhoto(ActionEvent event) {
+    private void onActionBtnChangePhoto(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar imagen");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
 
-        Stage stage = (Stage) btnUploadPhoto.getScene().getWindow();
+        Stage stage = (Stage) btnChangePhoto.getScene().getWindow();
         selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
@@ -73,7 +69,56 @@ public class UserRegisterController extends Controller implements Initializable 
     }
 
     @FXML
-    private void onActionBtnRegister(ActionEvent event) {
+    private void onActionBtnStartSession(ActionEvent event) {
+        message.showConfirmation("Inicio de sesión", getStage(), "'Sesión creada con éxito, disfrute del juego.");// modificar por que aca tira que se guardo correctamente aun que en la base no sea asi 
+        lblCurrentPoints.setText("0");
+        btnStartSession.setVisible(false);
+        btnCloseSession.setVisible(true);
+        currentName = txfUserName.getText().trim();
+        //agregar el usuario 
+        player = new PlayerDto(currentName, 0L, 1L, "noimagen");
+        PlayerService playerService = new PlayerService();
+        Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
+        if (answer.getEstado()) {
+            this.player = (PlayerDto) answer.getResultado("Jugador");
+            AppContext.getInstance().set("CurrentUser", player);
+            message.showModal(Alert.AlertType.INFORMATION, "Guardar Jugador", getStage(), "El jugador se guardo correctamente");
+        } else {
+            message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
+        }
+    }
+
+    @FXML
+    private void onActionBtnCloseSession(ActionEvent event) {
+        mgvUserPhoto.setImage(null);
+        lblCurrentPoints.setText("");
+        txfUserName.setText("");
+        btnCloseSession.setVisible(false);
+        btnStartSession.setVisible(true);
+        message.showConfirmation("Sesión Cerrada", getStage(), "Se ha cerrado la sesión con éxito.");
+    }
+
+    @FXML
+    private void onActionBtnEdit(ActionEvent event) {
+        File oldFile = new File(saveRoute + currentName + ".png");
+        File newFile = new File(saveRoute + txfUserName.getText().trim() + ".png");
+
+        if (oldFile.exists()) {
+            boolean renamed = oldFile.renameTo(newFile);
+            if (renamed) {
+                message.showConfirmation("Nombre de usuario", getStage(), "Nombre de usuario renombrado correctamente");
+            } else {
+                message.showModal(Alert.AlertType.ERROR, "Nombre de usuario", getStage(), "Error al renombrar el usuario");
+            }
+        }
+    }
+
+    @FXML
+    private void onActionBtnBack(ActionEvent event) {
+        FlowController.getInstance().goView("MenuView");
+    }
+
+    private void savePorfileImage(){
         if (selectedFile != null) {
             String name = txfUserName.getText().trim();
             if (name.isBlank()) {
@@ -87,37 +132,25 @@ public class UserRegisterController extends Controller implements Initializable 
                 Files.createDirectories(destination.getParent());
                 Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
 
-        message.showConfirmation("Inicio de sesión", getStage(), "'Sesión creada con éxito, disfrute del juego.");// modificar por que aca tira que se guardo correctamente aun que en la base no sea asi 
-        currentName = txfUserName.getText().trim();
-        //agregar el usuario 
-        player = new PlayerDto(currentName, 0L, 1L, "noimagen");
-        PlayerService playerService = new PlayerService();
-        Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
-        if (answer.getEstado()) {
-            this.player = (PlayerDto) answer.getResultado("Jugador");
-            AppContext.getInstance().set("CurrentUser", player);
-            message.showModal(Alert.AlertType.INFORMATION, "Guardar Jugador", getStage(), "El jugador se guardo correctamente");
-            FlowController.getInstance().goView("MenuView");
-        } else {
-            message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
-        }
             } catch (IOException e) {
                 message.showModal(Alert.AlertType.ERROR, "Imagen de usuario", getStage(), "Error al guardar la imagen: " + e.getMessage());
             }
         } else {
-            message.showModal(Alert.AlertType.WARNING, "Datos de registro", getStage(), "Favor de completar los datos para continuar.");
+            message.showModal(Alert.AlertType.WARNING, "Imagen de usuario", getStage(), "No hay imagen seleccionada para guardar.");
         }
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         player = new PlayerDto();
     }
 
     @Override
     public void initialize() {
-        
+        if (!"".equals(currentName.trim())) {
+            txfUserName.setText(currentName);
+            mgvUserPhoto.setImage(new Image(saveRoute + currentName + ".png"));
+        }
     }
 
 }

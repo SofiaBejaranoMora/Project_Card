@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
-/** * FXML Controller class * * @author ashly */
 public class AchievementsController  extends Controller  implements Initializable {
 
     @FXML
@@ -21,7 +20,7 @@ public class AchievementsController  extends Controller  implements Initializabl
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
 
     @Override

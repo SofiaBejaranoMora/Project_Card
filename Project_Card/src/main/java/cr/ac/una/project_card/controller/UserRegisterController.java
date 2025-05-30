@@ -111,8 +111,9 @@ public class UserRegisterController extends Controller implements Initializable 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+
+        player = new PlayerDto();
+    }
 
     @Override
     public void initialize() {

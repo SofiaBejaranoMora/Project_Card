@@ -82,8 +82,7 @@ public class UserSessionController extends Controller implements Initializable {
     private void onActionBtnStartSession(ActionEvent event) {
         message.showConfirmation("Inicio de sesión", getStage(), "'Sesión creada con éxito, disfrute del juego.");// modificar por que aca tira que se guardo correctamente aun que en la base no sea asi 
         lblCurrentPoints.setText("0");
-        btnStartSession.setVisible(false);
-        btnCloseSession.setVisible(true);
+        buttonManager(3);
         currentName = txfUserName.getText().trim();
         //agregar el usuario 
         player = new PlayerDto(currentName, 0L, 1L, "noimagen");
@@ -103,8 +102,7 @@ public class UserSessionController extends Controller implements Initializable {
         mgvUserPhoto.setImage(null);
         lblCurrentPoints.setText("");
         txfUserName.setText("");
-        btnCloseSession.setVisible(false);
-        btnStartSession.setVisible(true);
+        buttonManager(2);
         message.showConfirmation("Sesión Cerrada", getStage(), "Se ha cerrado la sesión con éxito.");
     }
 
@@ -128,6 +126,39 @@ public class UserSessionController extends Controller implements Initializable {
         FlowController.getInstance().goView("MenuView");
     }
 
+    private void buttonManager(int situation) {
+        switch (situation) {
+            case 1 -> {
+                btnCloseSession.setVisible(false);
+                btnCloseSession.setManaged(true);
+                btnStartSession.setVisible(false);
+                btnStartSession.setManaged(true);
+                btnRegisterUser.setVisible(true);
+            }
+            case 2 -> {
+                btnRegisterUser.setVisible(false);
+                btnRegisterUser.setManaged(true);
+                btnCloseSession.setVisible(false);
+                btnCloseSession.setManaged(true);
+                btnStartSession.setVisible(true);
+            }
+            case 3 -> {
+                btnRegisterUser.setVisible(false);
+                btnRegisterUser.setManaged(true);
+                btnStartSession.setVisible(false);
+                btnStartSession.setManaged(true);
+                btnCloseSession.setVisible(true);
+            }
+            case 4 -> {
+//                btnCloseSession.setVisible(false);
+//                btnCloseSession.setManaged(true);
+//                btnStartSession.setVisible(false);
+//                btnStartSession.setManaged(true);
+//                btnRegisterUser.setVisible(true);
+            }
+        }
+    }
+    
     private void savePorfileImage(){
         if (selectedFile != null) {
             String name = txfUserName.getText().trim();
@@ -153,6 +184,7 @@ public class UserSessionController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         player = new PlayerDto();
+        buttonManager(1);
     }
 
     @Override

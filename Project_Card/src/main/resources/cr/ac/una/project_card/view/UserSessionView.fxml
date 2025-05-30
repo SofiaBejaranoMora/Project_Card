@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.UserSessionController">
@@ -81,9 +82,17 @@
                      </HBox.margin>
                   </MFXButton>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <MFXButton id="MenuButton" fx:id="btnCloseSession" onAction="#onActionBtnCloseSession" stylesheets="@Style.css" text="Cerrar Sesión" visible="false" />
-                  <MFXButton id="MenuButton" fx:id="btnStartSession" onAction="#onActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión" visible="false" />
-                  <MFXButton id="MenuButton" fx:id="btnRegisterUser" onAction="#onActionRegisterUser" text="Registrar" />
+                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <MFXButton id="MenuButton" fx:id="btnCloseSession" onAction="#onActionBtnCloseSession" stylesheets="@Style.css" text="Cerrar Sesión" visible="false" />
+                        <MFXButton id="MenuButton" fx:id="btnStartSession" onAction="#onActionBtnStartSession" stylesheets="@Style.css" text="Iniciar Sesión" visible="false" />
+                        <StackPane fx:id="stp" prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <MFXButton id="MenuButton" fx:id="btnRegisterUser" onAction="#onActionRegisterUser" text="Registrar" />
+                           </children>
+                        </StackPane>
+                     </children>
+                  </StackPane>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>

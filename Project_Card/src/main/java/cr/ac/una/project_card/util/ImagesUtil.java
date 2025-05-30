@@ -36,20 +36,5 @@ public class ImagesUtil {
             return null;
         }
     }
-    
-    public static String getUserPath(String userImage) {
-        try {
-            String path = BASE_PATH + userImage + ".png";
-            if (ImagesUtil.class.getResource(path) == null) {
-                System.err.println("No se encontró la imagen: " + path);
-                return null;
-            }
-            return ImagesUtil.class.getResource(path).toExternalForm();
-        } catch (Exception e) {
-            System.err.println("Error cargando imagen " + userImage + ": " + e.getMessage());
-            return null;
-        }
-    }
-
 
 }

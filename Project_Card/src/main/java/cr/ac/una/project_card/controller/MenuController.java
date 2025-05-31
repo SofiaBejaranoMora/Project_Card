@@ -69,7 +69,7 @@ public class MenuController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        AppContext.getInstance().set("hasSectionStarted", false);
     }
 
     @Override

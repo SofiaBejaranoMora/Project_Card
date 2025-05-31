@@ -162,7 +162,6 @@ public class UserSessionController extends Controller implements Initializable {
         txfUserName.setText("");
         buttonManager(2);
         player = new PlayerDto();
-        AppContext.getInstance().set("CurrentUser", null);
         message.showConfirmation("Sesión Cerrada", getStage(), "Se ha cerrado la sesión con éxito.");
     }
 
@@ -226,8 +225,9 @@ public class UserSessionController extends Controller implements Initializable {
     public void initialize() {
         player = new PlayerDto();
         if (!"".equals(player.getName().trim())) {
-            txfUserName.setText(player.getName());
-            mgvUserPhoto.setImage(new Image("file:" + saveRoute + player.getName() + ".png"));
+            currentName = txfUserName.getText().trim();
+            txfUserName.setText(currentName);
+            mgvUserPhoto.setImage(new Image("file:" + saveRoute + currentName + ".png"));
         }
         if ((Boolean) AppContext.getInstance().get("isRegisterSession")) {
             buttonManager(1);

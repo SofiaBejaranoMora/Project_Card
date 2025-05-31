@@ -74,13 +74,40 @@ public class PlayerService {
                     }
                     player.update(playerDto);
                     player = em.merge(player);
-                }else {
+                } else {
                     player = new Player(playerDto);
                     em.persist(player);
                 }
                 et.commit();
                 return new Respuesta(true, "", "", "Jugador", new PlayerDto(player));
             }
+        } catch (Exception ex) {
+            et.rollback();
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error guardando el jugador[" + playerDto + "]", ex);
+            return new Respuesta(false, "Error guardando el jugador.", "Jugador " + ex.getMessage());
+        }
+    }
+
+    public Respuesta EditPlayerId(PlayerDto playerDto) {
+        try {
+            et = em.getTransaction();
+            et.begin();
+            Player player;
+            if (playerDto.getId() != null && playerDto.getId() > 0) {
+                player = em.find(Player.class, playerDto.getId());
+                if (player == null) {
+                    et.rollback();
+                    return new Respuesta(false, "No se encontró el jugador a modificar", "SavePlayer NoResultException");
+                }
+                player.update(playerDto);
+                player = em.merge(player);
+            } else {
+                player = new Player(playerDto);
+                em.persist(player);
+            }
+            et.commit();
+            return new Respuesta(true, "", "", "Jugador", new PlayerDto(player));
+
         } catch (Exception ex) {
             et.rollback();
             Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error guardando el jugador[" + playerDto + "]", ex);

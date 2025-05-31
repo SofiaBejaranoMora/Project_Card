@@ -73,28 +73,33 @@ public class UserSessionController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionRegisterUser(ActionEvent event) {
-        savePorfileImage();
-        currentName = txfUserName.getText().trim();
-        //message.showConfirmation("Inicio de sesión", getStage(), "'Sesión creada con éxito, disfrute del juego.");// modificar por que aca tira que se guardo correctamente aun que en la base no sea asi 
-        //agregar el usuario 
+private void onActionRegisterUser(ActionEvent event) {
+    currentName = txfUserName.getText().trim();
+    PlayerService playerService = new PlayerService();
+    Respuesta checkUser = playerService.findPlayerByName(currentName);
+    
+    if (checkUser.getEstado() && checkUser.getResultado("Jugador") != null) {
+        message.showModal(Alert.AlertType.WARNING, "Registro", getStage(), "El usuario ya existe. Inicie sesión.");
+        buttonManager(2);
+        return;
+    }   
+    // Si no existe, proceder con la imagen de perfil
+    if (savePorfileImage()) {
         player = new PlayerDto(currentName, 0L, 1L, "noimagen");
-        PlayerService playerService = new PlayerService();
-        Respuesta answer = playerService.SavePlayer(player); // tercera linea de error
+        Respuesta answer = playerService.SavePlayer(player);
+        
         if (answer.getEstado()) {
             this.player = (PlayerDto) answer.getResultado("Jugador");
             AppContext.getInstance().set("CurrentUser", player);
             buttonManager(3);
-            message.showModal(Alert.AlertType.INFORMATION, "Inicio de sesión", getStage(), "'Sesión creada con éxito, disfrute del juego.");
+            message.showModal(Alert.AlertType.INFORMATION, "Inicio de sesión", getStage(), "Sesión creada con éxito, disfrute del juego.");
             AppContext.getInstance().set("hasSectionStarted", true);
             FlowController.getInstance().goView("MenuView");
-
         } else {
-            buttonManager(2);
             message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
         }
-
     }
+}
 
     @FXML
     private void onActionBtnStartSession(ActionEvent event) {
@@ -194,12 +199,12 @@ public class UserSessionController extends Controller implements Initializable {
         }
     }
 
-    private void savePorfileImage() {
+    private Boolean savePorfileImage() {
         if (selectedFile != null) {
             String name = txfUserName.getText().trim();
             if (name.isBlank()) {
                 message.showModal(Alert.AlertType.ERROR, "Nombre de usuario", getStage(), "El nombre de usuario está vacío.");
-                return;
+                return false;
             }
             try {
                 String savePath = saveRoute + name + ".png";
@@ -207,12 +212,15 @@ public class UserSessionController extends Controller implements Initializable {
                 
                 Files.createDirectories(destination.getParent());
                 Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
+                return true;
 
             } catch (IOException e) {
                 message.showModal(Alert.AlertType.ERROR, "Imagen de usuario", getStage(), "Error al guardar la imagen: " + e.getMessage());
+                return false;
             }
         } else {
             message.showModal(Alert.AlertType.WARNING, "Datos de registro", getStage(), "Favor de completar los datos para continuar.");
+            return false;
         }
     }
 

@@ -114,4 +114,21 @@ public class PlayerService {
             return new Respuesta(false, "Error guardando el jugador.", "Jugador " + ex.getMessage());
         }
     }
+
+    public Respuesta findPlayerByName(String name) {
+        try {
+            Query query = em.createNamedQuery("Player.findByName");
+            query.setParameter("name", name);
+            List<Player> playerList = query.getResultList();
+
+            if (!playerList.isEmpty()) {
+                return new Respuesta(true, "Usuario encontrado", "", "Jugador", playerList.get(0));
+            } else {
+                return new Respuesta(false, "Usuario no encontrado", "", "Jugador", null);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error buscando el jugador[" + name + "]", ex);
+            return new Respuesta(false, "Error buscando el jugador.", "Jugador " + ex.getMessage());
+        }
+    }
 }

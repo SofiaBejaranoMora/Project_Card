@@ -246,3 +246,26 @@
     -fx-font-family: "Fredoka One";
     -fx-text-fill: white;
 }
+
+/*#tblPlayersTable {
+    -fx-background-color: #6666ff;
+    -fx-border-color: transparent;
+}
+
+#tblPlayersTable .column-header-background {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+#tblPlayersTable .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+#tblPlayersTable .table-cell {
+    -fx-alignment: CENTER;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}*/

@@ -28,7 +28,8 @@ import java.util.List;
 @Entity
 @Table(name = "GAME", schema = "PRO")
 @NamedQueries({
-    @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"), /* @NamedQuery(name = "Game.findByGamId", query = "SELECT g FROM Game g WHERE g.gamId = :gamId"),
+    @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"), 
+    /* @NamedQuery(name = "Game.findByGamId", query = "SELECT g FROM Game g WHERE g.gamId = :gamId"),
     @NamedQuery(name = "Game.findByGamTime", query = "SELECT g FROM Game g WHERE g.gamTime = :gamTime"),
     @NamedQuery(name = "Game.findByGamScore", query = "SELECT g FROM Game g WHERE g.gamScore = :gamScore"),
     @NamedQuery(name = "Game.findByGamVersion", query = "SELECT g FROM Game g WHERE g.gamVersion = :gamVersion"),

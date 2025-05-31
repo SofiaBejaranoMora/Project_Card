@@ -27,14 +27,14 @@ public class LoadGamesController extends Controller implements Initializable {
     private Mensaje message = new Mensaje();
     private PlayerDto player;
     private List<GameDto> saveGames = new ArrayList();
-    private ObservableList<String> observableSaveGames = FXCollections.observableArrayList();
+    private ObservableList<GameDto> observableSaveGames = FXCollections.observableArrayList();
     
     @FXML
     private Button btnBack;
     @FXML
-    private TableView<String> tbvSaveGames;
+    private TableView<GameDto> tbvSaveGames;
     @FXML
-    private TableColumn<String, ?> cmnSaveGames;
+    private TableColumn<GameDto, ?> cmnSaveGames;
     @FXML
     private MFXButton btnDelete;
     @FXML
@@ -69,7 +69,7 @@ public class LoadGamesController extends Controller implements Initializable {
         } else {
             
             saveGames.addAll(player.getGameList());
-            observableSaveGames.setAll(saveGames.toString());
+            observableSaveGames.setAll(saveGames);
             cmnSaveGames.setCellValueFactory(new PropertyValueFactory<>("name"));
             tbvSaveGames.setItems(observableSaveGames);
         }
@@ -83,6 +83,7 @@ public class LoadGamesController extends Controller implements Initializable {
     @Override
     public void initialize() {
         player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
+        saveGames = player.getGameList();
     }
 
 }

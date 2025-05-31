@@ -87,7 +87,7 @@ private void onActionRegisterUser(ActionEvent event) {
     if (savePorfileImage()) {
         player = new PlayerDto(currentName, 0L, 1L, "noimagen");
         Respuesta answer = playerService.SavePlayer(player);
-        
+
         if (answer.getEstado()) {
             this.player = (PlayerDto) answer.getResultado("Jugador");
             AppContext.getInstance().set("CurrentUser", player);
@@ -162,6 +162,7 @@ private void onActionRegisterUser(ActionEvent event) {
     @FXML
     private void onActionBtnCloseSession(ActionEvent event) {
         AppContext.getInstance().set("hasSectionStarted", false);
+        AppContext.getInstance().set("isRegisterSession", true);
         mgvUserPhoto.setImage(null);
         lblCurrentPoints.setText("");
         txfUserName.setText("");
@@ -242,7 +243,6 @@ private void onActionRegisterUser(ActionEvent event) {
         } else {
             if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
                 buttonManager(3);
-                onActionBtnStartSession(null);
             } else {
                 buttonManager(2);
             }

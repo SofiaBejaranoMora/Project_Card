@@ -15,6 +15,8 @@ import javafx.scene.control.Button;
  */
 public class MenuController extends Controller implements Initializable {
 
+    private boolean isFirstOpen = true;
+    
     @FXML
     private MFXButton btnSettings;
     @FXML
@@ -52,14 +54,12 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void OnActionBtnRegisterSession(ActionEvent event) {
-        AppContext.getInstance().set("isRegisterSession", true);
-        FlowController.getInstance().goView("UserSessionView");
+        sessionChecker(true);
     }
 
     @FXML
     private void OnActionBtnStartSession(ActionEvent event) {
-        AppContext.getInstance().set("isRegisterSession", false);
-        FlowController.getInstance().goView("UserSessionView");
+        sessionChecker(false);
     }
 
     @FXML
@@ -67,14 +67,36 @@ public class MenuController extends Controller implements Initializable {
         FlowController.getInstance().salir();
     }
 
+    private void sessionChecker(boolean situation) {
+        if (situation) {
+            AppContext.getInstance().set("isRegisterSession", true);
+            isFirstOpen = false;
+            FlowController.getInstance().goView("UserSessionView");
+        } else {
+            AppContext.getInstance().set("isRegisterSession", false);
+            FlowController.getInstance().goView("UserSessionView");
+        }
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         AppContext.getInstance().set("hasSectionStarted", false);
+        AppContext.getInstance().set("isRegisterSession", true);
     }
 
     @Override
     public void initialize() {
-
+        if (((Boolean) AppContext.getInstance().get("hasSectionStarted")) || !(Boolean) AppContext.getInstance().get("isRegisterSession")) {
+            btnRegisterSession.setVisible(false);
+            btnStartSession.setText("Cerrar Sesión");
+            btnStartSession.setVisible(true);
+        } else {
+            if (!isFirstOpen) {
+                btnRegisterSession.setVisible(false);
+                btnStartSession.setText("Iniciar Sesión");
+                btnStartSession.setVisible(true);
+            }
+        }
     }
 
 }

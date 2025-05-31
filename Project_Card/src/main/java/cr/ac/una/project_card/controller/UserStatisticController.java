@@ -231,15 +231,15 @@ public class UserStatisticController extends Controller implements Initializable
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");//SI NO CARGA ES LA LISTA
 
-        configureFirstTab();
-        configureSecondTab();
     }
     
     @Override
     public void initialize() {
-    
+        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");//SI NO CARGA ES LA LISTA
+
+        configureFirstTab();
+        configureSecondTab();
     }
 
 }

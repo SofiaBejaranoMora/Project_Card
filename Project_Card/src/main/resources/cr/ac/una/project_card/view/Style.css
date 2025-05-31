@@ -10,7 +10,7 @@
 }
 
 .SystemBackground {
-    -fx-background-image: url("../resources/ProgramImages/10.jpg");
+    -fx-background-image: url("../resources/ProgramImages/SystemBackground.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: 100% 100%;
     -fx-background-position: center center;

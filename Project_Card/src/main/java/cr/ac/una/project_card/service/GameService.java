@@ -19,82 +19,82 @@ public class GameService {
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 
-    public Respuesta getPlayerName(String name) {
+    public Respuesta getGameName(String name) {
         try {
-            Query qryGame = em.createNamedQuery("Player.findByName", Game.class);
+            Query qryGame = em.createNamedQuery("Game.findByName", Game.class);
             qryGame.setParameter("name", name);
             Game game = (Game) qryGame.getSingleResult();
-            GameDto playerDto = new GameDto(game);
-            return new Respuesta(true, " ", " ", "Jugador", playerDto);
+            GameDto gameDto = new GameDto(game);
+            return new Respuesta(true, " ", " ", "Partida", gameDto);
         } catch (NoResultException ex) {
-            return new Respuesta(false, "No existe un jugador con las credenciales ingresadas.", "getPlayerName NoResultException");
+            return new Respuesta(false, "No existe una partida bajo ese nombre.", "getGameName NoResultException");
         } catch (NonUniqueResultException ex) {
-            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Ocurrio un error al consultar el jugador.", ex);
-            return new Respuesta(false, "Ocurrio un error al consultar el jugador.", "getPlayerName NonUniqueResultException");
+            Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, "Ocurrio un error al consultar la partida.", ex);
+            return new Respuesta(false, "Ocurrio un error al consultar la partida.", "getGameName NonUniqueResultException");
         } catch (Exception ex) {
-            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error obteniendo el jugador  [" + name + "]", ex);
-            return new Respuesta(false, "Error obtener el jugador.", "getPlayerId " + ex.getMessage());
+            Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, "Error obteniendo la partida[" + name + "]", ex);
+            return new Respuesta(false, "Error obtener la partida.", "getGameId " + ex.getMessage());
         }
     }
 
-    public Respuesta SavePlayer(GameDto gameDto) {
+    public Respuesta SaveGame(GameDto gameDto) {
         try {
             et = em.getTransaction();
             et.begin();
-            Game player;
-            Query query = em.createNamedQuery("Player.findByName");
+            Game game;
+            Query query = em.createNamedQuery("Game.findByName");
             //query.setParameter("name", gameDto.getName());
-            List<Game> playerList = query.getResultList();//qryUsuario.getResultList()-> este para mas de un registro, y el que puse es para solo un unico registro
-            if (!playerList.isEmpty()) {
+            List<Game> gameList = query.getResultList();//qryUsuario.getResultList()-> este para mas de un registro, y el que puse es para solo un unico registro
+            if (!gameList.isEmpty()) {
                 et.rollback();
-                return new Respuesta(false, "El nombre del jugador ya existe.", "", "Jugador ", null);
+                return new Respuesta(false, "El nombre de la partida ya existe.", "", "Partida ", null);
             } else {
                 if (gameDto.getId() != null && gameDto.getId() > 0) {
-                    player = em.find(Game.class, gameDto.getId());
-                    if (player == null) {
+                    game = em.find(Game.class, gameDto.getId());
+                    if (game == null) {
                         et.rollback();
-                        return new Respuesta(false, "No se encontró el jugador a modificar", "SavePlayer NoResultException");
+                        return new Respuesta(false, "No se encontró la partida a actualizar", "SaveGame NoResultException");
                     }
-                    player.update(gameDto);
-                    player = em.merge(player);
+                    game.update(gameDto);
+                    game = em.merge(game);
                 } else {
-                    player = new Game(gameDto);
-                    em.persist(player);
+                    game = new Game(gameDto);
+                    em.persist(game);
                 }
                 et.commit();
-                return new Respuesta(true, "", "", "Jugador", new GameDto(player));
+                return new Respuesta(true, "", "", "Partida", new GameDto(game));
             }
         } catch (Exception ex) {
             et.rollback();
-            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error guardando el jugador[" + gameDto + "]", ex);
-            return new Respuesta(false, "Error guardando el jugador.", "Jugador " + ex.getMessage());
+            Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, "Error guardando la partida[" + gameDto + "]", ex);
+            return new Respuesta(false, "Error guardando la partida.", "Partida " + ex.getMessage());
         }
     }
 
-    public Respuesta EditPlayerId(GameDto gameDto) {
+    public Respuesta EditGameId(GameDto gameDto) {
         try {
             et = em.getTransaction();
             et.begin();
-            Game player;
+            Game game;
             if (gameDto.getId() != null && gameDto.getId() > 0) {
-                player = em.find(Game.class, gameDto.getId());
-                if (player == null) {
+                game = em.find(Game.class, gameDto.getId());
+                if (game == null) {
                     et.rollback();
-                    return new Respuesta(false, "No se encontró el jugador a modificar", "SavePlayer NoResultException");
+                    return new Respuesta(false, "No se encontró la partida a actualizar", "EditGameId NoResultException");
                 }
-                player.update(gameDto);
-                player = em.merge(player);
+                game.update(gameDto);
+                game = em.merge(game);
             } else {
-                player = new Game(gameDto);
-                em.persist(player);
+                game = new Game(gameDto);
+                em.persist(game);
             }
             et.commit();
-            return new Respuesta(true, "", "", "Jugador", new GameDto(player));
+            return new Respuesta(true, "", "", "Partida", new GameDto(game));
 
         } catch (Exception ex) {
             et.rollback();
-            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error guardando el jugador[" + gameDto + "]", ex);
-            return new Respuesta(false, "Error guardando el jugador.", "Jugador " + ex.getMessage());
+            Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, "Error guardando la partida[" + gameDto + "]", ex);
+            return new Respuesta(false, "Error guardando la partida.", "Partida " + ex.getMessage());
         }
     }
 }

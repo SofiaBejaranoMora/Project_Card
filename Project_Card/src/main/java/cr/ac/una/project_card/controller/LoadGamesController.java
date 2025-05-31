@@ -34,7 +34,7 @@ public class LoadGamesController extends Controller implements Initializable {
     @FXML
     private TableView<GameDto> tbvSaveGames;
     @FXML
-    private TableColumn<GameDto, ?> cmnSaveGames;
+    private TableColumn<GameDto, String> cmnSaveGames;
     @FXML
     private MFXButton btnDelete;
     @FXML

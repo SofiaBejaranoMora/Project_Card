@@ -3,6 +3,7 @@ package cr.ac.una.project_card.controller;
 import cr.ac.una.project_card.model.Game;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
+import cr.ac.una.project_card.util.AppContext;
 import io.github.palexdev.materialfx.utils.FXCollectors;
 import java.net.URL;
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class UserStatisticController extends Controller implements Initializable
             totalGames = player.getGameList().size();
 
             for (GameDto game : player.getGameList()) {
-                if ("S".equals(game.getHasWon())) {
+                if ("T".equals(game.getHasWon())) {
                     totalWons++;
                 }
             }
@@ -230,11 +231,8 @@ public class UserStatisticController extends Controller implements Initializable
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (player == null) {
-            player = new PlayerDto();
-            // Opcional: Inicializar con una lista vacía para evitar null
-            player.setGameList(new ArrayList<>());
-        }
+        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");//SI NO CARGA ES LA LISTA
+
         configureFirstTab();
         configureSecondTab();
     }

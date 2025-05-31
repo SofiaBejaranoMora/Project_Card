@@ -27,25 +27,38 @@ public class AchievementsController extends Controller implements Initializable 
     @FXML
     private Button btnBack;
     @FXML
-    private Button btnStatistics;
-    
+    private MFXTextField txtSearchNameAchievementObtained;
     @FXML
-    private void onActionBtnStatistics(ActionEvent event) {
-        FlowController.getInstance().goView("UserStatisticView");
-    }
+    private MFXComboBox<AchievementDto> cmbSearchAchievementObtainedType;
+    @FXML
+    private ScrollPane scrollPaneAchievementsObtained;
+    @FXML
+    private MFXTextField txtSearchNoObtainedAchievementsName;
+    @FXML
+    private MFXComboBox<AchievementDto> cmbSearchNoObtainedAchievementType;
+    @FXML
+    private ScrollPane scrollPaneAchievementsNoObtained;
+    @FXML
+    private VBox vBoxAchievementsObtained;
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goView("MenuView");
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @FXML
+    private void OnActionSearchNameAchievementObtained(ActionEvent event) {
+    }
 
+    @FXML
+    private void onActionCmbSearchAchievementObtainedType(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionCmbSearchNoObtainedAchievementType(ActionEvent event) {
     }
 
     public void UploadReview(AchievementDto achievement, VBox vBox) {
-
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.TOP_LEFT);
         hbox.setSpacing(15);
@@ -56,17 +69,16 @@ public class AchievementsController extends Controller implements Initializable 
         vbox.setSpacing(15);
         VBox.setMargin(vbox, new Insets(15));
 
-        image = new Image(/*raqui va la ruta +*/ achievement.getName()+ ".png");
+        image = new Image(/*raqui va la ruta +*/achievement.getName() + ".png");
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(182);
-        imageView.setFitHeight(40);
+        imageView.setFitWidth(100);
+        imageView.setFitHeight(100);
         imageView.setPreserveRatio(true);
-        
-        TextField textField = new TextField("Name: "+achievement.getName());
-       // textField.setWrapText(true);
+
+        TextField textField = new TextField("Name: " + achievement.getName());
         textField.setDisable(true);
-       
-        TextArea textArea = new TextArea("Tipo: "+achievement.getType()+ "\n" +"Cantidad: "+ achievement.getAmount()+ "\n" + achievement.getDescription());
+
+        TextArea textArea = new TextArea("Tipo: " + achievement.getType() + "\n" + "Cantidad: " + achievement.getAmount() + "\n" + achievement.getDescription());
         textArea.setWrapText(true);
         textArea.setDisable(true);
 
@@ -77,11 +89,15 @@ public class AchievementsController extends Controller implements Initializable 
         hbox.prefWidthProperty().bind(hbox.widthProperty().multiply(0.98));
         vBox.getChildren().addAll(hbox);
     }
+    
+        @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+    }
 
     @Override
     public void initialize() {
 
     }
-
 
 }

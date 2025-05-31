@@ -53,8 +53,8 @@
                            <children>
                               <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <MFXTextField fx:id="txtSearchNameAchievementObtained" floatingText="Buscar por nombre" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" HBox.hgrow="ALWAYS" />
-                                    <MFXComboBox fx:id="cmbSearchAchievementObtainedType" floatingText="Tipo" maxHeight="-Infinity" minHeight="-Infinity" onAction="#onActionCmbSearchAchievementObtainedType" prefHeight="40.0" HBox.hgrow="ALWAYS" />
+                                    <MFXTextField fx:id="txtSearchNameAchievementObtained" floatingText="Buscar por nombre" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" styleClass="TextField" HBox.hgrow="ALWAYS" />
+                                    <MFXComboBox fx:id="cmbSearchAchievementObtainedType" floatingText="Tipo" maxHeight="-Infinity" minHeight="-Infinity" onAction="#onActionCmbSearchAchievementObtainedType" prefHeight="40.0" styleClass="TextField" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                               <ScrollPane fx:id="scrollPaneAchievementsObtained" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -75,8 +75,8 @@
                            <children>
                               <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="50.0" spacing="10.0">
                                  <children>
-                                    <MFXTextField fx:id="txtSearchNotObtainedAchievementsName" floatingText="Buscar por nombre" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" HBox.hgrow="ALWAYS" />
-                                    <MFXComboBox fx:id="cmbSearchNotObtainedAchievementType" floatingText="Tipo" maxHeight="-Infinity" minHeight="-Infinity" onAction="#onActionCmbSearchNoObtainedAchievementType" prefHeight="40.0" HBox.hgrow="ALWAYS" />
+                                    <MFXTextField fx:id="txtSearchNotObtainedAchievementsName" floatingText="Buscar por nombre" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" styleClass="TextField" HBox.hgrow="ALWAYS" />
+                                    <MFXComboBox fx:id="cmbSearchNotObtainedAchievementType" floatingText="Tipo" maxHeight="-Infinity" minHeight="-Infinity" onAction="#onActionCmbSearchNoObtainedAchievementType" prefHeight="40.0" styleClass="TextField" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
                               <ScrollPane fx:id="scrollPaneAchievementsNotObtained" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0">

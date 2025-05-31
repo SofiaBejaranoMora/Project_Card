@@ -10,7 +10,7 @@
 }
 
 .SystemBackground {
-    -fx-background-image: url("../resources/ProgramImages/SystemBackground.jpg");
+    -fx-background-image: url("../resources/ProgramImages/10.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: 100% 100%;
     -fx-background-position: center center;
@@ -117,11 +117,12 @@
     -fx-text-fill: -fx-black-text-color;
     -fx-font-weight: bold;
     -fx-padding: 10px;
-    -fx-effect: dropshadow(gaussian, rgba(153, 153, 153, 1), 5, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 1), 5, 10, 0, 1);
 }
 
 #MenuButton {
-    -fx-background-color: transparent;
+    -fx-background-color: white;
+    -fx-background-radius: 12;
     -fx-border-color: -fx-black-text-color;
     -fx-min-width: 170px;
     -fx-pref-width: 170px;
@@ -143,7 +144,8 @@
 }
 
 #SystemButton {
-    -fx-background-color: transparent;
+    -fx-background-color: white;
+    -fx-background-radius: 12;
     -fx-border-color: -fx-black-text-color;
     -fx-border-width: 3;
     -fx-border-radius: 10;
@@ -159,7 +161,7 @@
     -fx-text-fill: -fx-black-text-color;
     -fx-font-weight: bold;
     -fx-padding: 10px;
-    -fx-effect: dropshadow(gaussian, rgba(153, 153, 153, 1), 5, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(153, 153, 153, 1), 5, 10, 0, 1);
 }
 
 .Label {
@@ -167,16 +169,16 @@
     -fx-text-fill: -fx-black-text-color;
     -fx-font-weight: bold;
     -fx-padding: 5px;
-    -fx-effect: dropshadow(gaussian, rgba(153, 153, 153, 1), 5, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(153, 153, 153, 1), 5, 10, 0, 1);
 }
 
 .TextField {
-    -mfx-main: -fx-black-text-color;
-    -fx-background-color: transparent;
+    -fx-background-color: white;
     -fx-border-color: -fx-black-text-color;
     -fx-border-width: 3;
     -fx-border-radius: 15;
     -fx-font-size: 18px;
+    -mfx-main: -fx-black-text-color;
     -fx-font-family: "Fredoka One";
     -fx-text-fill: -fx-black-text-color;
     -fx-font-weight: bold;
@@ -187,14 +189,7 @@
 } 
 
 .UserPhoto-border {
-    -fx-border-color: black;
-    -fx-border-width: 3px;
-    -fx-border-style: solid;
-    -fx-border-radius: 5px;
-}
-
-.SettingsPhotos {
-    -fx-background-color: transparent;
+    -fx-backgorund-color: black;
     -fx-border-color: black;
     -fx-border-width: 3px;
     -fx-border-style: solid;
@@ -236,6 +231,11 @@
     -fx-background-color: rgba(255, 255, 255, 0.1);
 }
 
+.table-column-header-background {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
 .table-row-cell {
     -fx-font-family: "Fredoka One";
     -fx-background-color: transparent;
@@ -249,11 +249,6 @@
 
 /*#tblPlayersTable {
     -fx-background-color: #6666ff;
-    -fx-border-color: transparent;
-}
-
-#tblPlayersTable .column-header-background {
-    -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
 

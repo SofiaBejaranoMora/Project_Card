@@ -16,6 +16,7 @@ import javafx.beans.property.StringProperty;
 public class GameDto {
 
     public StringProperty id;
+    private StringProperty name;
     public StringProperty time;
     public StringProperty score;
     public StringProperty hasWon;
@@ -54,6 +55,14 @@ public class GameDto {
         this.id.set(id.toString());
     }
 
+    public String getName() {
+        return name.get();
+    }
+
+    public void setName(String name) {
+        this.name.set(name);
+    }
+    
     public Long getTime() {
         if (this.time.get() != null & !this.time.get().isBlank()) {
             return Long.valueOf(time.get());

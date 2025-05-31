@@ -17,13 +17,14 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.io.Serializable;
+import java.math.BigInteger;
 
 @Entity
 @Table(name = "STACKCARDXCARD", schema = "PRO")
 @NamedQueries({
-    @NamedQuery(name = "Stackcardxcard.findAll", query = "SELECT s FROM Stackcardxcard s"),
-    /*@NamedQuery(name = "Stackcardxcard.findBySxcId", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcId = :sxcId"),
+    @NamedQuery(name = "Stackcardxcard.findAll", query = "SELECT s FROM Stackcardxcard s"), /*@NamedQuery(name = "Stackcardxcard.findBySxcId", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcId = :sxcId"),
     @NamedQuery(name = "Stackcardxcard.findBySxcIsfaceup", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcIsfaceup = :sxcIsfaceup"),
     @NamedQuery(name = "Stackcardxcard.findBySxcVersion", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcVersion = :sxcVersion")*/})
 public class Stackcardxcard implements Serializable {
@@ -40,6 +41,9 @@ public class Stackcardxcard implements Serializable {
     @Column(name = "SXC_ISFACEUP")
     private String isFaceUp;
     @Basic(optional = false)
+    @Column(name = "SXC_POSITIONNUMBER")
+    private Long positionNumber;
+    @Version
     @Column(name = "SXC_VERSION")
     private Long version;
     @JoinColumn(name = "SXC_CAR_ID", referencedColumnName = "CAR_ID")
@@ -64,6 +68,7 @@ public class Stackcardxcard implements Serializable {
     public void update(StackcardxcardDto stackcardxcardDto) {
         this.id = stackcardxcardDto.getId();
         this.isFaceUp = stackcardxcardDto.getIsFaceUp() ? "T" : "F";
+        this.positionNumber=stackcardxcardDto.getPositionNumber();
         this.version = stackcardxcardDto.getVersion();
     }
 
@@ -83,6 +88,14 @@ public class Stackcardxcard implements Serializable {
         this.isFaceUp = isFaceUp;
     }
 
+    public Long getPositionNumber() {
+        return positionNumber;
+    }
+
+    public void setPositionNumber(Long positionNumber) {
+        this.positionNumber = positionNumber;
+    }
+    
     public Long getVersion() {
         return version;
     }

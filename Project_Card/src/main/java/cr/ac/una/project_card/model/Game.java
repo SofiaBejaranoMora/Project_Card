@@ -1,4 +1,3 @@
-
 package cr.ac.una.project_card.model;
 
 import jakarta.persistence.Basic;
@@ -19,18 +18,17 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
  *
  * @author sofia
  */
-
 @Entity
 @Table(name = "GAME", schema = "PRO")
 @NamedQueries({
-    @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"),
-   /* @NamedQuery(name = "Game.findByGamId", query = "SELECT g FROM Game g WHERE g.gamId = :gamId"),
+    @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"), /* @NamedQuery(name = "Game.findByGamId", query = "SELECT g FROM Game g WHERE g.gamId = :gamId"),
     @NamedQuery(name = "Game.findByGamTime", query = "SELECT g FROM Game g WHERE g.gamTime = :gamTime"),
     @NamedQuery(name = "Game.findByGamScore", query = "SELECT g FROM Game g WHERE g.gamScore = :gamScore"),
     @NamedQuery(name = "Game.findByGamVersion", query = "SELECT g FROM Game g WHERE g.gamVersion = :gamVersion"),
@@ -41,11 +39,14 @@ public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-     @SequenceGenerator(name = "GAME_GAM_ID_GENERATOR", sequenceName = "pro.Game_seq03", allocationSize = 1)
+    @SequenceGenerator(name = "GAME_GAM_ID_GENERATOR", sequenceName = "pro.Game_seq03", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GAME_GAM_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "GAM_ID")
     private Long id;
+    @Basic(optional = false)
+    @Column(name = "GAM_NAME")
+    private String name;
     @Basic(optional = false)
     @Column(name = "GAM_TIME")
     private Long time;
@@ -86,6 +87,7 @@ public class Game implements Serializable {
 
     public void update(GameDto gameDto) {
         this.id = gameDto.getId();
+        this.name=gameDto.getName();
         this.time = gameDto.getTime();
         this.score = gameDto.getScore();
         this.hasWon = gameDto.getHasWon();
@@ -102,6 +104,14 @@ public class Game implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getTime() {

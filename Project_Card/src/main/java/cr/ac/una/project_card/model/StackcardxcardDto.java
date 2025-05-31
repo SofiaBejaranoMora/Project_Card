@@ -1,4 +1,3 @@
-
 package cr.ac.una.project_card.model;
 
 import java.util.Objects;
@@ -7,24 +6,26 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-
 public class StackcardxcardDto {
 
     public StringProperty id;
     public BooleanProperty isFaceUp;
+    public StringProperty positionNumber;
     private Long version;
     private CardDto card;
     private StackcardDto stackCard;
 
     public StackcardxcardDto() {
-        this.id =  new SimpleStringProperty("");
+        this.id = new SimpleStringProperty("");
         this.isFaceUp = new SimpleBooleanProperty(false);
+        this.positionNumber = new SimpleStringProperty("");
     }
 
     public StackcardxcardDto(Stackcardxcard stackcardxcard) {
-         this();
+        this();
         this.id.set(stackcardxcard.toString());
         this.isFaceUp.set(stackcardxcard.getIsFaceUp().equals("T"));
+        this.positionNumber.set(stackcardxcard.getPositionNumber().toString());
         this.version = stackcardxcard.getVersion();
     }
 
@@ -37,7 +38,7 @@ public class StackcardxcardDto {
     }
 
     public void setId(Long id) {
-       this.id.set(id.toString());
+        this.id.set(id.toString());
     }
 
     public Boolean getIsFaceUp() {
@@ -48,6 +49,18 @@ public class StackcardxcardDto {
         this.isFaceUp.set(isFaceUp);
     }
 
+    public Long getPositionNumber() {
+        if (this.positionNumber.get() != null && !this.positionNumber.get().isBlank()) {
+            return Long.valueOf(this.positionNumber.get());
+        } else {
+            return null;
+        }
+    }
+
+    public void setPositionNumber(Long positionNumber) {
+        this.positionNumber.set(positionNumber.toString());
+    }
+
     public Long getVersion() {
         return version;
     }
@@ -56,15 +69,15 @@ public class StackcardxcardDto {
         this.version = version;
     }
 
-    public CardDto  getCard() {
+    public CardDto getCard() {
         return card;
     }
 
-    public void setCard(CardDto  card) {
+    public void setCard(CardDto card) {
         this.card = card;
     }
 
-    public StackcardDto  getStackCard() {
+    public StackcardDto getStackCard() {
         return stackCard;
     }
 
@@ -98,5 +111,5 @@ public class StackcardxcardDto {
         final StackcardxcardDto other = (StackcardxcardDto) obj;
         return Objects.equals(this.id, other.id);
     }
-    
+
 }

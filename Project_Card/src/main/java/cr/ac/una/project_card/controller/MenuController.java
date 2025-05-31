@@ -42,7 +42,7 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnContinue(ActionEvent event) {
-        FlowController.getInstance().goView("GameView");
+        FlowController.getInstance().goView("LoadGamesView");
     }
 
     @FXML

@@ -125,24 +125,26 @@ public class UserSessionController extends Controller implements Initializable {
         File newFile = new File(saveRoute + txfUserName.getText().trim() + ".png");
 
         if (oldFile.exists()) {
-            boolean renamed = oldFile.renameTo(newFile);
-            
-            if (renamed) {
+            try {
+                Files.move(oldFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                // Actualizar nombre y datos del jugador
+                currentName = txfUserName.getText().trim();
                 player.setName(currentName);
-                PlayerService playerService = new PlayerService(); // Este es el de buscar por nombre mas bien
-                Respuesta answer = playerService.SavePlayer(player); // tercera linea de error
-                
-                if (answer.getEstado()) {
+                PlayerService playerService = new PlayerService();
+                Respuesta answer = playerService.SavePlayer(player);
+
+                if (answer != null && answer.getEstado()) {
                     this.player = (PlayerDto) answer.getResultado("Jugador");
                     AppContext.getInstance().set("CurrentUser", player);
                     message.showModal(Alert.AlertType.INFORMATION, "Editar Jugador", getStage(), "Sesión iniciada con éxito, disfrute del juego.");
                     mgvUserPhoto.setImage(new Image(saveRoute + currentName + ".png"));
                     
                 } else {
-                    message.showModal(Alert.AlertType.ERROR, "Editar Jugador", getStage(), answer.getMensaje());
+                    message.showModal(Alert.AlertType.ERROR, "Editar Jugador", getStage(), answer != null ? answer.getMensaje() : "Error al guardar jugador.");
                 }
-            } else {
-                message.showModal(Alert.AlertType.ERROR, "Nombre de usuario", getStage(), "Error al renombrar el usuario");
+            } catch (IOException e) {
+                message.showModal(Alert.AlertType.ERROR, "Nombre de usuario", getStage(), "Error al renombrar el usuario: " + e.getMessage());
             }
         }
     }

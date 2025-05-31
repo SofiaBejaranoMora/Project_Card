@@ -155,14 +155,15 @@ public class SettingsController extends Controller implements Initializable {
                 player.setCardBackImageName(player.getId()+"");
                 PlayerService playerService = new PlayerService();
                 Respuesta answer = playerService.SavePlayer(player);// tercera linea de error
+                
                 if (answer.getEstado()) {
                     this.player = (PlayerDto) answer.getResultado("Jugador");
                     AppContext.getInstance().set("CurrentUser", player);
                     message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
+               
                 }else {
                     message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
                 }
-
             } catch (IOException e) {
                 message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), "Error al guardar la imagen: " + e.getMessage());
             }

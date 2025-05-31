@@ -233,9 +233,9 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     private void initialConditionsCards() {
-        mgvEasyMode.setImage(new Image(imageUtility.getBackCardPath(easyModeCard.getBackImagePath())));
-        mgvMediumMode.setImage(new Image(imageUtility.getBackCardPath(mediumModeCard.getBackImagePath())));
-        mgvHardMode.setImage(new Image(imageUtility.getBackCardPath(hardModeCard.getBackImagePath())));
+        mgvEasyMode.setImage(new Image("file:" + imageUtility.getBackCardPath(easyModeCard.getBackImagePath())));
+        mgvMediumMode.setImage(new Image("file:" + imageUtility.getBackCardPath(mediumModeCard.getBackImagePath())));
+        mgvHardMode.setImage(new Image("file:" + imageUtility.getBackCardPath(hardModeCard.getBackImagePath())));
         mgvEasyMode.setRotate(180);
         mgvMediumMode.setRotate(180);
         mgvHardMode.setRotate(180);

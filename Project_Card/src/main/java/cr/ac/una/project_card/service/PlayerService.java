@@ -66,14 +66,15 @@ public class PlayerService {
                 et.rollback();
                 return new Respuesta(false, "El nombre del jugador ya existe.", "", "Jugador ", null);
             } else {
-                if (playerDto.getName()!= null && playerDto.getName().isBlank()) {
+                if (playerDto.getId() != null && playerDto.getId() > 0) {
                     player = em.find(Player.class, playerDto.getId());
                     if (player == null) {
-                        return new Respuesta(false, "No se encontro el jugador a modificar", "SavePlayer NoResultadoException");
+                        et.rollback();
+                        return new Respuesta(false, "No se encontró el jugador a modificar", "SavePlayer NoResultException");
                     }
                     player.update(playerDto);
                     player = em.merge(player);
-                } else {
+                }else {
                     player = new Player(playerDto);
                     em.persist(player);
                 }

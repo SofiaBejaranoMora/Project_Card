@@ -81,12 +81,12 @@ public class UserSessionController extends Controller implements Initializable {
         player = new PlayerDto(currentName, 0L, 1L, "noimagen");
         PlayerService playerService = new PlayerService();
         Respuesta answer = playerService.SavePlayer(player); // tercera linea de error
-
         if (answer.getEstado()) {
             this.player = (PlayerDto) answer.getResultado("Jugador");
             AppContext.getInstance().set("CurrentUser", player);
             buttonManager(3);
             message.showModal(Alert.AlertType.INFORMATION, "Inicio de sesión", getStage(), "'Sesión creada con éxito, disfrute del juego.");
+            AppContext.getInstance().set("hasSectionStarted", true);
             FlowController.getInstance().goView("MenuView");
 
         } else {
@@ -103,16 +103,20 @@ public class UserSessionController extends Controller implements Initializable {
         currentName = txfUserName.getText().trim();
         //buscar usuario
         player.setName(currentName);
+        if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
+            player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
+        }
         PlayerService playerService = new PlayerService(); // Este es el de buscar por nombre mas bien
         Respuesta answer = playerService.getPlayerName(player.getName());// tercera linea de error
-        
+
         if (answer.getEstado()) {
             this.player = (PlayerDto) answer.getResultado("Jugador");
             AppContext.getInstance().set("CurrentUser", player);
+            AppContext.getInstance().set("hasSectionStarted", true);
             message.showModal(Alert.AlertType.INFORMATION, "Inicio de sesión", getStage(), "Sesión iniciada con éxito, disfrute del juego.");
             lblCurrentPoints.setText(player.getAccumulatedPoint().toString());
             mgvUserPhoto.setImage(new Image("file:" + saveRoute + currentName + ".png"));
-            
+
         } else {
             buttonManager(1);
             message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
@@ -121,36 +125,38 @@ public class UserSessionController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnEdit(ActionEvent event) {
-        File oldFile = new File(saveRoute + currentName + ".png");
-        File newFile = new File(saveRoute + txfUserName.getText().trim() + ".png");
-
-        if (oldFile.exists()) {
-            try {
-                Files.move(oldFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-                // Actualizar nombre y datos del jugador
-                currentName = txfUserName.getText().trim();
-                player.setName(currentName);
-                PlayerService playerService = new PlayerService();
-                Respuesta answer = playerService.SavePlayer(player);
-
-                if (answer != null && answer.getEstado()) {
-                    this.player = (PlayerDto) answer.getResultado("Jugador");
-                    AppContext.getInstance().set("CurrentUser", player);
-                    message.showModal(Alert.AlertType.INFORMATION, "Editar Jugador", getStage(), "Sesión iniciada con éxito, disfrute del juego.");
-                    mgvUserPhoto.setImage(new Image(saveRoute + currentName + ".png"));
-                    
-                } else {
-                    message.showModal(Alert.AlertType.ERROR, "Editar Jugador", getStage(), answer != null ? answer.getMensaje() : "Error al guardar jugador.");
+        if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
+            File oldFile = new File(saveRoute + currentName + ".png");
+            File newFile = new File(saveRoute + txfUserName.getText().trim() + ".png");
+            if (oldFile.exists()) {
+                try {
+                    // Actualizar nombre y datos del jugador
+                    currentName = txfUserName.getText().trim();
+                    player.setName(currentName);
+                    PlayerService playerService = new PlayerService();
+                    Respuesta answer = playerService.SavePlayer(player);
+                    if (answer != null && answer.getEstado()) {
+                        this.player = (PlayerDto) answer.getResultado("Jugador");
+                        Files.move(oldFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        AppContext.getInstance().set("CurrentUser", player);
+                        message.showModal(Alert.AlertType.INFORMATION, "Editar Jugador", getStage(), "Sesión editada con éxito, disfrute del juego.");
+                        mgvUserPhoto.setImage(new Image("file:" + saveRoute + currentName + ".png"));
+                        
+                    } else {
+                        message.showModal(Alert.AlertType.ERROR, "Editar Jugador", getStage(), answer != null ? answer.getMensaje() : "Error al guardar jugador.");
+                    }
+                } catch (IOException e) {
+                    message.showModal(Alert.AlertType.ERROR, "Nombre de usuario", getStage(), "Error al renombrar el usuario: " + e.getMessage());
                 }
-            } catch (IOException e) {
-                message.showModal(Alert.AlertType.ERROR, "Nombre de usuario", getStage(), "Error al renombrar el usuario: " + e.getMessage());
             }
+        } else {
+            message.showModal(Alert.AlertType.WARNING, "Editar Jugador", getStage(), "Debe iniciar sesión para poder modificar el nombre.");
         }
     }
 
     @FXML
     private void onActionBtnCloseSession(ActionEvent event) {
+        AppContext.getInstance().set("hasSectionStarted", false);
         mgvUserPhoto.setImage(null);
         lblCurrentPoints.setText("");
         txfUserName.setText("");
@@ -161,6 +167,7 @@ public class UserSessionController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        //Crear un metodo de limpiar.
         FlowController.getInstance().goView("MenuView");
     }
 
@@ -197,7 +204,7 @@ public class UserSessionController extends Controller implements Initializable {
             try {
                 String savePath = saveRoute + name + ".png";
                 Path destination = Path.of(savePath);
-
+                
                 Files.createDirectories(destination.getParent());
                 Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
 
@@ -223,7 +230,12 @@ public class UserSessionController extends Controller implements Initializable {
         if ((Boolean) AppContext.getInstance().get("isRegisterSession")) {
             buttonManager(1);
         } else {
-            buttonManager(3);
+            if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
+                buttonManager(3);
+                onActionBtnStartSession(null);
+            } else {
+                buttonManager(2);
+            }
         }
     }
 }

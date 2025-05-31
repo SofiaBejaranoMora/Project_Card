@@ -39,15 +39,24 @@ public class CreateGameController extends Controller implements Initializable {
     private Mensaje message = new Mensaje();
     private PlayerDto player;
     private String style;
-    private CardView easyModeCard = new CardView("1", 1 + style, imageUtility);
-    private CardView mediumModeCard = new CardView("2", 2 + style, imageUtility);
-    private CardView hardModeCard = new CardView("3", 3 + style, imageUtility);
+    private String easyCardBack;
+    private String mediumCardBack;
+    private String hardCardBack;
+    private CardView easyModeCard = new CardView("1", easyCardBack, imageUtility);
+    private CardView mediumModeCard = new CardView("2", mediumCardBack, imageUtility);
+    private CardView hardModeCard = new CardView("3", hardCardBack, imageUtility);
     private Set<String> existingGames = new HashSet<>();
     private String nameGame;
     private String difficulty;
 
     private boolean lastNameValid = true;
 
+    @FXML
+    private Button btnEasyMode;
+    @FXML
+    private Button btnMediumMode;
+    @FXML
+    private Button btnHardMode;
     @FXML
     private MFXTextField txfNameGame;
     @FXML
@@ -57,31 +66,23 @@ public class CreateGameController extends Controller implements Initializable {
     @FXML
     private ImageView mgvHardMode;
     @FXML
-    private Button btnEasyMode;
-    @FXML
-    private Button btnMediumMode;
-    @FXML
-    private Button btnHardMode;
-    @FXML
     private MFXButton btnStartGame;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
     }
-
-    @Override
+    
+@Override
     public void initialize() {
         player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
-        if (player != null) {
-            if (player.getCardStyle() == 1) {
-                style = "N";
-            } else if (player.getCardStyle() == 2) {
-                style = "M";
-            } else {
-                style = "V";
-            }
-        } else style = "N";
+       
+        initializeBackCardStyles(player);
+        
+        easyModeCard.setBackImagePath(easyCardBack);
+        mediumModeCard.setBackImagePath(mediumCardBack);
+        hardModeCard.setBackImagePath(hardCardBack);
+        
         initialConditionsCards();
         setupCardInteractions();
         txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
@@ -97,6 +98,27 @@ public class CreateGameController extends Controller implements Initializable {
             System.out.println("Name changed: " + nameGame + ", Valid: " + isValid);
         });
 }
+
+    private void initializeBackCardStyles(PlayerDto player) {
+        if (player != null) {
+            if (player.getCardStyle() == 1) {
+                style = "N";
+            } else if (player.getCardStyle() == 2) {
+                style = "M";
+            } else {
+                style = "V";
+            }
+        } else {
+            style = "N";
+        }
+
+        easyCardBack = "1" + style;
+        System.out.println(easyCardBack);
+        mediumCardBack = "1" + style;
+        System.out.println(mediumCardBack);
+        hardCardBack = "1" + style;
+        System.out.println(hardCardBack);
+    }
 
     @FXML
     private void onKeyPressed(KeyEvent event) {
@@ -242,6 +264,9 @@ public class CreateGameController extends Controller implements Initializable {
         easyModeCard.setIsFlipped(true);
         mediumModeCard.setIsFlipped(true);
         hardModeCard.setIsFlipped(true);
+       easyModeCard.updateImageView(mgvEasyMode);
+       mediumModeCard.updateImageView(mgvMediumMode);
+       mediumModeCard.updateImageView(mgvHardMode);
     }
 
     private ImageView getImageViewByCard(CardView card) {
@@ -382,6 +407,9 @@ public class CreateGameController extends Controller implements Initializable {
         public String getBackImagePath() {
             return backImagePath;
         }
+        public void setBackImagePath(String backImagePath){
+            this.backImagePath=backImagePath;
+        }
 
         public String getFrontImagePath() {
             return frontImagePath;
@@ -401,7 +429,13 @@ public class CreateGameController extends Controller implements Initializable {
 
         public void updateImageView(ImageView imageView) {
             String imagePath = isFlipped ? backImagePath : frontImagePath;
-            String url = imageUtility.getCardDifficultPath(imagePath);
+            String url;
+            if(!isFlipped){
+                url= imageUtility.getCardDifficultPath(imagePath); 
+            }else{
+                url = imageUtility.getBackCardPath(imagePath);
+            }
+            
             if (url != null) {
                 imageView.setImage(new Image(url));
                 System.out.println("Updated image for card: " + frontImagePath + ", Flipped: " + isFlipped + ", Image: " + url);

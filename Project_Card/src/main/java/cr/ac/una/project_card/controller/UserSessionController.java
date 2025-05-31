@@ -4,6 +4,7 @@ import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.service.PlayerService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
+import cr.ac.una.project_card.util.Formato;
 import cr.ac.una.project_card.util.ImagesUtil;
 import cr.ac.una.project_card.util.Mensaje;
 import cr.ac.una.project_card.util.Respuesta;
@@ -218,6 +219,7 @@ public class UserSessionController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        txfUserName.delegateSetTextFormatter(Formato.getInstance().letrasFormat(30));
     }
 
     @Override

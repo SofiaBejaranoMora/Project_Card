@@ -34,6 +34,8 @@ public class GameController extends Controller implements Initializable {
     private MFXButton btnClues;
     @FXML
     private MFXButton btnUndo;
+    @FXML
+    private ImageView mgvBackground;
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {

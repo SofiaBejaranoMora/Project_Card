@@ -39,6 +39,13 @@ public class LoadGamesController extends Controller implements Initializable {
     private MFXButton btnDelete;
     @FXML
     private MFXButton btnContinue;
+    @FXML
+    private Button btnStatistics;
+
+    @FXML
+    private void onActionBtnStatistics(ActionEvent event) {
+        FlowController.getInstance().goView("UserStatisticView");
+    }
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {

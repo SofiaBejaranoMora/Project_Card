@@ -84,6 +84,10 @@
     -fx-image: url("../resources/ProgramImages/HelpIcon.png");
 }
 
+.btnStatistics > ImageView{
+    -fx-image: url("../resources/ProgramImages/StatisticsIcon.png");
+}
+
 #GameHBox {
     -fx-background-color: -fx-green-background-color;
 }

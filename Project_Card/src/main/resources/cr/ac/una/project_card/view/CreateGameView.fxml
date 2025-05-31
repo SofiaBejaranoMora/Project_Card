@@ -32,7 +32,17 @@
                      </HBox.margin>
                   </HBox>
                   <Label id="MenuLabel" stylesheets="@Style.css" text="Nueva Partida" HBox.hgrow="ALWAYS" />
-                  <HBox prefHeight="99.0" prefWidth="114.0" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="TOP_RIGHT" prefHeight="99.0" prefWidth="114.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button id="SystemButton" fx:id="btnHowToPlay" mnemonicParsing="false" onAction="#onActionBtnHowToPlay" styleClass="btnHelp" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                           </graphic>
+                           <HBox.margin>
+                              <Insets right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children></HBox>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="71.0" prefWidth="602.0">

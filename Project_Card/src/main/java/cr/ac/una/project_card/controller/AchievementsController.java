@@ -27,19 +27,12 @@ public class AchievementsController extends Controller implements Initializable 
     @FXML
     private Button btnBack;
     @FXML
-    private MFXTextField txtSearchNameAchievementObtained;
+    private Button btnStatistics;
+    
     @FXML
-    private MFXComboBox<AchievementDto> cmbSearchAchievementObtainedType;
-    @FXML
-    private ScrollPane scrollPaneAchievementsObtained;
-    @FXML
-    private MFXTextField txtSearchNoObtainedAchievementsName;
-    @FXML
-    private MFXComboBox<AchievementDto> cmbSearchNoObtainedAchievementType;
-    @FXML
-    private ScrollPane scrollPaneAchievementsNoObtained;
-    @FXML
-    private VBox vBoxAchievementsObtained;
+    private void onActionBtnStatistics(ActionEvent event) {
+        FlowController.getInstance().goView("UserStatisticView");
+    }
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
@@ -90,16 +83,5 @@ public class AchievementsController extends Controller implements Initializable 
 
     }
 
-    @FXML
-    private void OnActionSearchNameAchievementObtained(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionCmbSearchAchievementObtainedType(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionCmbSearchNoObtainedAchievementType(ActionEvent event) {
-    }
 
 }

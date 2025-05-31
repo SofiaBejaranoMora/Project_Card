@@ -30,7 +30,17 @@
                      </children>
                   </HBox>
                   <Label id="MenuLabel" styleClass="Label" stylesheets="@Style.css" text="Continuar Partidas" HBox.hgrow="ALWAYS" />
-                  <HBox prefHeight="100.0" prefWidth="80.0" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="80.0" styleClass="btnStatistics" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button id="SystemButton" fx:id="btnStatistics" minWidth="40.0" mnemonicParsing="false" onAction="#onActionBtnStatistics" prefHeight="40.0" prefWidth="40.0" styleClass="btnStatistics" stylesheets="@Style.css">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                           </graphic>
+                           <HBox.margin>
+                              <Insets right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children></HBox>
                </children>
             </HBox>
             <TableView fx:id="tbvSaveGames" pickOnBounds="false" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">

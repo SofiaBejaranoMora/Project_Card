@@ -85,28 +85,33 @@ public class CreateGameController extends Controller implements Initializable {
     
 @Override
     public void initialize() {
-        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
-       existingGames=player.getGameList();
-        initializeBackCardStyles(player);
-        
-        easyModeCard.setBackImagePath(easyCardBack);
-        mediumModeCard.setBackImagePath(mediumCardBack);
-        hardModeCard.setBackImagePath(hardCardBack);
-        
-        initialConditionsCards();
-        setupCardInteractions();
-        txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
-            nameGame = newValue.trim();
-            
-           
-            boolean isValid;
-            if(nameGame.isEmpty()){
-                isValid=false;
-            }else{
-                lastNameValid = true;
-            }
-            updateStartButtonVisibility();
-        });
+        if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
+            player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
+            existingGames = player.getGameList();
+            initializeBackCardStyles(player);
+
+            easyModeCard.setBackImagePath(easyCardBack);
+            mediumModeCard.setBackImagePath(mediumCardBack);
+            hardModeCard.setBackImagePath(hardCardBack);
+
+            initialConditionsCards();
+            setupCardInteractions();
+            txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
+                nameGame = newValue.trim();
+
+                boolean isValid;
+                if (nameGame.isEmpty()) {
+                    isValid = false;
+                } else {
+                    lastNameValid = true;
+                }
+                updateStartButtonVisibility();
+            });
+         }else{
+            message.showModal(Alert.AlertType.INFORMATION, "Por favor inicie sesión", getStage(), "Para poder crear un juego es necesario iniciar sesión");
+            FlowController.getInstance().goView("MenuView");
+        }
+       
 }
     private void initializeBackCardStyles(PlayerDto player) {
         if (player != null) {

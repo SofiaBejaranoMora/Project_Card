@@ -29,12 +29,14 @@ public class GameDto {
     public GameDto() {
         this.id = new SimpleStringProperty("");
         this.time = new SimpleStringProperty("");
+        this.name=new SimpleStringProperty("");
         this.score = new SimpleStringProperty("");
         this.hasWon = new SimpleStringProperty("");
         this.difficulty = new SimpleStringProperty("");
     }
     
     public GameDto(String name, Long difficulty){
+        this();
         this.name.set(name);
         this.time.set("0");
         this.score.set("500");
@@ -45,6 +47,7 @@ public class GameDto {
     public GameDto(Game game) {
         this();
         this.id.set(game.getId().toString());
+        this.name.set(game.getName());
         this.time.set(game.getTime().toString());
         this.score.set(game.getScore().toString());
         this.hasWon.set(game.getHasWon());

@@ -43,11 +43,11 @@ public class GameService {
             et.begin();
             Game game;
             Query query = em.createNamedQuery("Game.findByName");
-            //query.setParameter("name", gameDto.getName());
+            query.setParameter("name", gameDto.getName());
             List<Game> gameList = query.getResultList();//qryUsuario.getResultList()-> este para mas de un registro, y el que puse es para solo un unico registro
             if (!gameList.isEmpty()) {
                 et.rollback();
-                return new Respuesta(false, "El nombre de la partida ya existe.", "", "Partida ", null);
+                return new Respuesta(false, "El nombre del juego ya existe.", "", "Partida ", null);
             } else {
                 if (gameDto.getId() != null && gameDto.getId() > 0) {
                     game = em.find(Game.class, gameDto.getId());

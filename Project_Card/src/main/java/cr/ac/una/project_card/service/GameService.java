@@ -2,6 +2,8 @@ package cr.ac.una.project_card.service;
 
 import cr.ac.una.project_card.model.Game;
 import cr.ac.una.project_card.model.GameDto;
+import cr.ac.una.project_card.model.Player;
+import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.util.EntityManagerHelper;
 import cr.ac.una.project_card.util.Respuesta;
 import jakarta.persistence.EntityManager;
@@ -13,9 +15,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** * * @author ashly */
+/**
+ * * * @author ashly
+ */
 public class GameService {
-    
+
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 
@@ -37,7 +41,7 @@ public class GameService {
         }
     }
 
-    public Respuesta SaveGame(GameDto gameDto) {
+    public Respuesta SaveGame(GameDto gameDto, PlayerDto playerDto) {
         try {
             et = em.getTransaction();
             et.begin();
@@ -50,15 +54,21 @@ public class GameService {
                 return new Respuesta(false, "El nombre del juego ya existe.", "", "Partida ", null);
             } else {
                 if (gameDto.getId() != null && gameDto.getId() > 0) {
-                    game = em.find(Game.class, gameDto.getId());
-                    if (game == null) {
                         et.rollback();
-                        return new Respuesta(false, "No se encontró la partida a actualizar", "SaveGame NoResultException");
-                    }
-                    game.update(gameDto);
-                    game = em.merge(game);
+                        return new Respuesta(false, "Este game ya existe", "SaveGame NoResultException");
                 } else {
                     game = new Game(gameDto);
+                    if (playerDto.getId() != null) {
+                        Player player = em.find(Player.class, playerDto.getId());
+                        if (player == null) {
+                            et.rollback();
+                            return new Respuesta(false, "No se encontró el jugador asociado.", "SaveGame NoResultException");
+                        }
+                        game.setPlayer(player);
+                    } else {
+                        et.rollback();
+                        return new Respuesta(false,"El jugador no existe.", "SaveGame NoResultException");
+                    }
                     em.persist(game);
                 }
                 et.commit();

@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javafx.beans.property.SimpleStringProperty;
@@ -26,6 +27,8 @@ public class PlayerDto {
         this.accumulatedPoint = new SimpleStringProperty("");
         this.cardStyle = new SimpleStringProperty("");
         this.cardBackImageName = new SimpleStringProperty("");
+        this.gameList = new ArrayList<>();
+        this.achievementList = new ArrayList<>();
     }
 
     public PlayerDto(String name, Long accumulatedPoint, Long cardStyle, String cardBackImageName) {

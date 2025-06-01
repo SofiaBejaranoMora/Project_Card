@@ -13,6 +13,8 @@ import cr.ac.una.project_card.util.Respuesta;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +53,7 @@ public class CreateGameController extends Controller implements Initializable {
     private CardView easyModeCard = new CardView("1", easyCardBack, imageUtility);
     private CardView mediumModeCard = new CardView("2", mediumCardBack, imageUtility);
     private CardView hardModeCard = new CardView("3", hardCardBack, imageUtility);
-    private List<GameDto> existingGames=new ArrayList();
+    private List<GameDto> existingGames = new ArrayList();
     private String nameGame;
     private Long difficulty;
 
@@ -82,8 +84,8 @@ public class CreateGameController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
     }
-    
-@Override
+
+    @Override
     public void initialize() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
@@ -107,12 +109,13 @@ public class CreateGameController extends Controller implements Initializable {
                 }
                 updateStartButtonVisibility();
             });
-         }else{
+        } else {
             message.showModal(Alert.AlertType.INFORMATION, "Por favor inicie sesión", getStage(), "Para poder crear un juego es necesario iniciar sesión");
             FlowController.getInstance().goView("MenuView");
         }
-       
-}
+
+    }
+
     private void initializeBackCardStyles(PlayerDto player) {
         if (player != null) {
             if (player.getCardStyle() == 1) {
@@ -163,18 +166,20 @@ public class CreateGameController extends Controller implements Initializable {
         if (validatingDataBeforeStart()) {
             //crear juego y ajustar controlador
             GameService gameService = new GameService(); // Este es el de buscar por nombre mas bien
-            GameDto gameDto=new GameDto(nameGame, difficulty);
-            Respuesta answer=gameService.SaveGame(gameDto);
-          
-            if(answer.getEstado()){
-                gameDto=(GameDto) answer.getResultado("Partida");
+            GameDto gameDto = new GameDto(nameGame, difficulty);
+            Respuesta answer = gameService.SaveGame(gameDto, player);
+            if (answer.getEstado()) {
+                gameDto = (GameDto) answer.getResultado("Partida");
+                PlayerService playerService = new PlayerService();
+                answer = playerService.getPlayerName(player.getName());
+                if (answer != null && answer.getEstado()) {
+                    this.player = (PlayerDto) answer.getResultado("Jugador");
+                }
+
                 FlowController.getInstance().goView("GameView");
-            }else{
+            } else {
                 message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
             }
-          
-          
-    
         }
     }
 
@@ -182,10 +187,6 @@ public class CreateGameController extends Controller implements Initializable {
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goView("MenuView");
     }
-    
-    
-
-   
 
     private void updateStartButtonVisibility() {
         btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null);
@@ -218,7 +219,7 @@ public class CreateGameController extends Controller implements Initializable {
         }
         if (nameGame.isEmpty()) {
             message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Por favor, ingresa un nombre para la partida.");
-       } else {
+        } else {
             message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Presiona 'Empezar' para iniciar el juego.");
             lastNameValid = true;
         }
@@ -256,7 +257,7 @@ public class CreateGameController extends Controller implements Initializable {
         } else if (difficulty == null) {
             message.show(Alert.AlertType.WARNING, "Dificultad requerida", "Por favor, selecciona una dificultad.");
             return false;
-        } 
+        }
         return true;
     }
 
@@ -277,9 +278,9 @@ public class CreateGameController extends Controller implements Initializable {
         easyModeCard.setIsFlipped(true);
         mediumModeCard.setIsFlipped(true);
         hardModeCard.setIsFlipped(true);
-       easyModeCard.updateImageView(mgvEasyMode);
-       mediumModeCard.updateImageView(mgvMediumMode);
-       mediumModeCard.updateImageView(mgvHardMode);
+        easyModeCard.updateImageView(mgvEasyMode);
+        mediumModeCard.updateImageView(mgvMediumMode);
+        mediumModeCard.updateImageView(mgvHardMode);
     }
 
     private ImageView getImageViewByCard(CardView card) {
@@ -425,8 +426,9 @@ public class CreateGameController extends Controller implements Initializable {
         public String getBackImagePath() {
             return backImagePath;
         }
-        public void setBackImagePath(String backImagePath){
-            this.backImagePath=backImagePath;
+
+        public void setBackImagePath(String backImagePath) {
+            this.backImagePath = backImagePath;
         }
 
         public String getFrontImagePath() {
@@ -448,12 +450,12 @@ public class CreateGameController extends Controller implements Initializable {
         public void updateImageView(ImageView imageView) {
             String imagePath = isFlipped ? backImagePath : frontImagePath;
             String url;
-            if(!isFlipped){
-                url= imageUtility.getCardDifficultPath(imagePath); 
-            }else{
+            if (!isFlipped) {
+                url = imageUtility.getCardDifficultPath(imagePath);
+            } else {
                 url = imageUtility.getBackCardPath(imagePath);
             }
-            
+
             if (url != null) {
                 imageView.setImage(new Image(url));
                 System.out.println("Updated image for card: " + frontImagePath + ", Flipped: " + isFlipped + ", Image: " + url);

@@ -1,9 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package cr.ac.una.project_card.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javafx.beans.property.SimpleStringProperty;
@@ -23,6 +21,8 @@ public class CardDto {
         this.id = new SimpleStringProperty("");
         this.number = new SimpleStringProperty("");
         this.type = new SimpleStringProperty("");
+        this.stackCardxCards = new ArrayList<>();
+        this.games = new ArrayList<>();
     }
 
     public CardDto(Card card) {

@@ -50,7 +50,7 @@ public class AchievementsService {
             }
             return new Respuesta(true, " ", " ", "Logros", achievementsDtoList);
         } catch (NoResultException ex) {
-            return new Respuesta(false, "No existe logros con las credenciales ingresadas.", "NoResultException/etAchievementType");
+            return new Respuesta(false, "No existe logros con las credenciales ingresadas.", "NoResultException/getAchievementType");
         } catch (Exception ex) {
             Logger.getLogger(AchievementsService.class.getName()).log(Level.SEVERE, "Error obteniendo las logros", ex);
             return new Respuesta(false, "Error obtener logros.", "getAchievementType" + ex.getMessage());

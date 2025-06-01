@@ -16,7 +16,7 @@ import javafx.beans.property.StringProperty;
 public class GameDto {
 
     public StringProperty id;
-    private StringProperty name;
+    public StringProperty name;
     public StringProperty time;
     public StringProperty score;
     public StringProperty hasWon;
@@ -32,6 +32,14 @@ public class GameDto {
         this.score = new SimpleStringProperty("");
         this.hasWon = new SimpleStringProperty("");
         this.difficulty = new SimpleStringProperty("");
+    }
+    
+    public GameDto(String name, Long difficulty){
+        this.name.set(name);
+        this.time.set("0");
+        this.score.set("500");
+        this.hasWon.set("N");
+        this.difficulty.set(difficulty.toString());
     }
 
     public GameDto(Game game) {

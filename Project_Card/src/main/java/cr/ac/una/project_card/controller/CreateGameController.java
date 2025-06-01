@@ -1,13 +1,19 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.Game;
+import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
+import cr.ac.una.project_card.service.GameService;
+import cr.ac.una.project_card.service.PlayerService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.ImagesUtil;
 import cr.ac.una.project_card.util.Mensaje;
+import cr.ac.una.project_card.util.Respuesta;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -45,9 +51,9 @@ public class CreateGameController extends Controller implements Initializable {
     private CardView easyModeCard = new CardView("1", easyCardBack, imageUtility);
     private CardView mediumModeCard = new CardView("2", mediumCardBack, imageUtility);
     private CardView hardModeCard = new CardView("3", hardCardBack, imageUtility);
-    private Set<String> existingGames = new HashSet<>();
+    private List<GameDto> existingGames=new ArrayList();
     private String nameGame;
-    private String difficulty;
+    private Long difficulty;
 
     private boolean lastNameValid = true;
 
@@ -67,6 +73,10 @@ public class CreateGameController extends Controller implements Initializable {
     private ImageView mgvHardMode;
     @FXML
     private MFXButton btnStartGame;
+    @FXML
+    private Button btnBack;
+    @FXML
+    private Button btnHowToPlay;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -75,30 +85,34 @@ public class CreateGameController extends Controller implements Initializable {
     
 @Override
     public void initialize() {
-        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
-       
-        initializeBackCardStyles(player);
-        
-        easyModeCard.setBackImagePath(easyCardBack);
-        mediumModeCard.setBackImagePath(mediumCardBack);
-        hardModeCard.setBackImagePath(hardCardBack);
-        
-        initialConditionsCards();
-        setupCardInteractions();
-        txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
-            nameGame = newValue.trim();
-            boolean isValid = isNameValid(nameGame);
-            if (!isValid && !nameGame.isEmpty() && lastNameValid) {
-                message.show(Alert.AlertType.WARNING, "Nombre no válido", "Ese nombre de partida ya está en uso. Por favor, elige otro.");
-                lastNameValid = false;
-            } else if (isValid) {
-                lastNameValid = true;
-            }
-            updateStartButtonVisibility();
-            System.out.println("Name changed: " + nameGame + ", Valid: " + isValid);
-        });
-}
+        if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
+            player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
+            existingGames = player.getGameList();
+            initializeBackCardStyles(player);
 
+            easyModeCard.setBackImagePath(easyCardBack);
+            mediumModeCard.setBackImagePath(mediumCardBack);
+            hardModeCard.setBackImagePath(hardCardBack);
+
+            initialConditionsCards();
+            setupCardInteractions();
+            txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
+                nameGame = newValue.trim();
+
+                boolean isValid;
+                if (nameGame.isEmpty()) {
+                    isValid = false;
+                } else {
+                    lastNameValid = true;
+                }
+                updateStartButtonVisibility();
+            });
+         }else{
+            message.showModal(Alert.AlertType.INFORMATION, "Por favor inicie sesión", getStage(), "Para poder crear un juego es necesario iniciar sesión");
+            FlowController.getInstance().goView("MenuView");
+        }
+       
+}
     private void initializeBackCardStyles(PlayerDto player) {
         if (player != null) {
             if (player.getCardStyle() == 1) {
@@ -131,24 +145,36 @@ public class CreateGameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnEasyMode(ActionEvent event) {
-        signDifficulty("easy");
+        signDifficulty(1L);
     }
 
     @FXML
     private void onActionBtnMediumMode(ActionEvent event) {
-        signDifficulty("medium");
+        signDifficulty(2L);
     }
 
     @FXML
     private void onActionBtnHardMode(ActionEvent event) {
-        signDifficulty("hard");
+        signDifficulty(3L);
     }
 
     @FXML
     private void onActionBtnStartGame(ActionEvent event) {
         if (validatingDataBeforeStart()) {
-            existingGames.add(nameGame);
-            FlowController.getInstance().goView("GameView");
+            //crear juego y ajustar controlador
+            GameService gameService = new GameService(); // Este es el de buscar por nombre mas bien
+            GameDto gameDto=new GameDto(nameGame, difficulty);
+            Respuesta answer=gameService.SaveGame(gameDto);
+          
+            if(answer.getEstado()){
+                gameDto=(GameDto) answer.getResultado("Partida");
+                FlowController.getInstance().goView("GameView");
+            }else{
+                message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
+            }
+          
+          
+    
         }
     }
 
@@ -156,23 +182,17 @@ public class CreateGameController extends Controller implements Initializable {
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goView("MenuView");
     }
+    
+    
 
-    private boolean isNameValid(String name) {
-        if (name.isEmpty()) {
-            return false;
-        }
-        if (existingGames.contains(name)) {
-            return false;
-        }
-        return true;
-    }
+   
 
     private void updateStartButtonVisibility() {
-        btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null && isNameValid(nameGame));
+        btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null);
         System.out.println("Start button visible: " + btnStartGame.isVisible() + ", nameGame: " + nameGame + ", difficulty: " + difficulty);
     }
 
-    private void signDifficulty(String dificultad) {
+    private void signDifficulty(Long dificultad) {
         difficulty = dificultad;
         nameGame = txfNameGame.getText().trim();
         CardView selectedCard = getCardByDifficulty(dificultad);
@@ -198,10 +218,7 @@ public class CreateGameController extends Controller implements Initializable {
         }
         if (nameGame.isEmpty()) {
             message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Por favor, ingresa un nombre para la partida.");
-        } else if (!isNameValid(nameGame)) {
-            message.show(Alert.AlertType.WARNING, "Nombre no válido", "Ese nombre de partida ya está en uso. Por favor, elige otro.");
-            lastNameValid = false;
-        } else {
+       } else {
             message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Presiona 'Empezar' para iniciar el juego.");
             lastNameValid = true;
         }
@@ -239,11 +256,7 @@ public class CreateGameController extends Controller implements Initializable {
         } else if (difficulty == null) {
             message.show(Alert.AlertType.WARNING, "Dificultad requerida", "Por favor, selecciona una dificultad.");
             return false;
-        } else if (!isNameValid(nameGame)) {
-            message.show(Alert.AlertType.WARNING, "Nombre no válido", "Ese nombre de partida ya está en uso. Por favor, elige otro.");
-            predeterminedValues();
-            return false;
-        }
+        } 
         return true;
     }
 
@@ -295,13 +308,13 @@ public class CreateGameController extends Controller implements Initializable {
         return null;
     }
 
-    private CardView getCardByDifficulty(String difficulty) {
-        switch (difficulty.toLowerCase()) {
-            case "easy":
+    private CardView getCardByDifficulty(Long difficulty) {
+        switch (difficulty.intValue()) {
+            case 1:
                 return easyModeCard;
-            case "medium":
+            case 2:
                 return mediumModeCard;
-            case "hard":
+            case 3:
                 return hardModeCard;
             default:
                 return null;
@@ -377,6 +390,11 @@ public class CreateGameController extends Controller implements Initializable {
         button.applyCss();
         button.layout();
         System.out.println("Removed glow from button: " + button.getId());
+    }
+
+    @FXML
+    private void onActionBtnHowToPlay(ActionEvent event) {
+        //POR IMPLEMENTAR, AGREGAR LAS INSTRUCCIONES
     }
 
     public class CardView {

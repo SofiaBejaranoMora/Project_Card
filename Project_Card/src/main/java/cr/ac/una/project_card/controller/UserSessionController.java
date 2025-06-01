@@ -124,6 +124,7 @@ private void onActionRegisterUser(ActionEvent event) {
 
         } else {
             buttonManager(1);
+            AppContext.getInstance().set("hasSectionStarted", false);
             message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
         }
     }

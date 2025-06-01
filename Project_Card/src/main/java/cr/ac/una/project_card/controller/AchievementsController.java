@@ -5,6 +5,7 @@ import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.service.AchievementsService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
+import cr.ac.una.project_card.util.ImagesUtil;
 import cr.ac.una.project_card.util.Mensaje;
 import cr.ac.una.project_card.util.Respuesta;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
@@ -30,13 +31,18 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class AchievementsController extends Controller implements Initializable {
 
     private Image image;
+    private ImagesUtil imageUtility = new ImagesUtil();
     private Mensaje message = new Mensaje();
     private PlayerDto player = new PlayerDto();
+    private AchievementsService achievementsService = new AchievementsService();
+    private Respuesta answer;
     private List<AchievementDto> achievementObtainedList = new ArrayList();
     private List<AchievementDto> achievementNotObtainedList = new ArrayList();
     private ObservableList<String> achievementTypeObservableList = FXCollections.observableArrayList(
@@ -66,70 +72,139 @@ public class AchievementsController extends Controller implements Initializable 
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        clean();
         FlowController.getInstance().goView("MenuView");
     }
-    
+
     @FXML
     private void onActionBtnStatistics(ActionEvent event) {
     }
 
     @FXML
     private void onActionCmbSearchAchievementObtainedType(ActionEvent event) {
-    }
+        String selection = cmbSearchAchievementObtainedType.getValue();
+        if ((selection != null) && !selection.isBlank()) {
 
-    @FXML
-    private void onActionCmbSearchNoObtainedAchievementType(ActionEvent event) {
-    }
-    
-    public void UploadAchievement(AchievementDto achievement, VBox vBox, int Saturation) {
-        HBox hbox = new HBox();
-        hbox.setAlignment(Pos.TOP_LEFT);
-        hbox.setSpacing(15);
-        HBox.setMargin(hbox, new Insets(15));
-
-        VBox vbox = new VBox();
-        vbox.setAlignment(Pos.TOP_LEFT);
-        vbox.setSpacing(15);
-        VBox.setMargin(vbox, new Insets(15));
-
-//        image = new Image(/*raqui va la ruta +*/achievement.getName() + ".png");
-//        ImageView imageView = new ImageView(image);
-//        imageView.setFitWidth(100);
-//        imageView.setFitHeight(100);
-//        imageView.setPreserveRatio(true);
-//        ColorAdjust colorAdjust = new ColorAdjust();
-//        colorAdjust.setSaturation(Saturation); // -1 blanco y negro, 0 normal
-//        imageView.setEffect(colorAdjust);
-
-        TextField textField = new TextField("Name: " + achievement.getName());
-        textField.setDisable(true);
-
-        TextArea textArea = new TextArea("Tipo: " + achievement.getType() + "\n" + "Cantidad: " + achievement.getAmount() + "\n" + "Descripción: " + achievement.getDescription());
-        textArea.setWrapText(true);
-        textArea.setDisable(true);
-
-        textArea.setPrefWidth(200);
-        textArea.setPrefHeight(90);
-
-        hbox.getChildren().addAll(/*imageView,*/ textArea);
-        hbox.prefWidthProperty().bind(hbox.widthProperty().multiply(0.98));
-        vBox.getChildren().addAll(hbox);
-    }
-    
-    public void Loadachievement(List<AchievementDto> achievementLis,VBox vBox, int Saturation) {
-        if ((achievementLis != null) && (!achievementLis.isEmpty())) {
-            for (AchievementDto currentAchievement : achievementLis) {
-                UploadAchievement(currentAchievement,vBox,Saturation);
+            if (selection.equals("Todos")) {
+                answer = achievementsService.loadAllAchievement();
+            } else {
+                answer = achievementsService.getAchievementType(selection);
+            }
+            if (answer.getEstado()) {
+                vBoxAchievementsObtained.getChildren().clear();
+                this.achievementObtainedList = (AbstractList<AchievementDto>) answer.getResultado("Logros");
+                Loadachievement(achievementObtainedList, vBoxAchievementsObtained, 0.0);
             }
         }
     }
 
-    public void initializeTabAchievementsNotObtained() {
-        Loadachievement(achievementNotObtainedList,vBoxAchievementsNotObtained,-1);
+    @FXML
+    private void onActionCmbSearchNoObtainedAchievementType(ActionEvent event) {
+        String selection = cmbSearchNotObtainedAchievementType.getValue();
+        if ((selection != null) && !selection.isBlank()) {
+
+            if (selection.equals("Todos")) {
+                answer = achievementsService.loadAllAchievement();
+            } else {
+                answer = achievementsService.getAchievementType(selection);
+            }
+            if (answer.getEstado()) {
+                vBoxAchievementsNotObtained.getChildren().clear();
+                this.achievementNotObtainedList = (AbstractList<AchievementDto>) answer.getResultado("Logros");
+                Loadachievement(achievementNotObtainedList, vBoxAchievementsNotObtained, -1.0);
+            }
+        }
     }
 
-    public void initializeTabAchievementsObtained() {
-        Loadachievement(achievementNotObtainedList,vBoxAchievementsNotObtained,0);
+    public void UploadAchievement(AchievementDto achievement, VBox vBoxPrincipal, Double Saturation) {
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.TOP_LEFT);
+        hbox.setSpacing(15);
+        VBox.setMargin(hbox, new Insets(15));
+
+        // Agregar la Imagen
+        ImageView imageView = new ImageView(new Image("file:" + imageUtility.getAchievement(achievement.getImageName())));
+        imageView.setFitWidth(64);
+        imageView.setFitHeight(64);
+        imageView.setPreserveRatio(true);
+
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setSaturation(Saturation);
+        imageView.setEffect(colorAdjust);
+
+        // VBox del texto
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.TOP_LEFT);
+        vbox.setSpacing(8);
+        HBox.setHgrow(vbox, Priority.ALWAYS); // permite que el VBox crezca horizontalmente
+
+        // Campo del nombre
+        TextField textField = new TextField(achievement.getName());
+        textField.setDisable(true);
+        textField.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: transparent; -fx-text-fill: black; -fx-border-color: transparent;");
+
+        // Campo del texto informativo
+        String fullText = "Tipo: " + achievement.getType() + "\n"
+                + "Cantidad: " + achievement.getAmount() + "\n\n"
+                + achievement.getDescription();
+        TextArea textArea = new TextArea(fullText);
+        textArea.setWrapText(true);
+        textArea.setDisable(true);
+        textArea.setStyle("-fx-background-color: transparent; -fx-text-fill: black; -fx-border-color: transparent;");
+        textArea.setEditable(false);
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        VBox.setVgrow(textArea, Priority.ALWAYS);
+
+        //AJUSTE DE ALTURA DEL TEXT_AREA
+        // Cuenta las lineas
+        int lineCount = fullText.split("\n").length + 1;
+        double lineHeight = 17.0; // Aproximado de tamaño de fuente 
+        double textHeight = lineCount * lineHeight + 10; // cantador * alto de la linea + margen
+        textArea.setPrefHeight(textHeight);
+
+        // Evita qeu el Hbox crezca más de lo necesario
+        hbox.setMinHeight(Region.USE_PREF_SIZE);
+        hbox.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        hbox.setMaxHeight(Region.USE_COMPUTED_SIZE);
+
+        // Agregar el TextArea y el textFiel al vbox
+        vbox.getChildren().addAll(textField, textArea);
+        vbox.prefWidthProperty().bind(hbox.widthProperty().multiply(0.85)); // Deja espacio para imagen
+        vbox.setMaxWidth(Double.MAX_VALUE);
+
+        // Agragar el vbox y imagen al Hbox
+        hbox.getChildren().addAll(imageView, vbox);
+        hbox.prefWidthProperty().bind(vBoxPrincipal.widthProperty().multiply(0.98));
+        HBox.setHgrow(hbox, Priority.ALWAYS);
+
+        // Agregar el Hbox el Vbox que tenemos tendro del ScrollPane
+        vBoxPrincipal.getChildren().add(hbox);
+    }
+
+    public void Loadachievement(List<AchievementDto> achievementLis, VBox vBox, Double Saturation) {
+        if ((achievementLis != null) && (!achievementLis.isEmpty())) {
+            for (AchievementDto currentAchievement : achievementLis) {
+                UploadAchievement(currentAchievement, vBox, Saturation);
+            }
+        }
+    }
+
+    public void clean() {
+        txtSearchNameAchievementObtained.setText("");
+        txtSearchNotObtainedAchievementsName.setText("");
+        cmbSearchAchievementObtainedType.getSelectionModel().clearSelection();
+        cmbSearchAchievementObtainedType.setValue(null);
+        cmbSearchNotObtainedAchievementType.getSelectionModel().clearSelection();
+        cmbSearchNotObtainedAchievementType.setValue(null);
+        vBoxAchievementsNotObtained.getChildren().clear();
+        vBoxAchievementsObtained.getChildren().clear();
+    }
+
+    public void initializeTabAchievements() {
+        vBoxAchievementsNotObtained.prefWidthProperty().bind(scrollPaneAchievementsNotObtained.widthProperty().multiply(0.98));
+        Loadachievement(achievementNotObtainedList, vBoxAchievementsNotObtained, -1.0);
+        vBoxAchievementsObtained.prefWidthProperty().bind(scrollPaneAchievementsObtained.widthProperty().multiply(0.98));
+        Loadachievement(achievementObtainedList, vBoxAchievementsObtained, 0.0);
     }
 
     @Override
@@ -142,12 +217,11 @@ public class AchievementsController extends Controller implements Initializable 
     public void initialize() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
-            AchievementsService achievementsService = new AchievementsService();
-            Respuesta answer = achievementsService.loadAllAchievement();
-
+            answer = achievementsService.loadAllAchievement();
             if (answer.getEstado()) {
                 this.achievementNotObtainedList = (AbstractList<AchievementDto>) answer.getResultado("Logros");
-                this.achievementNotObtainedList = achievementNotObtainedList;
+                this.achievementObtainedList = achievementNotObtainedList;
+                initializeTabAchievements();
                 message.showModal(Alert.AlertType.INFORMATION, "¡Logros actualizados con éxito!", getStage(), "Tus hazañas más épicas ya están al día. ¡Ve a echarles un vistazo y presume como se debe!");
             }
         } else {

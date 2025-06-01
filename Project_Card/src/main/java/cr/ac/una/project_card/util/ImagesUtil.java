@@ -36,5 +36,19 @@ public class ImagesUtil {
             return null;
         }
     }
+        
+        public static String getAchievement(String nameAchievement) {
+        try {
+            String path = BASE_PATH + "Achievements/" + nameAchievement + ".png";
+            if (ImagesUtil.class.getResource(path) == null) {
+                System.err.println("No se encontró la imagen en formato PNG " + nameAchievement);
+                return null;
+            }
+            return ImagesUtil.class.getResource(path).toExternalForm();
+        } catch (Exception e) {
+            System.err.println("Error cargando imagen " + nameAchievement + ": " + e.getMessage());
+            return null;
+        }
+    }
 
 }

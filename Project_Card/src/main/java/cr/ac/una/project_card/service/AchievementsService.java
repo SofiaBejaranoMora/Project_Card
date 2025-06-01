@@ -27,8 +27,8 @@ public class AchievementsService {
             Query queryAchievements = em.createNamedQuery("Achievement.findAll", Achievement.class);
             List<Achievement> achievementsList = queryAchievements.getResultList();
             List<AchievementDto> achievementsDtoList = new ArrayList<>();
-            for (Achievement achievementDto : achievementsList) {
-                achievementsDtoList.add(new AchievementDto(achievementDto));
+            for (Achievement achievement : achievementsList) {
+                achievementsDtoList.add(new AchievementDto(achievement));
             }
             return new Respuesta(true, " ", " ", "Logros", achievementsDtoList);
         } catch (NoResultException ex) {
@@ -38,4 +38,23 @@ public class AchievementsService {
             return new Respuesta(false, "Error obtener logros.", "loadAllAchievement" + ex.getMessage());
         }
     }
+
+    public Respuesta getAchievementType(String type) {
+        try {
+            Query queryAchievements = em.createNamedQuery("Achievement.findByType", Achievement.class);
+            queryAchievements.setParameter("type", type);
+            List<AchievementDto> achievementsDtoList = new ArrayList<>();
+            List<Achievement> achievementsList = queryAchievements.getResultList();
+            for (Achievement achievement : achievementsList) {
+                achievementsDtoList.add(new AchievementDto(achievement));
+            }
+            return new Respuesta(true, " ", " ", "Logros", achievementsDtoList);
+        } catch (NoResultException ex) {
+            return new Respuesta(false, "No existe logros con las credenciales ingresadas.", "NoResultException/etAchievementType");
+        } catch (Exception ex) {
+            Logger.getLogger(AchievementsService.class.getName()).log(Level.SEVERE, "Error obteniendo las logros", ex);
+            return new Respuesta(false, "Error obtener logros.", "getAchievementType" + ex.getMessage());
+        }
+    }
 }
+

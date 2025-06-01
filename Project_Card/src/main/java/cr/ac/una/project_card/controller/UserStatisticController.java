@@ -236,7 +236,7 @@ public class UserStatisticController extends Controller implements Initializable
     
     @Override
     public void initialize() {
-        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");//SI NO CARGA ES LA LISTA
+        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
 
         configureFirstTab();
         configureSecondTab();

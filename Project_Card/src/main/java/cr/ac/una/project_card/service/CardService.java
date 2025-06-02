@@ -24,7 +24,7 @@ public class CardService {
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
 
-    public Respuesta getCardService(String type) {
+    public Respuesta getCardType(String type) {
         try {
             Query queryCard = em.createNamedQuery("Card.findByType", Card.class);
             queryCard.setParameter("type", type);
@@ -35,10 +35,10 @@ public class CardService {
             }
             return new Respuesta(true, " ", " ", "Cartas", cardDtoList);
         } catch (NoResultException ex) {
-            return new Respuesta(false, "No existe cartas con las credenciales ingresadas.", "NoResultException/getCardService");
+            return new Respuesta(false, "No existe cartas con las credenciales ingresadas.", "NoResultException/getCardType");
         } catch (Exception ex) {
             Logger.getLogger(AchievementsService.class.getName()).log(Level.SEVERE, "Error obteniendo las cartas", ex);
-            return new Respuesta(false, "Error obtener cartas.", "getCardService" + ex.getMessage());
+            return new Respuesta(false, "Error obtener cartas.", "getCardType" + ex.getMessage());
         }
     }
 }

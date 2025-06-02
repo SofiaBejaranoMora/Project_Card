@@ -69,6 +69,10 @@ public class AchievementsController extends Controller implements Initializable 
     private Button btnStatistics;
     @FXML
     private VBox vBoxAchievementsNotObtained;
+    @FXML
+    private Button btnSearchAchievementNotObtainedName;
+    @FXML
+    private Button btnSearchAchievementObtainedName;
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
@@ -78,6 +82,33 @@ public class AchievementsController extends Controller implements Initializable 
 
     @FXML
     private void onActionBtnStatistics(ActionEvent event) {
+        FlowController.getInstance().goView("UserStatisticView");
+    }
+
+    @FXML
+    private void onActionBtnSearchAchievementNotObtainedName(ActionEvent event) {
+        if ((txtSearchNotObtainedAchievementsName != null) && !txtSearchNotObtainedAchievementsName.getText().isBlank()) {
+            cmbSearchAchievementObtainedType.setValue("Todos");
+            // traer del service la lista y si es solo 1 sacamos el tipo que es y lo colocamos en set value
+            if (achievementNotObtainedList.size() == 1) {
+                cmbSearchNotObtainedAchievementType.setValue(achievementNotObtainedList.get(0).getType());
+            }
+        } else {
+            message.showModal(Alert.AlertType.INFORMATION, "¿Buscando qué?", getStage(), "Parece que olvidaste escribir un nombre. ¡No te preocupes, nos pasa a todos! Escribe algo y démosle a la búsqueda.!");
+        }
+    }
+
+    @FXML
+    private void onActionBtnSearchAchievementObtainedName(ActionEvent event) {
+        if ((txtSearchNameAchievementObtained != null) && !txtSearchNameAchievementObtained.getText().isBlank()) {
+            cmbSearchAchievementObtainedType.setValue("Todos");
+            // traer del service la lista y si es solo 1 sacamos el tipo que es y lo colocamos en set value
+            if (achievementObtainedList.size() == 1) {
+                cmbSearchAchievementObtainedType.setValue(achievementObtainedList.get(0).getType());
+            }
+        } else {
+            message.showModal(Alert.AlertType.INFORMATION, "¿Buscando qué?", getStage(), "Parece que olvidaste escribir un nombre. ¡No te preocupes, nos pasa a todos! Escribe algo y démosle a la búsqueda.!");
+        }
     }
 
     @FXML

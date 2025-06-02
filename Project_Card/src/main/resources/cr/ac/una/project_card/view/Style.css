@@ -76,6 +76,10 @@
     -fx-image: url("../resources/ProgramImages/ReturnIcon.png");
 }
 
+.btnSearch > ImageView {
+    -fx-image: url("../resources/ProgramImages/searchIcon.png");
+}
+
 .btnEdit > ImageView{
     -fx-image: url("../resources/ProgramImages/EditIcon.png");
 }

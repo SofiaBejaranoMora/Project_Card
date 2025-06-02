@@ -26,6 +26,7 @@ public class LoadGamesController extends Controller implements Initializable {
 
     private Mensaje message = new Mensaje();
     private PlayerDto player;
+    private GameDto game;
     private List<GameDto> saveGames = new ArrayList();
     private ObservableList<GameDto> observableSaveGames = FXCollections.observableArrayList();
     
@@ -54,36 +55,55 @@ public class LoadGamesController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnDelete(ActionEvent event) {
+        GameDto selectedGame = tbvSaveGames.getSelectionModel().getSelectedItem();
+        if (selectedGame != null) {
+            saveGames.remove(selectedGame);
+            observableSaveGames.setAll(saveGames);
+        } else {
+            message.showModal(Alert.AlertType.WARNING, "Eliminar partida", getStage(), "Por favor selecciona una partida antes de eliminar.");
+        }
     }
 
     @FXML
     private void onActionBtnContinue(ActionEvent event) {
-        FlowController.getInstance().goView("GameView");
-    }
-    
-    private void initializeSaveGames() {
-        String user = (String) AppContext.getInstance().get("CurrentUser");
+        game = tbvSaveGames.getSelectionModel().getSelectedItem();
         
-        if ("".equals(user.trim())) {
-            message.showModal(Alert.AlertType.ERROR, "Cargando partidas guardadas", getStage(), "Favor de revisar el inicio de sesión para cargar partidas anteriores.");
-        } else {
+        if (game != null && game.getName() != null && !game.getName().trim().isEmpty()) {
+            AppContext.getInstance().set("CurrentGame", game);
+            FlowController.getInstance().goView("GameView");
             
-            saveGames.addAll(player.getGameList());
-            observableSaveGames.setAll(saveGames);
-            cmnSaveGames.setCellValueFactory(new PropertyValueFactory<>("name"));
-            tbvSaveGames.setItems(observableSaveGames);
+        } else {
+            message.showModal(Alert.AlertType.WARNING, "Cargar partida", getStage(), "Por favor selecciona una partida válida para continuar.");
         }
     }
-    
+
+    private void initializeSaveGames() {
+        if (player == null || player.getName().trim().isEmpty()) {
+            message.showModal(Alert.AlertType.ERROR, "Cargando partidas guardadas", getStage(), "Favor de revisar el inicio de sesión para cargar partidas anteriores.");
+            return;
+        }
+
+        saveGames.clear();
+        saveGames.addAll(player.getGameList());
+        observableSaveGames.setAll(saveGames);
+        cmnSaveGames.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tbvSaveGames.setItems(observableSaveGames);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @Override
     public void initialize() {
         player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
-        saveGames = player.getGameList();
+        if (player != null) {
+            game = new GameDto();
+            saveGames = player.getGameList();
+        } else {
+            message.showModal(Alert.AlertType.ERROR, "Error", getStage(), "No se encontró información del usuario.");
+        }
     }
 
 }

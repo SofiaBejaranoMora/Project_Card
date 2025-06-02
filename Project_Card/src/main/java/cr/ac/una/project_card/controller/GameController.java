@@ -19,26 +19,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 /*** FXML Controller class * * @author ashly */
-
-
 public class GameController extends Controller implements Initializable {
-
-    @FXML private MFXButton btnBack;
-    @FXML private Label lblDificult;
-    @FXML private Label lblPoints;
-    @FXML private Label lblTimer;
-    @FXML private Button btnSizeScreen;
-    @FXML private ImageView mgvFull;
-    @FXML private ImageView mgvMin;
-    @FXML private MFXButton btnSettings;
-    @FXML private MFXButton btnClues;
-    @FXML private MFXButton btnUndo;
-    @FXML private ImageView mgvBackground;
 
     // Variables del juego
     private List<CardDto> card = new ArrayList<>(); // Mazo completo
@@ -52,6 +40,57 @@ public class GameController extends Controller implements Initializable {
     private List<CardDto> picas = new ArrayList<>();
     private List<CardDto> treboles = new ArrayList<>();
     private List<CardDto> diamantes = new ArrayList<>();
+    private Boolean isBigScreen = false;
+
+    @FXML
+    private MFXButton btnBack;
+    @FXML
+    private Label lblDificult;
+    @FXML
+    private Label lblPoints;
+    @FXML
+    private Label lblTimer;
+    @FXML
+    private Button btnSizeScreen;
+    @FXML
+    private ImageView mgvFull;
+    @FXML
+    private ImageView mgvMin;
+    @FXML
+    private MFXButton btnSettings;
+    @FXML
+    private MFXButton btnClues;
+    @FXML
+    private MFXButton btnUndo;
+    @FXML
+    private ImageView mgvBackground;
+
+    @FXML
+    private void onActionBtnBack(ActionEvent event) {
+        FlowController.getInstance().goView("MenuView");
+    }
+
+    @FXML
+    private void onActionBtnSizeScreen(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        if (isBigScreen) {
+            stage.setFullScreen(false);
+            isBigScreen = false;
+            mgvFull.setVisible(true);
+            mgvMin.setVisible(false);
+        } else {
+            stage.setFullScreen(true);
+            isBigScreen = true;
+            mgvFull.setVisible(false);
+            mgvMin.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void onActionBtnSettings(ActionEvent event) {
+        FlowController.getInstance().goView("SettingsView");
+    }
 
     private void loadCards() {
         Long difficulty = game.getDifficulty();
@@ -68,19 +107,20 @@ public class GameController extends Controller implements Initializable {
                     if (cartaCorazones != null) {
                         card.add(cartaCorazones);
                     }
+                }
             }
-        }
 
-        game.setCards(card);
+            game.setCards(card);
         }
     }
+
     private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
         for (CardDto carta : tipo) {
             if (carta.getNumber() != null && carta.getNumber() == number) {
                 return carta;
             }
         }
-        return null; 
+        return null;
     }
 
     private void prepareGame() {
@@ -93,7 +133,7 @@ public class GameController extends Controller implements Initializable {
             Respuesta spadeCardsAnswer = cardService.getCardType("P");
             Respuesta clubCardsAnswer = cardService.getCardType("T");
 
-            if (heartCardsAnswer.getEstado() && diamondCardsAnswer.getEstado() &&spadeCardsAnswer.getEstado() && clubCardsAnswer.getEstado()) {
+            if (heartCardsAnswer.getEstado() && diamondCardsAnswer.getEstado() && spadeCardsAnswer.getEstado() && clubCardsAnswer.getEstado()) {
                 corazones = (List<CardDto>) heartCardsAnswer.getResultado("Cartas");
                 diamantes = (List<CardDto>) diamondCardsAnswer.getResultado("Cartas");
                 picas = (List<CardDto>) spadeCardsAnswer.getResultado("Cartas");
@@ -104,21 +144,11 @@ public class GameController extends Controller implements Initializable {
             }
 
             loadCards();
-            game.setPlayer(player); 
+            game.setPlayer(player);
         } else {
             message.showModal(Alert.AlertType.INFORMATION, "Por favor inicie sesión", getStage(), "Para poder crear un juego es necesario iniciar sesión");
             FlowController.getInstance().goView("MenuView");
         }
-    }
-
-    @FXML
-    private void onActionBtnBack(ActionEvent event) {
-        FlowController.getInstance().goView("MenuView");
-    }
-
-    @FXML
-    private void onActionBtnSettings(ActionEvent event) {
-        FlowController.getInstance().goView("SettingsView");
     }
 
     @Override
@@ -128,6 +158,6 @@ public class GameController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        
+
     }
 }

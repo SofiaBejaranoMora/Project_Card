@@ -32,7 +32,7 @@ import javafx.stage.Stage;
 public class GameController extends Controller implements Initializable {
 
     // Variables del juego
-    private List<CardDto> card = new ArrayList<>(); // Mazo completo
+    private List<CardDto> cards = new ArrayList<>(); // Mazo completo
     private GameDto game;
     private CardService cardService = new CardService();
     private Mensaje message = new Mensaje();
@@ -107,25 +107,31 @@ public class GameController extends Controller implements Initializable {
     }
 
     private void loadCards() {
-        Long difficulty = game.getDifficulty();
+      try{
+            Long difficulty = game.getDifficulty();//parece ser que la dificultad es nula
+        
         if (difficulty == 1) {
-            card.addAll(picas);
+            cards.addAll(picas);
         } else {
-            while (card.size() < 104) {
+            while (cards.size() < 104) {
                 for (int i = 0; i < 13; i++) {
                     CardDto cartaPicas = getCartaByNumber(picas, i + 1);
                     if (cartaPicas != null) {
-                        card.add(cartaPicas);
+                        cards.add(cartaPicas);
                     }
                     CardDto cartaCorazones = getCartaByNumber(corazones, i + 1);
                     if (cartaCorazones != null) {
-                        card.add(cartaCorazones);
+                        cards.add(cartaCorazones);
                     }
                 }
             }
 
-            game.setCards(card);
+            game.setCards(cards);
         }
+      }catch(Exception e){
+          Mensaje mensaje=new Mensaje();
+          mensaje.show(Alert.AlertType.ERROR, "Dificultad nula", "La dificultad es nula");
+      }
     }
 
     private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
@@ -182,16 +188,16 @@ public class GameController extends Controller implements Initializable {
     }
     
     private void mixCards(){
-        mixFirstCards(card, stackcardList1);
-        mixFirstCards(card, stackcardList2);
-        mixFirstCards(card, stackcardList3);
-        mixFirstCards(card, stackcardList4);
-        mixOtherCards(card, stackcardList5);
-        mixOtherCards(card, stackcardList6);
-        mixOtherCards(card, stackcardList7);
-        mixOtherCards(card, stackcardList8);
-        mixOtherCards(card, stackcardList9);
-        mixOtherCards(card, stackcardList10);
+        mixFirstCards(cards, stackcardList1);
+        mixFirstCards(cards, stackcardList2);
+        mixFirstCards(cards, stackcardList3);
+        mixFirstCards(cards, stackcardList4);
+        mixOtherCards(cards, stackcardList5);
+        mixOtherCards(cards, stackcardList6);
+        mixOtherCards(cards, stackcardList7);
+        mixOtherCards(cards, stackcardList8);
+        mixOtherCards(cards, stackcardList9);
+        mixOtherCards(cards, stackcardList10);
            
         
     }
@@ -229,10 +235,19 @@ public class GameController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         prepareGame();
+        mixCards();
     }
 
     @Override
     public void initialize() {
 
+    }
+
+    @FXML
+    private void onActionBtnClues(ActionEvent event) {
+    }
+
+    @FXML
+    private void onActionBtnUndo(ActionEvent event) {
     }
 }

@@ -5,6 +5,9 @@ import cr.ac.una.project_card.model.CardDto;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.Player;
 import cr.ac.una.project_card.model.PlayerDto;
+import cr.ac.una.project_card.model.Stackcard;
+import cr.ac.una.project_card.model.StackcardDto;
+import cr.ac.una.project_card.model.StackcardxcardDto;
 import cr.ac.una.project_card.service.CardService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
@@ -41,6 +44,17 @@ public class GameController extends Controller implements Initializable {
     private List<CardDto> treboles = new ArrayList<>();
     private List<CardDto> diamantes = new ArrayList<>();
     private Boolean isBigScreen = false;
+    
+    StackcardDto stackcardList1=new StackcardDto();
+    StackcardDto stackcardList2 = new StackcardDto();
+    StackcardDto stackcardList3 = new StackcardDto();
+    StackcardDto stackcardList4 = new StackcardDto(); // Hasta aquí llevan 5 cartas de espaldas y la última de frente
+    StackcardDto stackcardList5 = new StackcardDto();
+    StackcardDto stackcardList6 = new StackcardDto();
+    StackcardDto stackcardList7 = new StackcardDto();
+    StackcardDto stackcardList8 =new StackcardDto();
+    StackcardDto stackcardList9 = new StackcardDto();
+    StackcardDto stackcardList10 = new StackcardDto();
 
     @FXML
     private MFXButton btnBack;
@@ -122,6 +136,65 @@ public class GameController extends Controller implements Initializable {
         }
         return null;
     }
+    
+    public void mixFirstCards(List<CardDto> cards, StackcardDto cardStack){
+        if(!cards.isEmpty()){
+            List<StackcardxcardDto> cardxcardList=new ArrayList();
+            for(int i=0; i<5; i++){
+                CardDto selectedCard=cards.remove(0);//saco una carta del mazo desde arriba
+                StackcardxcardDto newCard=new StackcardxcardDto();//creo una stackCardXcard
+                newCard.setCard(selectedCard);
+                newCard.setPositionNumber((long)(i+1));
+                newCard.setIsFaceUp(false);//las primeras 5 cartas en agregarse irán de espaldas
+                cardxcardList.add(newCard);
+            }
+            CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
+            StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
+            newCard.setCard(selectedCard);
+            newCard.setPositionNumber((long) 6);
+            newCard.setIsFaceUp(true);
+            cardxcardList.add(newCard);
+            
+           cardStack.setStackCardxCards(cardxcardList);
+        }
+    }
+    
+    public void mixOtherCards(List<CardDto> cards, StackcardDto cardStack){
+           if(!cards.isEmpty()){
+            List<StackcardxcardDto> cardxcardList=new ArrayList();
+            for(int i=0; i<4; i++){
+                CardDto selectedCard=cards.remove(0);//saco una carta del mazo desde arriba
+                StackcardxcardDto newCard=new StackcardxcardDto();//creo una stackCardXcard
+                newCard.setCard(selectedCard);
+                newCard.setPositionNumber((long)(i+1));
+                newCard.setIsFaceUp(false);//las primeras 4 cartas en agregarse irán de espaldas
+                cardxcardList.add(newCard);
+            }
+            CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
+            StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
+            newCard.setCard(selectedCard);
+            newCard.setPositionNumber((long) 5);
+            newCard.setIsFaceUp(true);
+            cardxcardList.add(newCard);
+            
+           cardStack.setStackCardxCards(cardxcardList);
+        }
+    }
+    
+    private void mixCards(){
+        mixFirstCards(card, stackcardList1);
+        mixFirstCards(card, stackcardList2);
+        mixFirstCards(card, stackcardList3);
+        mixFirstCards(card, stackcardList4);
+        mixOtherCards(card, stackcardList5);
+        mixOtherCards(card, stackcardList6);
+        mixOtherCards(card, stackcardList7);
+        mixOtherCards(card, stackcardList8);
+        mixOtherCards(card, stackcardList9);
+        mixOtherCards(card, stackcardList10);
+           
+        
+    }
 
     private void prepareGame() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
@@ -138,6 +211,8 @@ public class GameController extends Controller implements Initializable {
                 diamantes = (List<CardDto>) diamondCardsAnswer.getResultado("Cartas");
                 picas = (List<CardDto>) spadeCardsAnswer.getResultado("Cartas");
                 treboles = (List<CardDto>) clubCardsAnswer.getResultado("Cartas");
+                
+              
             } else {
                 message.showModal(Alert.AlertType.ERROR, "Error al cargar cartas", getStage(), "No se pudieron cargar las cartas necesarias.");
                 return;

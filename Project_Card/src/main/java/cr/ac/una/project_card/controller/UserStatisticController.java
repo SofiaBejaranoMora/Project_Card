@@ -53,7 +53,6 @@ public class UserStatisticController extends Controller implements Initializable
     //PlayerDto
     PlayerDto player;
     private ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-    
    
     private void configurePastelGraphic() {
         pieChartData.clear();

@@ -117,11 +117,14 @@ public class GameController extends Controller implements Initializable {
     private void loadCards() {
       try{
           Long difficulty = game.getDifficulty();//parece ser que la dificultad es nula
-        
-        if (difficulty == 1) {
-            cards.addAll(picas);
-        } else {
-            while (cards.size() < 104) {
+          
+          if(difficulty!=1)
+          {
+              if(difficulty==3){
+                  cards.addAll(treboles);
+                   cards.addAll(diamantes);
+              }
+              while (cards.size() < 104) {
                 for (int i = 0; i < 13; i++) {
                     CardDto cartaPicas = getCartaByNumber(picas, i + 1);
                     if (cartaPicas != null) {
@@ -133,15 +136,19 @@ public class GameController extends Controller implements Initializable {
                     }
                 }
             }
-
-            game.setCards(cards);
-        }
+          }
+          else
+          {
+              cards.addAll(picas);
+          }
+          game.setCards(cards);
+        
       }catch(Exception e){
           Mensaje mensaje=new Mensaje();
           mensaje.show(Alert.AlertType.ERROR, "Dificultad nula", "La dificultad es nula");
       }
     }
-
+    
     private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
         for (CardDto carta : tipo) {
             if (carta.getNumber() != null && carta.getNumber() == number) {

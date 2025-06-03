@@ -225,7 +225,6 @@ public class GameController extends Controller implements Initializable {
             }
 
             loadCards();
-            game.setPlayer(player);
         } else {
             message.showModal(Alert.AlertType.INFORMATION, "Por favor inicie sesión", getStage(), "Para poder crear un juego es necesario iniciar sesión");
             FlowController.getInstance().goView("MenuView");

@@ -68,16 +68,10 @@ public class MenuController extends Controller implements Initializable {
     }
 
     private void sessionChecker(boolean situation) {
-        if (situation) {
-            AppContext.getInstance().set("isRegisterSession", true);
-            isFirstOpen = false;
-            FlowController.getInstance().goView("UserSessionView");
-        } else {
-            AppContext.getInstance().set("isRegisterSession", false);
-            FlowController.getInstance().goView("UserSessionView");
-        }
+        AppContext.getInstance().set("isRegisterSession", situation);
+        FlowController.getInstance().goView("UserSessionView");
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         AppContext.getInstance().set("hasSectionStarted", false);
@@ -86,16 +80,20 @@ public class MenuController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        if (((Boolean) AppContext.getInstance().get("hasSectionStarted")) || !(Boolean) AppContext.getInstance().get("isRegisterSession")) {
+        Boolean hasStarted = (Boolean) AppContext.getInstance().get("hasSectionStarted");
+        Boolean isRegistering = (Boolean) AppContext.getInstance().get("isRegisterSession");
+
+        hasStarted = hasStarted != null ? hasStarted : false;
+        isRegistering = isRegistering != null ? isRegistering : true;
+
+        if (hasStarted) {
             btnRegisterSession.setVisible(false);
             btnStartSession.setText("Cerrar Sesión");
             btnStartSession.setVisible(true);
         } else {
-            if (!isFirstOpen) {
-                btnRegisterSession.setVisible(false);
-                btnStartSession.setText("Iniciar Sesión");
-                btnStartSession.setVisible(true);
-            }
+            btnRegisterSession.setVisible(!isRegistering);
+            btnStartSession.setText("Iniciar Sesión");
+            btnStartSession.setVisible(true);
         }
     }
 

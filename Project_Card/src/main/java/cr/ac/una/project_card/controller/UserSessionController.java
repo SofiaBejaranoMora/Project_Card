@@ -179,26 +179,10 @@ private void onActionRegisterUser(ActionEvent event) {
     }
 
     private void buttonManager(int situation) {
-        switch (situation) {
-            case 1 -> {
-                btnCloseSession.setVisible(false);
-                btnStartSession.setVisible(false);
-                btnRegisterUser.setVisible(true);
-                stp.setVisible(true);
-            }
-            case 2 -> {
-                btnCloseSession.setVisible(false);
-                btnStartSession.setVisible(true);
-                btnRegisterUser.setVisible(false);
-                stp.setVisible(false);
-            }
-            case 3 -> {
-                btnCloseSession.setVisible(true);
-                btnStartSession.setVisible(false);
-                btnRegisterUser.setVisible(false);
-                stp.setVisible(false);
-            }
-        }
+        btnCloseSession.setVisible(situation == 3);
+        btnStartSession.setVisible(situation == 2);
+        btnRegisterUser.setVisible(situation == 1);
+        stp.setVisible(situation == 1);
     }
 
     private Boolean savePorfileImage() {

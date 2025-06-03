@@ -175,6 +175,7 @@ public class CreateGameController extends Controller implements Initializable {
                 if (answer != null && answer.getEstado()) {
                     this.player = (PlayerDto) answer.getResultado("Jugador");
                 }
+                AppContext.getInstance().set("CurrentGame", nameGame);
                 FlowController.getInstance().goView("GameView");
             } else {
                 message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());

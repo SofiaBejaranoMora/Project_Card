@@ -208,10 +208,16 @@ public class GameController extends Controller implements Initializable {
         mixOtherCards(cards, stackcardList10);
     }
 
-    private void prepareGame() {
+private void prepareGame() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
             game = new GameDto();
+            String gameName= (String) AppContext.getInstance().get("CurrentGame");
+            for(GameDto gameDto:player.getGameList()){
+                if(gameDto.getName()==gameName){
+                    game = gameDto;
+                }
+            }
 
             Respuesta heartCardsAnswer = cardService.getCardType("C");
             Respuesta diamondCardsAnswer = cardService.getCardType("D");

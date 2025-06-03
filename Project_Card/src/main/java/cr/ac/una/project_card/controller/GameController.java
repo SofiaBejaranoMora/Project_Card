@@ -105,10 +105,18 @@ public class GameController extends Controller implements Initializable {
     private void onActionBtnSettings(ActionEvent event) {
         FlowController.getInstance().goView("SettingsView");
     }
+    
+    @FXML
+    private void onActionBtnClues(ActionEvent event) {
+    }
 
+    @FXML
+    private void onActionBtnUndo(ActionEvent event) {
+    }
+    
     private void loadCards() {
       try{
-            Long difficulty = game.getDifficulty();//parece ser que la dificultad es nula
+          Long difficulty = game.getDifficulty();//parece ser que la dificultad es nula
         
         if (difficulty == 1) {
             cards.addAll(picas);
@@ -198,8 +206,6 @@ public class GameController extends Controller implements Initializable {
         mixOtherCards(cards, stackcardList8);
         mixOtherCards(cards, stackcardList9);
         mixOtherCards(cards, stackcardList10);
-           
-        
     }
 
     private void prepareGame() {
@@ -242,11 +248,4 @@ public class GameController extends Controller implements Initializable {
 
     }
 
-    @FXML
-    private void onActionBtnClues(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionBtnUndo(ActionEvent event) {
-    }
 }

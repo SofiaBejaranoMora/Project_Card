@@ -69,7 +69,7 @@ public class LoadGamesController extends Controller implements Initializable {
         game = tbvSaveGames.getSelectionModel().getSelectedItem();
         
         if (game != null && game.getName() != null && !game.getName().trim().isEmpty()) {
-            AppContext.getInstance().set("CurrentGame", game);
+            AppContext.getInstance().set("CurrentGame", game.getName());
             FlowController.getInstance().goView("GameView");
             
         } else {

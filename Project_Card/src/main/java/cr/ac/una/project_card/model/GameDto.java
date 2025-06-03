@@ -55,6 +55,54 @@ public class GameDto {
         this.version=game.getVersion();
     }
 
+    public StringProperty getIdProperty() {
+        return id;
+    }
+
+    public void setIdProperty(StringProperty id) {
+        this.id = id;
+    }
+
+    public StringProperty getNameProperty() {
+        return name;
+    }
+
+    public void setNameProperty(StringProperty name) {
+        this.name = name;
+    }
+
+    public StringProperty getTimeProperty() {
+        return time;
+    }
+
+    public void setTimeProperty(StringProperty time) {
+        this.time = time;
+    }
+
+    public StringProperty getScoreProperty() {
+        return score;
+    }
+
+    public void setScoreProperty(StringProperty score) {
+        this.score = score;
+    }
+
+    public StringProperty getHasWonProperty() {
+        return hasWon;
+    }
+
+    public void setHasWonProperty(StringProperty hasWon) {
+        this.hasWon = hasWon;
+    }
+
+    public StringProperty getDifficultyProperty() {
+        return difficulty;
+    }
+
+    public void setDifficultyProperty(StringProperty difficulty) {
+        this.difficulty = difficulty;
+    }
+
     public Long getId() {
         if (this.id.get() != null & !this.id.get().isBlank()) {
             return Long.valueOf(id.get());

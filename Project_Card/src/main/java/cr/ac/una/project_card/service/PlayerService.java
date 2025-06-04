@@ -49,7 +49,7 @@ public class PlayerService {
             Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Ocurrio un error al consultar el jugador.", ex);
             return new Respuesta(false, "Ocurrio un error al consultar el jugador.", "getPlayerName NonUniqueResultException");
         } catch (Exception ex) {
-            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error obteniendo el jugador  [" + name + "]", ex);
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error obteniendo el jugador  [" + id + "]", ex);
             return new Respuesta(false, "Error obtener el jugador.", "getPlayerId " + ex.getMessage());
         }
     }

@@ -29,6 +29,30 @@ public class PlayerService {
 
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
+    
+        public Respuesta getPlayerId(Long id) {
+        try {
+            Query qryPlayer = em.createNamedQuery("Player.findById", Player.class);
+            qryPlayer.setParameter("id", id);
+            Player player = (Player) qryPlayer.getSingleResult();
+            PlayerDto playerDto = new PlayerDto(player);
+            for (Game game : player.getGames()) {
+                playerDto.getGameList().add(new GameDto(game));
+            }
+            for (Achievement achievement : player.getAchievements()) {
+                playerDto.getAchievementList().add(new AchievementDto(achievement));
+            }
+            return new Respuesta(true, " ", " ", "Jugador", playerDto);
+        } catch (NoResultException ex) {
+            return new Respuesta(false, "No existe un jugador con las credenciales ingresadas.", "getPlayerName NoResultException");
+        } catch (NonUniqueResultException ex) {
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Ocurrio un error al consultar el jugador.", ex);
+            return new Respuesta(false, "Ocurrio un error al consultar el jugador.", "getPlayerName NonUniqueResultException");
+        } catch (Exception ex) {
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error obteniendo el jugador  [" + name + "]", ex);
+            return new Respuesta(false, "Error obtener el jugador.", "getPlayerId " + ex.getMessage());
+        }
+    }
 
     public Respuesta getPlayerName(String name) {
         try {

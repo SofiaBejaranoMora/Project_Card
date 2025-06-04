@@ -175,7 +175,7 @@ public class CreateGameController extends Controller implements Initializable {
                 answer = playerService.getPlayerName(player.getName());
                 if (answer != null && answer.getEstado()) {
                     this.player = (PlayerDto) answer.getResultado("Jugador");
-                    AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
+                    AppContext.getInstance().set("IdCurrentGame", gameDto.getId());//Falta actualizar jugardor, ya que las partidas creadas en JRE no se ven en LoadGames
                     FlowController.getInstance().goView("GameView");
                 }
 

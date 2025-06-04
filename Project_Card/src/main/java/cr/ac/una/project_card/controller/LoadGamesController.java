@@ -69,7 +69,7 @@ public class LoadGamesController extends Controller implements Initializable {
         game = tbvSaveGames.getSelectionModel().getSelectedItem();
         
         if (game != null && game.getName() != null && !game.getName().trim().isEmpty()) {
-            AppContext.getInstance().set("CurrentGame", game.getName());
+            AppContext.getInstance().set("IdCurrentGame", game.getId());
             FlowController.getInstance().goView("GameView");
             
         } else {
@@ -78,7 +78,7 @@ public class LoadGamesController extends Controller implements Initializable {
     }
 
     private void initializeSaveGames() {
-        if (player == null || player.getName().trim().isEmpty()) {
+        if (player == null || player.getName().trim().isBlank()) {
             message.showModal(Alert.AlertType.ERROR, "Cargando partidas guardadas", getStage(), "Favor de revisar el inicio de sesión para cargar partidas anteriores.");
             return;
         }
@@ -88,6 +88,7 @@ public class LoadGamesController extends Controller implements Initializable {
         observableSaveGames.setAll(saveGames);
         cmnSaveGames.setCellValueFactory(new PropertyValueFactory<>("name"));
         tbvSaveGames.setItems(observableSaveGames);
+        tbvSaveGames.refresh();
     }
 
     @Override
@@ -100,9 +101,12 @@ public class LoadGamesController extends Controller implements Initializable {
         player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
         if (player != null) {
             game = new GameDto();
-            saveGames = player.getGameList();
+            initializeSaveGames();
+            System.out.println(player.getGameList());
+
         } else {
             message.showModal(Alert.AlertType.ERROR, "Error", getStage(), "No se encontró información del usuario.");
+            FlowController.getInstance().goView("MenuView");
         }
     }
 

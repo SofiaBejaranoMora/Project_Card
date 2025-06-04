@@ -58,12 +58,12 @@ public class SettingsController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnGrassBackground(ActionEvent event) {
-        AppContext.getInstance().set("GrassBackground", "Background");
+        AppContext.getInstance().set("Background", "GrassBackground");
     }
 
     @FXML
     private void onActionBtnWoodBackground(ActionEvent event) {
-        AppContext.getInstance().set("WoodBackground", "Background");
+        AppContext.getInstance().set("Background", "WoodBackground");
     }
 
     @FXML

@@ -178,6 +178,7 @@
 
 .TextField {
     -fx-background-color: white;
+    -fx-background-radius: 17;
     -fx-border-color: -fx-black-text-color;
     -fx-border-width: 3;
     -fx-border-radius: 15;
@@ -230,41 +231,32 @@
     -fx-scale-y: 1.05;
 }
 
-.table-view {
+#tblLoadGames {
     -fx-font-family: "Fredoka One";
-    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-text-fill: #ffffff;
+    -fx-background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente negro */
+    -fx-table-cell-border-visible: false;
 }
 
-.table-column-header-background {
+#tblLoadGames .column-header-background {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+#tblLoadGames .column-header {
+    -fx-font-size: 40px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 1), 5, 10, 0, 1);
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+#tblLoadGames .table-row-cell {
+    -fx-font-size: 30px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 1), 5, 10, 0, 1);
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
 
-.table-row-cell {
-    -fx-font-family: "Fredoka One";
+#tblLoadGames .table-cell {
     -fx-background-color: transparent;
-    -fx-border-color: rgba(255, 255, 255, 0.2);
 }
-
-.table-cell {
-    -fx-font-family: "Fredoka One";
-    -fx-text-fill: white;
-}
-
-/*#tblPlayersTable {
-    -fx-background-color: #6666ff;
-    -fx-border-color: transparent;
-}
-
-#tblPlayersTable .table-row-cell {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-}
-
-#tblPlayersTable .table-cell {
-    -fx-alignment: CENTER;
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-}*/

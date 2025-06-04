@@ -12,6 +12,7 @@ import cr.ac.una.project_card.service.CardService;
 import cr.ac.una.project_card.service.GameService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
+import cr.ac.una.project_card.util.ImagesUtil;
 import cr.ac.una.project_card.util.Mensaje;
 import cr.ac.una.project_card.util.Respuesta;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -26,6 +27,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
@@ -35,6 +37,7 @@ import javafx.stage.Stage;
 public class GameController extends Controller implements Initializable {
 
     // Variables del juego
+    private ImagesUtil getBackground;
     private List<CardDto> cards = new ArrayList<>(); // Mazo completo
     private GameDto game;
     private CardService cardService = new CardService();
@@ -252,15 +255,15 @@ public class GameController extends Controller implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb
-    ) {
+    public void initialize(URL url, ResourceBundle rb) {
         prepareGame();
         mixCards();
     }
 
     @Override
     public void initialize() {
-
+        String rute = getBackground.getBackground((String) AppContext.getInstance().get("Background"));
+        mgvBackground.setImage(new Image("file:" + rute));
     }
 
 }

@@ -2,8 +2,6 @@ package cr.ac.una.project_card.service;
 
 import cr.ac.una.project_card.model.Card;
 import cr.ac.una.project_card.model.CardDto;
-import cr.ac.una.project_card.model.Game;
-import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.util.EntityManagerHelper;
 import cr.ac.una.project_card.util.Respuesta;
 import jakarta.persistence.EntityManager;

@@ -52,6 +52,7 @@ public class GameDto {
         this.score.set(game.getScore().toString());
         this.hasWon.set(game.getHasWon());
         this.difficulty.set(game.getDifficulty().toString());
+        this.player=new PlayerDto(game.getPlayer());
         this.version=game.getVersion();
     }
 

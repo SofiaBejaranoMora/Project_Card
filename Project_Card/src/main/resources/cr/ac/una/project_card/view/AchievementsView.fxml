@@ -47,24 +47,24 @@
             </HBox>
             <TabPane prefHeight="200.0" prefWidth="200.0" styleClass="tab-header-area" stylesheets="@Style.css" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                <tabs>
-                  <Tab text="Logros no obtenidos">
+                  <Tab text="Logros Obtenidos">
                      <content>
-                        <VBox spacing="15.0">
+                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
                            <children>
                               <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <MFXTextField fx:id="txtSearchNotObtainedAchievementsName" floatingText="Buscar por nombre" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" HBox.hgrow="ALWAYS" />
-                                    <Button id="SystemButton" fx:id="btnSearchAchievementNotObtainedName" mnemonicParsing="false" onAction="#onActionBtnSearchAchievementNotObtainedName" styleClass="btnSearch" stylesheets="@Style.css">
+                                    <MFXTextField fx:id="txtSearchNameAchievementObtained" floatingText="Buscar por nombre" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" HBox.hgrow="ALWAYS" />
+                                    <MFXComboBox fx:id="cmbSearchAchievementObtainedType" floatingText="Tipo" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" HBox.hgrow="ALWAYS" />
+                                    <Button id="SystemButton" fx:id="btnSearchAchievementObtained" mnemonicParsing="false" onAction="#onActionBtnSearchAchievementObtained" styleClass="btnSearch" stylesheets="@Style.css">
                                        <graphic>
                                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
                                        </graphic>
                                     </Button>
-                                    <MFXComboBox fx:id="cmbSearchNotObtainedAchievementType" floatingText="Tipo" maxHeight="-Infinity" minHeight="-Infinity" onAction="#onActionCmbSearchNoObtainedAchievementType" prefHeight="40.0" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
-                              <ScrollPane fx:id="scrollPaneAchievementsNotObtained" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                              <ScrollPane fx:id="scrollPaneAchievementsObtained" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                  <content>
-                                    <VBox fx:id="vBoxAchievementsNotObtained" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" />
+                                    <VBox fx:id="vBoxAchievementsObtained" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" spacing="20.0" />
                                  </content>
                               </ScrollPane>
                            </children>
@@ -74,24 +74,24 @@
                         </VBox>
                      </content>
                   </Tab>
-                  <Tab text="Logros Obtenidos">
+                  <Tab text="Logros no obtenidos">
                      <content>
-                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
+                        <VBox spacing="15.0">
                            <children>
                               <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="50.0" spacing="10.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <MFXTextField fx:id="txtSearchNameAchievementObtained" floatingText="Buscar por nombre" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" HBox.hgrow="ALWAYS" />
-                                    <Button id="SystemButton" fx:id="btnSearchAchievementObtainedName" mnemonicParsing="false" onAction="#onActionBtnSearchAchievementObtainedName" styleClass="btnSearch" stylesheets="@Style.css">
+                                    <MFXTextField fx:id="txtSearchNotObtainedAchievementsName" floatingText="Buscar por nombre" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="40.0" HBox.hgrow="ALWAYS" />
+                                    <MFXComboBox fx:id="cmbSearchNotObtainedAchievementType" floatingText="Tipo" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" HBox.hgrow="ALWAYS" />
+                                    <Button id="SystemButton" fx:id="btnSearchAchievementNotObtained" mnemonicParsing="false" onAction="#onActionBtnSearchAchievementNotObtained" styleClass="btnSearch" stylesheets="@Style.css">
                                        <graphic>
                                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
                                        </graphic>
                                     </Button>
-                                    <MFXComboBox fx:id="cmbSearchAchievementObtainedType" floatingText="Tipo" maxHeight="-Infinity" minHeight="-Infinity" onAction="#onActionCmbSearchAchievementObtainedType" prefHeight="40.0" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
-                              <ScrollPane fx:id="scrollPaneAchievementsObtained" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                              <ScrollPane fx:id="scrollPaneAchievementsNotObtained" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                                  <content>
-                                    <VBox fx:id="vBoxAchievementsObtained" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" spacing="20.0" />
+                                    <VBox fx:id="vBoxAchievementsNotObtained" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" />
                                  </content>
                               </ScrollPane>
                            </children>

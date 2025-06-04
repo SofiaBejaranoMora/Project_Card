@@ -170,13 +170,15 @@ public class CreateGameController extends Controller implements Initializable {
             Respuesta answer = gameService.SaveGame(gameDto, player);
             if (answer.getEstado()) {
                 gameDto = (GameDto) answer.getResultado("Partida");
+                Long dificultad = gameDto.getDifficulty();
                 PlayerService playerService = new PlayerService();
                 answer = playerService.getPlayerName(player.getName());
                 if (answer != null && answer.getEstado()) {
                     this.player = (PlayerDto) answer.getResultado("Jugador");
+                    AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
+                    FlowController.getInstance().goView("GameView");
                 }
-                AppContext.getInstance().set("CurrentGame", nameGame);
-                FlowController.getInstance().goView("GameView");
+
             } else {
                 message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
             }

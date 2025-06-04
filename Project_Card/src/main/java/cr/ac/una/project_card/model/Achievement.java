@@ -24,12 +24,15 @@ import java.util.List;
 @Table(name = "ACHIEVEMENT", schema = "PRO")
 @NamedQueries({
     @NamedQuery(name = "Achievement.findAll", query = "SELECT a FROM Achievement a"),
-    @NamedQuery(name = "Achievement.findByType", query = "SELECT a FROM Achievement a WHERE a.type = :type"), /*@NamedQuery(name = "Achievement.findById", query = "SELECT a FROM Achievement a WHERE a.id = :id"),
+    @NamedQuery(name = "Achievement.findByType", query = "SELECT a FROM Achievement a WHERE a.type = :type"),
+
+/*@NamedQuery(name = "Achievement.findById", query = "SELECT a FROM Achievement a WHERE a.id = :id"),
     @NamedQuery(name = "Achievement.findByName", query = "SELECT a FROM Achievement a WHERE a.name = :name"),
     @NamedQuery(name = "Achievement.findByAchImagename", query = "SELECT a FROM Achievement a WHERE a.achImagename = :achImagename"),
     @NamedQuery(name = "Achievement.findByAchDescription", query = "SELECT a FROM Achievement a WHERE a.achDescription = :achDescription"),
     @NamedQuery(name = "Achievement.findByAchAmount", query = "SELECT a FROM Achievement a WHERE a.achAmount = :achAmount"),
-    @NamedQuery(name = "Achievement.findByAchVersion", query = "SELECT a FROM Achievement a WHERE a.achVersion = :achVersion")*/})
+    @NamedQuery(name = "Achievement.findByAchVersion", query = "SELECT a FROM Achievement a WHERE a.achVersion = :achVersion")*/
+})
 public class Achievement implements Serializable {
 
     private static final long serialVersionUID = 1L;

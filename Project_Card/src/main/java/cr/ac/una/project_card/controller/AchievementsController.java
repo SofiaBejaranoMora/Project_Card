@@ -70,9 +70,9 @@ public class AchievementsController extends Controller implements Initializable 
     @FXML
     private VBox vBoxAchievementsNotObtained;
     @FXML
-    private Button btnSearchAchievementNotObtainedName;
+    private Button btnSearchAchievementNotObtained;
     @FXML
-    private Button btnSearchAchievementObtainedName;
+    private Button btnSearchAchievementObtained;
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
@@ -85,7 +85,6 @@ public class AchievementsController extends Controller implements Initializable 
         FlowController.getInstance().goView("UserStatisticView");
     }
 
-    @FXML
     private void onActionBtnSearchAchievementNotObtainedName(ActionEvent event) {
         if ((txtSearchNotObtainedAchievementsName != null) && !txtSearchNotObtainedAchievementsName.getText().isBlank()) {
             cmbSearchAchievementObtainedType.setValue("Todos");
@@ -98,7 +97,6 @@ public class AchievementsController extends Controller implements Initializable 
         }
     }
 
-    @FXML
     private void onActionBtnSearchAchievementObtainedName(ActionEvent event) {
         if ((txtSearchNameAchievementObtained != null) && !txtSearchNameAchievementObtained.getText().isBlank()) {
             cmbSearchAchievementObtainedType.setValue("Todos");
@@ -112,37 +110,37 @@ public class AchievementsController extends Controller implements Initializable 
     }
 
     @FXML
-    private void onActionCmbSearchAchievementObtainedType(ActionEvent event) {
-        String selection = cmbSearchAchievementObtainedType.getValue();
-        if ((selection != null) && !selection.isBlank()) {
-
-            if (selection.equals("Todos")) {
-                answer = achievementsService.loadAllAchievement();
+    private void onActionBtnSearchAchievementNotObtained(ActionEvent event) {
+        String selectionType = cmbSearchNotObtainedAchievementType.getValue();
+        String name = txtSearchNotObtainedAchievementsName.getText();
+        if (((selectionType != null) && !selectionType.isBlank()) || ((name != null) && !name.isEmpty())) {
+            if (selectionType == null || selectionType.equals("Todos")) {
+                answer = achievementsService.getAchievementParameter(name, "");
             } else {
-                answer = achievementsService.getAchievementType(selection);
+                answer = achievementsService.getAchievementParameter(name, selectionType);
             }
             if (answer.getEstado()) {
-                vBoxAchievementsObtained.getChildren().clear();
-                this.achievementObtainedList = (AbstractList<AchievementDto>) answer.getResultado("Logros");
-                Loadachievement(achievementObtainedList, vBoxAchievementsObtained, 0.0);
+                vBoxAchievementsNotObtained.getChildren().clear();
+                this.achievementNotObtainedList = (List<AchievementDto>) answer.getResultado("Logro");
+                Loadachievement(achievementNotObtainedList, vBoxAchievementsNotObtained, -1.0);
             }
         }
     }
 
     @FXML
-    private void onActionCmbSearchNoObtainedAchievementType(ActionEvent event) {
-        String selection = cmbSearchNotObtainedAchievementType.getValue();
-        if ((selection != null) && !selection.isBlank()) {
-
-            if (selection.equals("Todos")) {
-                answer = achievementsService.loadAllAchievement();
+    private void onActionBtnSearchAchievementObtained(ActionEvent event) {
+        String selectionType = cmbSearchAchievementObtainedType.getValue();
+        String name = txtSearchNameAchievementObtained.getText();
+        if (((selectionType != null) && !selectionType.isBlank()) || ((name != null) && !name.isEmpty())) {
+            if (selectionType == null || selectionType.equals("Todos")) {
+                answer = achievementsService.getAchievementParameter(name, "");
             } else {
-                answer = achievementsService.getAchievementType(selection);
+                answer = achievementsService.getAchievementParameter(name, selectionType);
             }
             if (answer.getEstado()) {
-                vBoxAchievementsNotObtained.getChildren().clear();
-                this.achievementNotObtainedList = (AbstractList<AchievementDto>) answer.getResultado("Logros");
-                Loadachievement(achievementNotObtainedList, vBoxAchievementsNotObtained, -1.0);
+                vBoxAchievementsObtained.getChildren().clear();
+                this.achievementObtainedList = (List<AchievementDto>) answer.getResultado("Logro");
+                Loadachievement(achievementObtainedList, vBoxAchievementsObtained, 0.0 /*vBoxAchievementsNotObtained, -1.0*/);
             }
         }
     }
@@ -154,15 +152,17 @@ public class AchievementsController extends Controller implements Initializable 
         VBox.setMargin(hbox, new Insets(15));
 
         // Agregar la Imagen
-        ImageView imageView = new ImageView(new Image("file:" + imageUtility.getAchievement(achievement.getImageName())));
-        imageView.setFitWidth(64);
-        imageView.setFitHeight(64);
-        imageView.setPreserveRatio(true);
-
-        ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setSaturation(Saturation);
-        imageView.setEffect(colorAdjust);
-
+//        String rute = imageUtility.getAchievement(achievement.getImageName());
+//        System.out.println(rute);
+//        ImageView imageView = new ImageView();
+//        imageView.setImage(new Image(rute));
+//        imageView.setFitWidth(64);
+//        imageView.setFitHeight(64);
+//        imageView.setPreserveRatio(true);
+//
+//        ColorAdjust colorAdjust = new ColorAdjust();
+//        colorAdjust.setSaturation(Saturation);
+//        imageView.setEffect(colorAdjust);
         // VBox del texto
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.TOP_LEFT);
@@ -204,7 +204,7 @@ public class AchievementsController extends Controller implements Initializable 
         vbox.setMaxWidth(Double.MAX_VALUE);
 
         // Agragar el vbox y imagen al Hbox
-        hbox.getChildren().addAll(imageView, vbox);
+        hbox.getChildren().addAll(/*imageView,*/vbox);
         hbox.prefWidthProperty().bind(vBoxPrincipal.widthProperty().multiply(0.98));
         HBox.setHgrow(hbox, Priority.ALWAYS);
 
@@ -250,7 +250,7 @@ public class AchievementsController extends Controller implements Initializable 
             player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
             answer = achievementsService.loadAllAchievement();
             if (answer.getEstado()) {
-                this.achievementNotObtainedList = (AbstractList<AchievementDto>) answer.getResultado("Logros");
+                this.achievementNotObtainedList = (List<AchievementDto>) answer.getResultado("Logros");
                 this.achievementObtainedList = achievementNotObtainedList;
                 initializeTabAchievements();
                 message.showModal(Alert.AlertType.INFORMATION, "¡Logros actualizados con éxito!", getStage(), "Tus hazañas más épicas ya están al día. ¡Ve a echarles un vistazo y presume como se debe!");

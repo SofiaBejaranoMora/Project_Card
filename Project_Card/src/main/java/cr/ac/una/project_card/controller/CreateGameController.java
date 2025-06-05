@@ -124,6 +124,7 @@ public class CreateGameController extends Controller implements Initializable {
                 answer = playerService.getPlayerName(player.getName());
                 if (answer != null && answer.getEstado()) {
                     this.player = (PlayerDto) answer.getResultado("Jugador");
+                    AppContext.getInstance().set("CurrentUser", player);
                     AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
                     FlowController.getInstance().goView("GameView");
                 }

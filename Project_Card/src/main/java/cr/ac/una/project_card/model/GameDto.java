@@ -35,7 +35,7 @@ public class GameDto {
         this.difficulty = new SimpleStringProperty("");
     }
     
-    public GameDto(String name, Long difficulty,Long time){
+    public GameDto(String name, Long difficulty, Long time){
         this();
         this.name.set(name);
         this.time.set(time.toString());

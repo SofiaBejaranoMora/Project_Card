@@ -90,16 +90,19 @@ public class CreateGameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnEasyMode(ActionEvent event) {
+        player.setCardBackImageName(easyCardBack);
         signDifficulty(1L);
     }
 
     @FXML
     private void onActionBtnMediumMode(ActionEvent event) {
+        player.setCardBackImageName(mediumCardBack);
         signDifficulty(2L);
     }
 
     @FXML
     private void onActionBtnHardMode(ActionEvent event) {
+        player.setCardBackImageName(hardCardBack);
         signDifficulty(3L);
     }
 
@@ -114,13 +117,12 @@ public class CreateGameController extends Controller implements Initializable {
             else if(difficulty==3L){
                 time=1260L;
             }
-            GameDto gameDto = new GameDto(nameGame, difficulty,time);
+            GameDto gameDto = new GameDto(nameGame, difficulty, time);
             Respuesta answer = gameService.SaveGame(gameDto, player);
             if (answer.getEstado()) {
                 gameDto = (GameDto) answer.getResultado("Partida");
                 Long dificultad = gameDto.getDifficulty();
                 PlayerService playerService = new PlayerService();
-                player.getGameList().add(gameDto);
                 answer = playerService.getPlayerName(player.getName());
                 if (answer != null && answer.getEstado()) {
                     this.player = (PlayerDto) answer.getResultado("Jugador");

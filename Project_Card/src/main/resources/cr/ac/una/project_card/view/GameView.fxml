@@ -10,128 +10,131 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.GameController">
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.project_card.controller.GameController">
    <children>
-      <ImageView fx:id="mgvBackground" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox id="GameHBox" alignment="CENTER" prefHeight="48.0" prefWidth="720.0" stylesheets="@Style.css">
+            <VBox alignment="TOP_CENTER" prefHeight="327.0" prefWidth="505.0">
                <children>
-                  <MFXButton id="GameButton" fx:id="btnBack" onAction="#onActionBtnBack" styleClass="btnBackG" stylesheets="@Style.css" text="Regresar">
-                     <graphic>
-                        <VBox prefHeight="30.0" prefWidth="30.0">
-                           <children>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </VBox>
-                     </graphic>
-                     <HBox.margin>
-                        <Insets right="15.0" />
-                     </HBox.margin>
-                  </MFXButton>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="WebIcon">
-                     <HBox.margin>
-                        <Insets left="15.0" right="5.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label id="GameLabel" fx:id="lblDificult" stylesheets="@Style.css" text="Spider">
-                     <HBox.margin>
-                        <Insets right="15.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label id="GameLabel" fx:id="lblPoints" stylesheets="@Style.css" text="Puntuación ">
-                     <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label id="GameLabel" fx:id="lblTimer" stylesheets="@Style.css" text="Tiempo:">
-                     <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Button id="GameButton" fx:id="btnSizeScreen" mnemonicParsing="false" onAction="#onActionBtnSizeScreen" stylesheets="@Style.css">
-                     <HBox.margin>
-                        <Insets left="15.0" />
-                     </HBox.margin>
-                     <graphic>
-                        <StackPane prefHeight="30.0" prefWidth="30.0">
-                           <children>
-                              <ImageView fx:id="mgvFull" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="FullScreenIcon" />
-                              <ImageView fx:id="mgvMin" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="MinimizeScreenIcon" visible="false" />
-                           </children>
-                        </StackPane>
-                     </graphic>
-                  </Button>
+                  <HBox id="GameHBox" alignment="CENTER" prefHeight="48.0" prefWidth="720.0" stylesheets="@Style.css">
+                     <children>
+                        <MFXButton id="GameButton" fx:id="btnBack" onAction="#onActionBtnBack" styleClass="btnBackG" stylesheets="@Style.css" text="Regresar">
+                           <graphic>
+                              <VBox prefHeight="30.0" prefWidth="30.0">
+                                 <children>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="WebIcon">
+                           <HBox.margin>
+                              <Insets left="15.0" right="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label id="GameLabel" fx:id="lblDificult" stylesheets="@Style.css" text="Spider">
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label id="GameLabel" fx:id="lblPoints" stylesheets="@Style.css" text="Puntuación ">
+                           <HBox.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label id="GameLabel" fx:id="lblTimer" stylesheets="@Style.css" text="Tiempo:">
+                           <HBox.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Button id="GameButton" fx:id="btnSizeScreen" mnemonicParsing="false" onAction="#onActionBtnSizeScreen" stylesheets="@Style.css">
+                           <HBox.margin>
+                              <Insets left="15.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <StackPane prefHeight="30.0" prefWidth="30.0">
+                                 <children>
+                                    <ImageView fx:id="mgvFull" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="FullScreenIcon" />
+                                    <ImageView fx:id="mgvMin" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="MinimizeScreenIcon" visible="false" />
+                                 </children>
+                              </StackPane>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0" spacing="3.0">
+                     <children>
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="85.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                     </children>
+                  </HBox>
+                  <HBox id="GameHBox" alignment="CENTER" prefHeight="45.0" prefWidth="720.0" stylesheets="@Style.css">
+                     <children>
+                        <MFXButton id="GameButton" fx:id="btnSettings" onAction="#onActionBtnSettings" styleClass="btnSettings" stylesheets="@Style.css" text="Ajustes">
+                           <graphic>
+                              <VBox prefHeight="30.0" prefWidth="30.0">
+                                 <children>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                        <MFXButton id="GameButton" fx:id="btnClues" onAction="#onActionBtnClues" styleClass="btnClues" stylesheets="@Style.css" text="Pistas">
+                           <graphic>
+                              <VBox prefHeight="30.0" prefWidth="30.0">
+                                 <children>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                        <MFXButton id="GameButton" fx:id="btnUndo" onAction="#onActionBtnUndo" styleClass="btnUndo" stylesheets="@Style.css" text="Deshacer">
+                           <graphic>
+                              <VBox prefHeight="30.0" prefWidth="30.0">
+                                 <children>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </VBox>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets left="15.0" right="15.0" />
+                           </HBox.margin>
+                        </MFXButton>
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0" spacing="3.0">
-               <children>
-                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fitHeight="85.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
-               </children>
-            </HBox>
-            <HBox id="GameHBox" alignment="CENTER" prefHeight="45.0" prefWidth="720.0" stylesheets="@Style.css">
-               <children>
-                  <MFXButton id="GameButton" fx:id="btnSettings" onAction="#onActionBtnSettings" styleClass="btnSettings" stylesheets="@Style.css" text="Ajustes">
-                     <graphic>
-                        <VBox prefHeight="30.0" prefWidth="30.0">
-                           <children>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </VBox>
-                     </graphic>
-                     <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
-                     </HBox.margin>
-                  </MFXButton>
-                  <MFXButton id="GameButton" fx:id="btnClues" onAction="#onActionBtnClues" styleClass="btnClues" stylesheets="@Style.css" text="Pistas">
-                     <graphic>
-                        <VBox prefHeight="30.0" prefWidth="30.0">
-                           <children>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </VBox>
-                     </graphic>
-                     <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
-                     </HBox.margin>
-                  </MFXButton>
-                  <MFXButton id="GameButton" fx:id="btnUndo" onAction="#onActionBtnUndo" styleClass="btnUndo" stylesheets="@Style.css" text="Deshacer">
-                     <graphic>
-                        <VBox prefHeight="30.0" prefWidth="30.0">
-                           <children>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </VBox>
-                     </graphic>
-                     <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
-                     </HBox.margin>
-                  </MFXButton>
-               </children>
-            </HBox>
+            </VBox>
          </children>
-      </VBox>
+      </StackPane>
    </children>
 </AnchorPane>

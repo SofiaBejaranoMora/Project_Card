@@ -53,7 +53,7 @@ public class ImagesUtil {
 
         public static String getBackground(String nameBackground) {
         try {
-            String path = BASE_PATH + "ProgramImages/" + nameBackground + ".png";
+            String path = BASE_PATH + "ProgramImages/" + nameBackground + ".jpg";
             if (ImagesUtil.class.getResource(path) == null) {
                 System.err.println("No se encontró la imagen en formato PNG " + nameBackground);
                 return null;

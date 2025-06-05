@@ -29,11 +29,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.stage.Stage;
 
-/**
- * * FXML Controller class * * @author ashly
- */
+/** * * FXML Controller class * * @author ashly */
 public class GameController extends Controller implements Initializable {
 
     // Variables del juego
@@ -83,7 +87,7 @@ public class GameController extends Controller implements Initializable {
     @FXML
     private MFXButton btnUndo;
     @FXML
-    private ImageView mgvBackground;
+    private AnchorPane root;
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
@@ -254,6 +258,13 @@ public class GameController extends Controller implements Initializable {
 
     }
 
+    private void setupBackground(String rute) {
+        BackgroundImage backgroundImage = new BackgroundImage(new Image(rute),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+        root.setBackground(new Background(backgroundImage));
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         prepareGame();
@@ -262,8 +273,13 @@ public class GameController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        String rute = getBackground.getBackground((String) AppContext.getInstance().get("Background"));
-        mgvBackground.setImage(new Image("file:" + rute));
+        if (AppContext.getInstance().get("Background") == null) {
+            String rute = ImagesUtil.getBackground("GrassBackground");
+            setupBackground(rute);
+        } else {
+            String rute = ImagesUtil.getBackground((String) AppContext.getInstance().get("Background"));
+            setupBackground(rute);
+        }
     }
 
 }

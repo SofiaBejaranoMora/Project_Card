@@ -12,12 +12,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
-/**
- * * FXML Controller class * * @author ashly
- */
+/** * * FXML Controller class * * @author ashly */
 public class MenuController extends Controller implements Initializable {
 
-    private Boolean hasStarted = false;
+    private Boolean hasStarted;
     private Mensaje message = new Mensaje();
 
     @FXML
@@ -103,7 +101,7 @@ public class MenuController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        Boolean hasStarted = (Boolean) AppContext.getInstance().get("hasSectionStarted");
+        hasStarted = (Boolean) AppContext.getInstance().get("hasSectionStarted");
         Boolean isRegistering = (Boolean) AppContext.getInstance().get("isRegisterSession");
 
         hasStarted = hasStarted != null ? hasStarted : false;

@@ -131,9 +131,9 @@ public class CreateGameController extends Controller implements Initializable {
 
         easyCardBack = "1" + style;
         System.out.println(easyCardBack);
-        mediumCardBack = "1" + style;
+        mediumCardBack = "2" + style;
         System.out.println(mediumCardBack);
-        hardCardBack = "1" + style;
+        hardCardBack = "3" + style;
         System.out.println(hardCardBack);
     }
 

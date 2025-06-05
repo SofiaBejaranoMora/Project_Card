@@ -2,12 +2,14 @@ package cr.ac.una.project_card.controller;
 
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
+import cr.ac.una.project_card.util.Mensaje;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 /**
@@ -15,8 +17,9 @@ import javafx.scene.control.Button;
  */
 public class MenuController extends Controller implements Initializable {
 
-    private boolean isFirstOpen = true;
-    
+    private Boolean hasStarted = false;
+    private Mensaje message = new Mensaje();
+
     @FXML
     private MFXButton btnSettings;
     @FXML
@@ -34,22 +37,42 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
-        FlowController.getInstance().goView("SettingsView");
+        if (hasStarted) {
+            FlowController.getInstance().goView("SettingsView");
+        } else {
+            message.showModal(Alert.AlertType.INFORMATION, "¡Primero tu nombre, luego tu estilo!", getStage(), "Puedes cambiar el aspecto de tus cartas, pero antes, dinos quién eres.\n\n"
+                    + "¡Regístrate o inicia sesión para personalizar tu experiencia!");
+        }
     }
 
     @FXML
     private void onActionBtnNew(ActionEvent event) {
-        FlowController.getInstance().goView("CreateGameView");
+        if (hasStarted) {
+            FlowController.getInstance().goView("CreateGameView");
+        } else {
+            message.showModal(Alert.AlertType.INFORMATION, "¡Sin identidad, no hay batalla!", getStage(), "Antes de barajar tu mazo y empezar la aventura, necesitas registrarte o iniciar sesión.\n\n"
+                    + "¡No puedes lanzar cartas si nadie sabe quién eres!");
+        }
     }
 
     @FXML
     private void onActionBtnContinue(ActionEvent event) {
-        FlowController.getInstance().goView("LoadGamesView");
+        if (hasStarted) {
+            FlowController.getInstance().goView("LoadGamesView");
+        } else {
+            message.showModal(Alert.AlertType.INFORMATION, "¿Tú otra vez? ¡Demuéstralo!", getStage(), "Parece que ya habías empezado una partida… pero para continuarla, necesitamos que inicies sesión o te registres.\n\n"
+                    + "¡No vale hacer trampa con cartas fantasmas!");
+        }
     }
 
     @FXML
     private void onActionBtnAchievements(ActionEvent event) {
-        FlowController.getInstance().goView("AchievementsView");
+        if (hasStarted) {
+            FlowController.getInstance().goView("AchievementsView");
+        } else {
+            message.showModal(Alert.AlertType.INFORMATION, "¡Los logros no aparecen por arte de magia!", getStage(), "Tus victorias están a salvo, pero solo podemos mostrártelas si sabemos quién eres.\n \n"
+                    + "Inicia sesión o regístrate para ver tus hazañas.");
+        }
     }
 
     @FXML

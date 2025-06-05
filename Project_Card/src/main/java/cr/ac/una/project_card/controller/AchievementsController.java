@@ -93,7 +93,7 @@ public class AchievementsController extends Controller implements Initializable 
                 cmbSearchNotObtainedAchievementType.setValue(achievementNotObtainedList.get(0).getType());
             }
         } else {
-            message.showModal(Alert.AlertType.INFORMATION, "¿Buscando qué?", getStage(), "Parece que olvidaste escribir un nombre. ¡No te preocupes, nos pasa a todos! Escribe algo y démosle a la búsqueda.!");
+            message.showModal(Alert.AlertType.INFORMATION, "¡Oops! ¿Y qué buscamos?", getStage(), "Aún no escribiste un nombre ni elegiste un tipo. Así no hay mucho que investigar...\nDale, elige algo y pongamos a trabajar la lupa");
         }
     }
 
@@ -105,7 +105,7 @@ public class AchievementsController extends Controller implements Initializable 
                 cmbSearchAchievementObtainedType.setValue(achievementObtainedList.get(0).getType());
             }
         } else {
-            message.showModal(Alert.AlertType.INFORMATION, "¿Buscando qué?", getStage(), "Parece que olvidaste escribir un nombre. ¡No te preocupes, nos pasa a todos! Escribe algo y démosle a la búsqueda.!");
+            message.showModal(Alert.AlertType.INFORMATION, "¡Oops! ¿Y qué buscamos?", getStage(), "Aún no escribiste un nombre ni elegiste un tipo. Así no hay mucho que investigar...\nDale, elige algo y pongamos a trabajar la lupa");
         }
     }
 
@@ -246,17 +246,13 @@ public class AchievementsController extends Controller implements Initializable 
 
     @Override
     public void initialize() {
-        if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
-            player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
-            answer = achievementsService.getAchievemenNoPlayerId(player.getId());
-            if (answer.getEstado()) {
-                this.achievementNotObtainedList = (List<AchievementDto>) answer.getResultado("Logro");
-                this.achievementObtainedList = player.getAchievementList();
-                initializeTabAchievements();
-                message.showModal(Alert.AlertType.INFORMATION, "¡Logros actualizados con éxito!", getStage(), "Tus hazañas más épicas ya están al día. ¡Ve a echarles un vistazo y presume como se debe!");
-            }
-        } else {
-            message.showModal(Alert.AlertType.INFORMATION, "¡Tus logros están haciendo fila!", getStage(), "Pero solo se muestran si inicias sesión o te registras desde el menú. ¡Hazlo y déjalos brillar como se merecen!");
+        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
+        answer = achievementsService.getAchievemenNoPlayerId(player.getId());
+        if (answer.getEstado()) {
+            this.achievementNotObtainedList = (List<AchievementDto>) answer.getResultado("Logro");
+            this.achievementObtainedList = player.getAchievementList();
+            initializeTabAchievements();
+            message.showModal(Alert.AlertType.INFORMATION, "¡Logros actualizados con éxito!", getStage(), "Tus hazañas más épicas ya están al día. ¡Ve a echarles un vistazo y presume como se debe!");
         }
     }
 

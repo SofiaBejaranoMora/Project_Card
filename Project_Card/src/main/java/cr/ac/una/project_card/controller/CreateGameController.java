@@ -109,14 +109,14 @@ public class CreateGameController extends Controller implements Initializable {
     @FXML
     private void onActionBtnStartGame(ActionEvent event) {
         if (validatingDataBeforeStart()) {
-            Long time=600L;
-            GameService gameService = new GameService(); 
-            if(difficulty==2L){
-                time=992L;
+            Long time = 600L;
+            GameService gameService = new GameService();
+            if (difficulty == 2L) {
+                time = 992L;
+            } else if (difficulty == 3L) {
+                time = 1260L;
             }
-            else if(difficulty==3L){
-                time=1260L;
-            }
+
             GameDto gameDto = new GameDto(nameGame, difficulty, time);
             Respuesta answer = gameService.SaveGame(gameDto, player);
             if (answer.getEstado()) {
@@ -130,7 +130,6 @@ public class CreateGameController extends Controller implements Initializable {
                     AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
                     FlowController.getInstance().goView("GameView");
                 }
-
             } else {
                 message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
             }
@@ -324,7 +323,6 @@ public class CreateGameController extends Controller implements Initializable {
 //        updateStartButtonVisibility();
 //        lastNameValid = true;
 //    }
-
     private void updateStartButtonVisibility() {
         btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null);
         System.out.println("Start button visible: " + btnStartGame.isVisible() + ", nameGame: " + nameGame + ", difficulty: " + difficulty);
@@ -372,7 +370,7 @@ public class CreateGameController extends Controller implements Initializable {
         hardCardBack = "3" + style;
         System.out.println(hardCardBack);
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

@@ -56,8 +56,7 @@ public class CreateGameController extends Controller implements Initializable {
     private List<GameDto> existingGames = new ArrayList();
     private String nameGame;
     private Long difficulty;
-
-    private boolean lastNameValid = true;
+    private Boolean lastNameValid = true;
 
     @FXML
     private Button btnEasyMode;
@@ -79,63 +78,6 @@ public class CreateGameController extends Controller implements Initializable {
     private Button btnBack;
     @FXML
     private Button btnHowToPlay;
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-
-    }
-
-    @Override
-    public void initialize() {
-        if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
-            player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
-            existingGames = player.getGameList();
-            initializeBackCardStyles(player);
-
-            easyModeCard.setBackImagePath(easyCardBack);
-            mediumModeCard.setBackImagePath(mediumCardBack);
-            hardModeCard.setBackImagePath(hardCardBack);
-
-            initialConditionsCards();
-            setupCardInteractions();
-            txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
-                nameGame = newValue.trim();
-
-                boolean isValid;
-                if (nameGame.isEmpty()) {
-                    isValid = false;
-                } else {
-                    lastNameValid = true;
-                }
-                updateStartButtonVisibility();
-            });
-        } else {
-            message.showModal(Alert.AlertType.INFORMATION, "Por favor inicie sesión", getStage(), "Para poder crear un juego es necesario iniciar sesión");
-            FlowController.getInstance().goView("MenuView");
-        }
-
-    }
-
-    private void initializeBackCardStyles(PlayerDto player) {
-        if (player != null) {
-            if (player.getCardStyle() == 1) {
-                style = "N";
-            } else if (player.getCardStyle() == 2) {
-                style = "M";
-            } else {
-                style = "V";
-            }
-        } else {
-            style = "N";
-        }
-
-        easyCardBack = "1" + style;
-        System.out.println(easyCardBack);
-        mediumCardBack = "2" + style;
-        System.out.println(mediumCardBack);
-        hardCardBack = "3" + style;
-        System.out.println(hardCardBack);
-    }
 
     @FXML
     private void onKeyPressed(KeyEvent event) {
@@ -172,10 +114,11 @@ public class CreateGameController extends Controller implements Initializable {
                 gameDto = (GameDto) answer.getResultado("Partida");
                 Long dificultad = gameDto.getDifficulty();
                 PlayerService playerService = new PlayerService();
+                player.getGameList().add(gameDto);
                 answer = playerService.getPlayerName(player.getName());
                 if (answer != null && answer.getEstado()) {
                     this.player = (PlayerDto) answer.getResultado("Jugador");
-                    AppContext.getInstance().set("IdCurrentGame", gameDto.getId());//Falta actualizar jugardor, ya que las partidas creadas en JRE no se ven en LoadGames
+                    AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
                     FlowController.getInstance().goView("GameView");
                 }
 
@@ -190,65 +133,12 @@ public class CreateGameController extends Controller implements Initializable {
         FlowController.getInstance().goView("MenuView");
     }
 
-    private void updateStartButtonVisibility() {
-        btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null);
-        System.out.println("Start button visible: " + btnStartGame.isVisible() + ", nameGame: " + nameGame + ", difficulty: " + difficulty);
+    @FXML
+    private void onActionBtnHowToPlay(ActionEvent event) {
+        //POR IMPLEMENTAR, AGREGAR LAS INSTRUCCIONES
     }
 
-    private void signDifficulty(Long dificultad) {
-        difficulty = dificultad;
-        nameGame = txfNameGame.getText().trim();
-        CardView selectedCard = getCardByDifficulty(dificultad);
-        if (selectedCard != null) {
-            selectedCard.setSelected(true);
-            Button button = getButtonByCard(selectedCard);
-            ImageView imageView = getImageViewByCard(selectedCard);
-            if (selectedCard.isFlipped()) {
-                rollCard(button, imageView, selectedCard);
-            }
-            applyGlowEffect(button);
-            List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
-            allCards.forEach(otherCard -> {
-                if (otherCard != selectedCard) {
-                    otherCard.setSelected(false);
-                    ImageView otherImageView = getImageViewByCard(otherCard);
-                    if (!otherCard.isFlipped()) {
-                        rollCard(getButtonByCard(otherCard), otherImageView, otherCard);
-                    }
-                    removeGlowEffect(getButtonByCard(otherCard));
-                }
-            });
-        }
-        if (nameGame.isEmpty()) {
-            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Por favor, ingresa un nombre para la partida.");
-        } else {
-            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Presiona 'Empezar' para iniciar el juego.");
-            lastNameValid = true;
-        }
-        updateStartButtonVisibility();
-    }
-
-    private void predeterminedValues() {
-        txfNameGame.clear();
-        nameGame = "";
-        difficulty = null;
-        List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
-        for (CardView card : allCards) {
-            if (card.getIsSelected()) {
-                card.setSelected(false);
-                Button button = getButtonByCard(card);
-                ImageView imageView = getImageViewByCard(card);
-                removeGlowEffect(button);
-                if (!card.isFlipped()) {
-                    rollCard(button, imageView, card);
-                }
-            }
-        }
-        updateStartButtonVisibility();
-        lastNameValid = true;
-    }
-
-    private boolean validatingDataBeforeStart() {
+    private Boolean validatingDataBeforeStart() {
         nameGame = txfNameGame.getText().trim();
         if (nameGame.isEmpty() && difficulty == null) {
             message.show(Alert.AlertType.WARNING, "Campos requeridos", "Por favor, ingresa un nombre para la partida y selecciona una dificultad.");
@@ -261,28 +151,6 @@ public class CreateGameController extends Controller implements Initializable {
             return false;
         }
         return true;
-    }
-
-    private void setupCardInteractions() {
-        List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
-        setupCardEffects(btnEasyMode, mgvEasyMode, easyModeCard, allCards);
-        setupCardEffects(btnMediumMode, mgvMediumMode, mediumModeCard, allCards);
-        setupCardEffects(btnHardMode, mgvHardMode, hardModeCard, allCards);
-    }
-
-    private void initialConditionsCards() {
-        mgvEasyMode.setImage(new Image("file:" + imageUtility.getBackCardPath(easyModeCard.getBackImagePath())));
-        mgvMediumMode.setImage(new Image("file:" + imageUtility.getBackCardPath(mediumModeCard.getBackImagePath())));
-        mgvHardMode.setImage(new Image("file:" + imageUtility.getBackCardPath(hardModeCard.getBackImagePath())));
-        mgvEasyMode.setRotate(180);
-        mgvMediumMode.setRotate(180);
-        mgvHardMode.setRotate(180);
-        easyModeCard.setIsFlipped(true);
-        mediumModeCard.setIsFlipped(true);
-        hardModeCard.setIsFlipped(true);
-        easyModeCard.updateImageView(mgvEasyMode);
-        mediumModeCard.updateImageView(mgvMediumMode);
-        mediumModeCard.updateImageView(mgvHardMode);
     }
 
     private ImageView getImageViewByCard(CardView card) {
@@ -395,9 +263,141 @@ public class CreateGameController extends Controller implements Initializable {
         System.out.println("Removed glow from button: " + button.getId());
     }
 
-    @FXML
-    private void onActionBtnHowToPlay(ActionEvent event) {
-        //POR IMPLEMENTAR, AGREGAR LAS INSTRUCCIONES
+    private void signDifficulty(Long dificultad) {
+        difficulty = dificultad;
+        nameGame = txfNameGame.getText().trim();
+        CardView selectedCard = getCardByDifficulty(dificultad);
+        if (selectedCard != null) {
+            selectedCard.setSelected(true);
+            Button button = getButtonByCard(selectedCard);
+            ImageView imageView = getImageViewByCard(selectedCard);
+            if (selectedCard.isFlipped()) {
+                rollCard(button, imageView, selectedCard);
+            }
+            applyGlowEffect(button);
+            List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
+            allCards.forEach(otherCard -> {
+                if (otherCard != selectedCard) {
+                    otherCard.setSelected(false);
+                    ImageView otherImageView = getImageViewByCard(otherCard);
+                    if (!otherCard.isFlipped()) {
+                        rollCard(getButtonByCard(otherCard), otherImageView, otherCard);
+                    }
+                    removeGlowEffect(getButtonByCard(otherCard));
+                }
+            });
+        }
+        if (nameGame.isEmpty()) {
+            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Por favor, ingresa un nombre para la partida.");
+        } else {
+            message.show(Alert.AlertType.INFORMATION, "Dificultad seleccionada", "Dificultad " + difficulty + " asignada. Presiona 'Empezar' para iniciar el juego.");
+            lastNameValid = true;
+        }
+        updateStartButtonVisibility();
+    }
+
+//    private void predeterminedValues() {
+//        txfNameGame.clear();
+//        nameGame = "";
+//        difficulty = null;
+//        List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
+//        for (CardView card : allCards) {
+//            if (card.getIsSelected()) {
+//                card.setSelected(false);
+//                Button button = getButtonByCard(card);
+//                ImageView imageView = getImageViewByCard(card);
+//                removeGlowEffect(button);
+//                if (!card.isFlipped()) {
+//                    rollCard(button, imageView, card);
+//                }
+//            }
+//        }
+//        updateStartButtonVisibility();
+//        lastNameValid = true;
+//    }
+
+    private void updateStartButtonVisibility() {
+        btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null);
+        System.out.println("Start button visible: " + btnStartGame.isVisible() + ", nameGame: " + nameGame + ", difficulty: " + difficulty);
+    }
+
+    private void setupCardInteractions() {
+        List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
+        setupCardEffects(btnEasyMode, mgvEasyMode, easyModeCard, allCards);
+        setupCardEffects(btnMediumMode, mgvMediumMode, mediumModeCard, allCards);
+        setupCardEffects(btnHardMode, mgvHardMode, hardModeCard, allCards);
+    }
+
+    private void initialConditionsCards() {
+        mgvEasyMode.setImage(new Image("file:" + imageUtility.getBackCardPath(easyModeCard.getBackImagePath())));
+        mgvMediumMode.setImage(new Image("file:" + imageUtility.getBackCardPath(mediumModeCard.getBackImagePath())));
+        mgvHardMode.setImage(new Image("file:" + imageUtility.getBackCardPath(hardModeCard.getBackImagePath())));
+        mgvEasyMode.setRotate(180);
+        mgvMediumMode.setRotate(180);
+        mgvHardMode.setRotate(180);
+        easyModeCard.setIsFlipped(true);
+        mediumModeCard.setIsFlipped(true);
+        hardModeCard.setIsFlipped(true);
+        easyModeCard.updateImageView(mgvEasyMode);
+        mediumModeCard.updateImageView(mgvMediumMode);
+        mediumModeCard.updateImageView(mgvHardMode);
+    }
+
+    private void initializeBackCardStyles(PlayerDto player) {
+        if (player != null) {
+            if (player.getCardStyle() == 1) {
+                style = "N";
+            } else if (player.getCardStyle() == 2) {
+                style = "M";
+            } else {
+                style = "V";
+            }
+        } else {
+            style = "N";
+        }
+
+        easyCardBack = "1" + style;
+        System.out.println(easyCardBack);
+        mediumCardBack = "2" + style;
+        System.out.println(mediumCardBack);
+        hardCardBack = "3" + style;
+        System.out.println(hardCardBack);
+    }
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+    }
+
+    @Override
+    public void initialize() {
+        if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
+            player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
+            existingGames = player.getGameList();
+            initializeBackCardStyles(player);
+
+            easyModeCard.setBackImagePath(easyCardBack);
+            mediumModeCard.setBackImagePath(mediumCardBack);
+            hardModeCard.setBackImagePath(hardCardBack);
+
+            initialConditionsCards();
+            setupCardInteractions();
+            txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
+                nameGame = newValue.trim();
+
+                boolean isValid;
+                if (nameGame.isEmpty()) {
+                    isValid = false;
+                } else {
+                    lastNameValid = true;
+                }
+                updateStartButtonVisibility();
+            });
+        } else {
+            message.showModal(Alert.AlertType.INFORMATION, "Por favor inicie sesión", getStage(), "Para poder crear un juego es necesario iniciar sesión");
+            FlowController.getInstance().goView("MenuView");
+        }
+
     }
 
     public class CardView {

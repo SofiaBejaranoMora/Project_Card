@@ -76,7 +76,7 @@ public class UserSessionController extends Controller implements Initializable {
 private void onActionRegisterUser(ActionEvent event) {
     currentName = txfUserName.getText().trim();
     PlayerService playerService = new PlayerService();
-    Respuesta checkUser = playerService.findPlayerByName(currentName);
+    Respuesta checkUser = playerService.getPlayerName(currentName);
     
     if (checkUser.getEstado() && checkUser.getResultado("Jugador") != null) {
         message.showModal(Alert.AlertType.WARNING, "Registro", getStage(), "El usuario ya existe. Inicie sesión.");

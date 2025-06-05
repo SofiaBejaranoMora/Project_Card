@@ -39,7 +39,7 @@ public class AchievementsService {
         }
     }
     
-    public Respuesta getAchievementParameter(String name, String type) {
+    public Respuesta getAchievemenSearchParameter(String name, String type) {
         try {
             Query queryAchievements = em.createNamedQuery("Achievement.findByAchievementType", Achievement.class);
             queryAchievements.setParameter("name", "%" + name + "%");
@@ -55,6 +55,24 @@ public class AchievementsService {
         }  catch (Exception ex) {
             Logger.getLogger(AchievementsService.class.getName()).log(Level.SEVERE, "Error obteniendo el logro  [" + name + type +"]", ex);
             return new Respuesta(false, "Error obtener el logro.", "getAchievementParameter " + ex.getMessage());
+        }
+    }
+    
+    public Respuesta getAchievemenNoPlayerId(Long id) {
+        try {
+            Query queryAchievements = em.createNamedQuery("Achievement.findByNameIdNot", Achievement.class);
+            queryAchievements.setParameter("playerId", id);
+            List<AchievementDto> achievementsDtoList = new ArrayList<>();
+            List<Achievement> achievementsList = queryAchievements.getResultList();
+            for (Achievement achievement : achievementsList) {
+                achievementsDtoList.add(new AchievementDto(achievement));
+            }
+            return new Respuesta(true, " ", " ", "Logro", achievementsDtoList);
+        } catch (NoResultException ex) {
+            return new Respuesta(false, "No existe logro no obtenido con las credenciales ingresadas.", "getAchievemenNoPlayerId NoResultException");
+        }  catch (Exception ex) {
+            Logger.getLogger(AchievementsService.class.getName()).log(Level.SEVERE, "Error obteniendo los logros no obtenidos de  [" + id +"]", ex);
+            return new Respuesta(false, "Error obtener el logro.", "getAchievemenNoPlayerId " + ex.getMessage());
         }
     }
 }

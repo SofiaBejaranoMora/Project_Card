@@ -25,14 +25,13 @@ import java.util.List;
 @NamedQueries({
     @NamedQuery(name = "Achievement.findAll", query = "SELECT a FROM Achievement a"),
     @NamedQuery(name = "Achievement.findByType", query = "SELECT a FROM Achievement a WHERE a.type = :type"),
-
-/*@NamedQuery(name = "Achievement.findById", query = "SELECT a FROM Achievement a WHERE a.id = :id"),
+    @NamedQuery(name = "Achievement.findByNameIdNot", query = "SELECT DISTINCT a FROM Achievement a WHERE a NOT IN (" +
+            "SELECT a2 FROM Achievement a2 JOIN a2.players p WHERE p.id = :playerId)"), /*@NamedQuery(name = "Achievement.findById", query = "SELECT a FROM Achievement a WHERE a.id = :id"),
     @NamedQuery(name = "Achievement.findByName", query = "SELECT a FROM Achievement a WHERE a.name = :name"),
     @NamedQuery(name = "Achievement.findByAchImagename", query = "SELECT a FROM Achievement a WHERE a.achImagename = :achImagename"),
     @NamedQuery(name = "Achievement.findByAchDescription", query = "SELECT a FROM Achievement a WHERE a.achDescription = :achDescription"),
     @NamedQuery(name = "Achievement.findByAchAmount", query = "SELECT a FROM Achievement a WHERE a.achAmount = :achAmount"),
-    @NamedQuery(name = "Achievement.findByAchVersion", query = "SELECT a FROM Achievement a WHERE a.achVersion = :achVersion")*/
-})
+    @NamedQuery(name = "Achievement.findByAchVersion", query = "SELECT a FROM Achievement a WHERE a.achVersion = :achVersion")*/})
 public class Achievement implements Serializable {
 
     private static final long serialVersionUID = 1L;

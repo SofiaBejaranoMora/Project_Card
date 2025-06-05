@@ -115,9 +115,9 @@ public class AchievementsController extends Controller implements Initializable 
         String name = txtSearchNotObtainedAchievementsName.getText();
         if (((selectionType != null) && !selectionType.isBlank()) || ((name != null) && !name.isEmpty())) {
             if (selectionType == null || selectionType.equals("Todos")) {
-                answer = achievementsService.getAchievementParameter(name, "");
+                answer = achievementsService.getAchievemenSearchParameter(name, "");
             } else {
-                answer = achievementsService.getAchievementParameter(name, selectionType);
+                answer = achievementsService.getAchievemenSearchParameter(name, selectionType);
             }
             if (answer.getEstado()) {
                 vBoxAchievementsNotObtained.getChildren().clear();
@@ -133,9 +133,9 @@ public class AchievementsController extends Controller implements Initializable 
         String name = txtSearchNameAchievementObtained.getText();
         if (((selectionType != null) && !selectionType.isBlank()) || ((name != null) && !name.isEmpty())) {
             if (selectionType == null || selectionType.equals("Todos")) {
-                answer = achievementsService.getAchievementParameter(name, "");
+                answer = achievementsService.getAchievemenSearchParameter(name, "");
             } else {
-                answer = achievementsService.getAchievementParameter(name, selectionType);
+                answer = achievementsService.getAchievemenSearchParameter(name, selectionType);
             }
             if (answer.getEstado()) {
                 vBoxAchievementsObtained.getChildren().clear();
@@ -248,10 +248,10 @@ public class AchievementsController extends Controller implements Initializable 
     public void initialize() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
-            answer = achievementsService.loadAllAchievement();
+            answer = achievementsService.getAchievemenNoPlayerId(player.getId());
             if (answer.getEstado()) {
-                this.achievementNotObtainedList = (List<AchievementDto>) answer.getResultado("Logros");
-                this.achievementObtainedList = achievementNotObtainedList;
+                this.achievementNotObtainedList = (List<AchievementDto>) answer.getResultado("Logro");
+                this.achievementObtainedList = player.getAchievementList();
                 initializeTabAchievements();
                 message.showModal(Alert.AlertType.INFORMATION, "¡Logros actualizados con éxito!", getStage(), "Tus hazañas más épicas ya están al día. ¡Ve a echarles un vistazo y presume como se debe!");
             }

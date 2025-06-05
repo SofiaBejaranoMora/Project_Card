@@ -106,9 +106,15 @@ public class CreateGameController extends Controller implements Initializable {
     @FXML
     private void onActionBtnStartGame(ActionEvent event) {
         if (validatingDataBeforeStart()) {
-            //crear juego y ajustar controlador
-            GameService gameService = new GameService(); // Este es el de buscar por nombre mas bien
-            GameDto gameDto = new GameDto(nameGame, difficulty);
+            Long time=600L;
+            GameService gameService = new GameService(); 
+            if(difficulty==2L){
+                time=992L;
+            }
+            else if(difficulty==3L){
+                time=1260L;
+            }
+            GameDto gameDto = new GameDto(nameGame, difficulty,time);
             Respuesta answer = gameService.SaveGame(gameDto, player);
             if (answer.getEstado()) {
                 gameDto = (GameDto) answer.getResultado("Partida");

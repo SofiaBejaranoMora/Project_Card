@@ -30,6 +30,8 @@ import java.util.List;
     @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"), 
     @NamedQuery(name = "Game.findById", query = "SELECT g FROM Game g WHERE g.id = :id"),
     @NamedQuery(name = "Game.findByName", query = "SELECT g FROM Game g WHERE g.name = :name"),
+    @NamedQuery(name = "Game.findByNamePlayerId", query = "SELECT DISTINCT g FROM Game g JOIN g.player p " +
+            "WHERE p.id = :playerId AND g.name LIKE :name"),
     /*@NamedQuery(name = "Game.findByGamTime", query = "SELECT g FROM Game g WHERE g.gamTime = :gamTime"),
     @NamedQuery(name = "Game.findByGamScore", query = "SELECT g FROM Game g WHERE g.gamScore = :gamScore"),
     @NamedQuery(name = "Game.findByGamVersion", query = "SELECT g FROM Game g WHERE g.gamVersion = :gamVersion"),

@@ -66,7 +66,8 @@ public class GameService {
             et = em.getTransaction();
             et.begin();
             Game game;
-            Query query = em.createNamedQuery("Game.findByName");
+            Query query = em.createNamedQuery("Game.findByNamePlayerId");
+            query.setParameter("playerId", playerDto.getId());
             query.setParameter("name", gameDto.getName());
             List<Game> gameList = query.getResultList();//qryUsuario.getResultList()-> este para mas de un registro, y el que puse es para solo un unico registro
             if (!gameList.isEmpty()) {
@@ -84,7 +85,9 @@ public class GameService {
                             et.rollback();
                             return new Respuesta(false, "No se encontró el jugador asociado.", "SaveGame NoResultException");
                         }
+                        player.getGames().add(game);
                         game.setPlayer(player);
+                        
 //                        for (CardDto cardDto : cardDtoList) {
 //                            game.getCards().add(em.find(Card.class, cardDto.getId())); 
 //                        }

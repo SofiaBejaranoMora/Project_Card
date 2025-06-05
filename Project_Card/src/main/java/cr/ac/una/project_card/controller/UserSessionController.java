@@ -92,6 +92,7 @@ private void onActionRegisterUser(ActionEvent event) {
             this.player = (PlayerDto) answer.getResultado("Jugador");
             AppContext.getInstance().set("CurrentUser", player);
             buttonManager(3);
+            lblCurrentPoints.setText("0");
             message.showModal(Alert.AlertType.INFORMATION, "Inicio de sesión", getStage(), "Sesión creada con éxito, disfrute del juego.");
             AppContext.getInstance().set("hasSectionStarted", true);
             FlowController.getInstance().goView("MenuView");
@@ -103,7 +104,6 @@ private void onActionRegisterUser(ActionEvent event) {
 
     @FXML
     private void onActionBtnStartSession(ActionEvent event) {
-        lblCurrentPoints.setText("0");
         buttonManager(3);
         currentName = txfUserName.getText().trim();
         //buscar usuario

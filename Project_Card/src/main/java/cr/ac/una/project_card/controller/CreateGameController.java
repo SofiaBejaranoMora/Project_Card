@@ -1,8 +1,12 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.CardDto;
 import cr.ac.una.project_card.model.Game;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
+import cr.ac.una.project_card.model.StackcardDto;
+import cr.ac.una.project_card.model.StackcardxcardDto;
+import cr.ac.una.project_card.service.CardService;
 import cr.ac.una.project_card.service.GameService;
 import cr.ac.una.project_card.service.PlayerService;
 import cr.ac.una.project_card.util.AppContext;
@@ -57,6 +61,23 @@ public class CreateGameController extends Controller implements Initializable {
     private String nameGame;
     private Long difficulty;
     private Boolean lastNameValid = true;
+    
+    private CardService cardService = new CardService();
+    private List<CardDto> cards = new ArrayList<>(); // Mazo completo
+    private List<CardDto> corazones = new ArrayList<>();
+    private List<CardDto> picas = new ArrayList<>();
+    private List<CardDto> treboles = new ArrayList<>();
+    private List<CardDto> diamantes = new ArrayList<>();
+    private StackcardDto stackcardList1 = new StackcardDto();
+    private StackcardDto stackcardList2 = new StackcardDto();
+    private StackcardDto stackcardList3 = new StackcardDto();
+    private StackcardDto stackcardList4 = new StackcardDto();
+    private StackcardDto stackcardList5 = new StackcardDto();
+    private StackcardDto stackcardList6 = new StackcardDto();
+    private StackcardDto stackcardList7 = new StackcardDto();
+    private StackcardDto stackcardList8 = new StackcardDto();
+    private StackcardDto stackcardList9 = new StackcardDto();
+    private StackcardDto stackcardList10 = new StackcardDto();
 
     @FXML
     private Button btnEasyMode;
@@ -118,6 +139,7 @@ public class CreateGameController extends Controller implements Initializable {
             }
 
             GameDto gameDto = new GameDto(nameGame, difficulty, time);
+            prepareGame(gameDto);
             Respuesta answer = gameService.SaveGame(gameDto, player);
             if (answer.getEstado()) {
                 gameDto = (GameDto) answer.getResultado("Partida");
@@ -370,7 +392,145 @@ public class CreateGameController extends Controller implements Initializable {
         hardCardBack = "3" + style;
         System.out.println(hardCardBack);
     }
+    
+        private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
+        for (CardDto carta : tipo) {
+            if (carta.getNumber() != null && carta.getNumber() == number) {
+                return carta;
+            }
+        }
+        return null;
+    }
+        public void mixFirstCards(List<CardDto> cards, StackcardDto cardStack) {
+        if (!cards.isEmpty()) {
+            List<StackcardxcardDto> cardxcardList = new ArrayList();
+            for (int i = 0; i < 5; i++) {
+                CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
+                StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
+                newCard.setCard(selectedCard);
+                newCard.setPositionNumber((long) (i + 1));
+                newCard.setIsFaceUp(false);//las primeras 5 cartas en agregarse irán de espaldas
+                cardxcardList.add(newCard);
+            }
+            CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
+            StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
+            newCard.setCard(selectedCard);
+            newCard.setPositionNumber((long) 6);
+            newCard.setIsFaceUp(true);
+            cardxcardList.add(newCard);
 
+            cardStack.setStackCardxCards(cardxcardList);
+        }
+    }
+
+    public void mixOtherCards(List<CardDto> cards, StackcardDto cardStack) {
+        if (!cards.isEmpty()) {
+            List<StackcardxcardDto> cardxcardList = new ArrayList();
+            for (int i = 0; i < 4; i++) {
+                CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
+                StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
+                newCard.setCard(selectedCard);
+                newCard.setPositionNumber((long) (i + 1));
+                newCard.setIsFaceUp(false);//las primeras 4 cartas en agregarse irán de espaldas
+                cardxcardList.add(newCard);
+            }
+            CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
+            StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
+            newCard.setCard(selectedCard);
+            newCard.setPositionNumber((long) 5);
+            newCard.setIsFaceUp(true);
+            cardxcardList.add(newCard);
+
+            cardStack.setStackCardxCards(cardxcardList);
+        }
+    }
+    
+    
+
+    private void mixCards() {
+        mixFirstCards(cards, stackcardList1);
+        mixFirstCards(cards, stackcardList2);
+        mixFirstCards(cards, stackcardList3);
+        mixFirstCards(cards, stackcardList4);
+        mixOtherCards(cards, stackcardList5);
+        mixOtherCards(cards, stackcardList6);
+        mixOtherCards(cards, stackcardList7);
+        mixOtherCards(cards, stackcardList8);
+        mixOtherCards(cards, stackcardList9);
+        mixOtherCards(cards, stackcardList10);
+    }
+
+
+    
+    private void loadCards(GameDto game) {
+        try {
+            Long difficulty = game.getDifficulty();//parece ser que la dificultad es nula
+
+            if (difficulty != 1) {
+                if (difficulty == 3) {
+                    cards.addAll(treboles);
+                    cards.addAll(diamantes);
+                }
+                while (cards.size() < 104) {
+                    for (int i = 0; i < 13; i++) {
+                        CardDto cartaPicas = getCartaByNumber(picas, i + 1);
+                        if (cartaPicas != null) {
+                            cards.add(cartaPicas);
+                        }
+                        CardDto cartaCorazones = getCartaByNumber(corazones, i + 1);
+                        if (cartaCorazones != null) {
+                            cards.add(cartaCorazones);
+                        }
+                    }
+                }
+            } else {
+                cards.addAll(picas);
+            }
+            game.setCards(cards);
+
+        } catch (Exception e) {
+            Mensaje mensaje = new Mensaje();
+            mensaje.show(Alert.AlertType.ERROR, "Dificultad nula", "La dificultad es nula");
+        }
+    }
+    
+    private void prepareGame(GameDto game) {
+        if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
+            player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
+            game = new GameDto();
+
+            GameService gameService = new GameService();
+            Respuesta answer = gameService.getGameID((Long) AppContext.getInstance().get("IdCurrentGame"));
+
+            if (answer != null && answer.getEstado()) {
+                game = (GameDto) answer.getResultado("Partida");
+                Long Dificultad = game.getDifficulty();
+                Respuesta heartCardsAnswer = cardService.getCardType("C");
+                Respuesta diamondCardsAnswer = cardService.getCardType("D");
+                Respuesta spadeCardsAnswer = cardService.getCardType("P");
+                Respuesta clubCardsAnswer = cardService.getCardType("T");
+
+                if (heartCardsAnswer.getEstado() && diamondCardsAnswer.getEstado() && spadeCardsAnswer.getEstado() && clubCardsAnswer.getEstado()) {
+                    corazones = (List<CardDto>) heartCardsAnswer.getResultado("Cartas");
+                    diamantes = (List<CardDto>) diamondCardsAnswer.getResultado("Cartas");
+                    picas = (List<CardDto>) spadeCardsAnswer.getResultado("Cartas");
+                    treboles = (List<CardDto>) clubCardsAnswer.getResultado("Cartas");
+
+                } else {
+                    message.showModal(Alert.AlertType.ERROR, "Error al cargar cartas", getStage(), "No se pudieron cargar las cartas necesarias.");
+                    return;
+                }
+
+                loadCards(game);
+            } else {
+                message.showModal(Alert.AlertType.INFORMATION, "Por favor inicie sesión", getStage(), "Para poder crear un juego es necesario iniciar sesión");
+                FlowController.getInstance().goView("MenuView");
+            }
+        }
+
+    }
+
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -483,4 +643,6 @@ public class CreateGameController extends Controller implements Initializable {
             });
         }
     }
+    
+    
 }

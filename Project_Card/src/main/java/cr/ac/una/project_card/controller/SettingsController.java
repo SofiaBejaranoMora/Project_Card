@@ -185,28 +185,28 @@ public class SettingsController extends Controller implements Initializable {
     }
  
     private void fitCards(Button btn) {
-        btn.prefWidthProperty().bind(root.widthProperty().divide(5));
-        btn.prefHeightProperty().bind(root.widthProperty().divide(5).multiply(17).divide(15));
+        btn.setMinWidth(96);
+        btn.setMinHeight(106);
+        btn.prefWidthProperty().bind(root.widthProperty().divide(4.4));
+        btn.prefHeightProperty().bind(root.widthProperty().divide(5).multiply(17).divide(14.5));
 
-        if (btn.getGraphic() instanceof ImageView) {
-            Platform.runLater(() -> {
-                ImageView image = (ImageView) btn.getGraphic();
-                image.fitWidthProperty().bind(btn.prefWidthProperty());
-                image.fitHeightProperty().bind(btn.prefHeightProperty());
-            });
+        if (btn.getGraphic() instanceof ImageView image) {
+            image.setPreserveRatio(true);
+            image.fitWidthProperty().bind(btn.prefWidthProperty().multiply(0.9));
+            image.fitHeightProperty().bind(btn.prefHeightProperty().multiply(0.9));
         }
     }
 
     private void fitBackgrounds(Button btn) {
-        btn.prefWidthProperty().bind(root.widthProperty().divide(5));
-        btn.prefHeightProperty().bind(root.widthProperty().divide(5).multiply(17).divide(25));
+        btn.setMinWidth(135);
+        btn.setMinHeight(80);
+        btn.prefWidthProperty().bind(root.widthProperty().divide(4.9));
+        btn.prefHeightProperty().bind(root.widthProperty().divide(5).multiply(17).divide(27));
 
-        if (btn.getGraphic() instanceof ImageView) {
-            Platform.runLater(() -> {
-                ImageView image = (ImageView) btn.getGraphic();
-                image.fitWidthProperty().bind(btn.prefWidthProperty());
-                image.fitHeightProperty().bind(btn.prefHeightProperty());
-            });
+        if (btn.getGraphic() instanceof ImageView image) {
+            image.setPreserveRatio(true);
+            image.fitWidthProperty().bind(btn.prefWidthProperty().multiply(0.95));
+            image.fitHeightProperty().bind(btn.prefHeightProperty().multiply(0.95));
         }
     }
 

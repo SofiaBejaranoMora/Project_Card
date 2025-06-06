@@ -48,6 +48,7 @@ public class AchievementsController extends Controller implements Initializable 
     private ObservableList<String> achievementTypeObservableList = FXCollections.observableArrayList(
             "Ganar", "Movimiento", "Partidas", "Perder", "Puntos", "Registro", "Tiempo", "Todos"
     );
+    private String rute = imageUtility.getAchievement();
 
     @FXML
     private Button btnBack;
@@ -140,7 +141,7 @@ public class AchievementsController extends Controller implements Initializable 
             if (answer.getEstado()) {
                 vBoxAchievementsObtained.getChildren().clear();
                 this.achievementObtainedList = (List<AchievementDto>) answer.getResultado("Logro");
-                Loadachievement(achievementObtainedList, vBoxAchievementsObtained, 0.0 /*vBoxAchievementsNotObtained, -1.0*/);
+                Loadachievement(achievementObtainedList, vBoxAchievementsObtained, 0.0);
             }
         }
     }
@@ -152,17 +153,17 @@ public class AchievementsController extends Controller implements Initializable 
         VBox.setMargin(hbox, new Insets(15));
 
         // Agregar la Imagen
-//        String rute = imageUtility.getAchievement(achievement.getImageName());
-//        System.out.println(rute);
-//        ImageView imageView = new ImageView();
-//        imageView.setImage(new Image(rute));
-//        imageView.setFitWidth(64);
-//        imageView.setFitHeight(64);
-//        imageView.setPreserveRatio(true);
-//
-//        ColorAdjust colorAdjust = new ColorAdjust();
-//        colorAdjust.setSaturation(Saturation);
-//        imageView.setEffect(colorAdjust);
+       
+        System.out.println(rute);
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image(rute+achievement.getImageName()+".png"));
+        imageView.setFitWidth(64);
+        imageView.setFitHeight(64);
+        imageView.setPreserveRatio(true);
+
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setSaturation(Saturation);
+        imageView.setEffect(colorAdjust);
         // VBox del texto
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.TOP_LEFT);
@@ -204,7 +205,7 @@ public class AchievementsController extends Controller implements Initializable 
         vbox.setMaxWidth(Double.MAX_VALUE);
 
         // Agragar el vbox y imagen al Hbox
-        hbox.getChildren().addAll(/*imageView,*/vbox);
+        hbox.getChildren().addAll(imageView,vbox);
         hbox.prefWidthProperty().bind(vBoxPrincipal.widthProperty().multiply(0.98));
         HBox.setHgrow(hbox, Priority.ALWAYS);
 

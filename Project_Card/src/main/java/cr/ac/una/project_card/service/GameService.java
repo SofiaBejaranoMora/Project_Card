@@ -115,7 +115,6 @@ public class GameService {
                             stackcard.setGame(game);
                             game.getStackCards().add(stackcard);
                         }
-
                     } else {
                         et.rollback();
                         return new Respuesta(false, "El jugador no existe.", "SaveGame NoResultException");

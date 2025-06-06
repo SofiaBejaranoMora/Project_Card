@@ -29,7 +29,7 @@ public class StackcardService {
             Stackcard stackcard;
             if (stackcardDto.getId() != null && stackcardDto.getId() > 0) {
                 et.rollback();
-                return new Respuesta(false, "Este game ya existe", "SaveGame NoResultException");
+                return new Respuesta(false, "Esta columna ya existe", "SaveStackcard NoResultException");
             } else {
                 stackcard = new Stackcard(stackcardDto);
                 em.persist(stackcard);// crear un registro nuevo;

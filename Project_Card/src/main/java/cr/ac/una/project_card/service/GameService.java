@@ -70,18 +70,21 @@ public class GameService {
             query.setParameter("playerId", playerDto.getId());
             query.setParameter("name", gameDto.getName());
             List<Game> gameList = query.getResultList();//qryUsuario.getResultList()-> este para mas de un registro, y el que puse es para solo un unico registro
-            if (!gameList.isEmpty()) {
+            if (!gameList.isEmpty()) { // revisa si hay games con ese nombre en el mismo jugador
                 et.rollback();
                 return new Respuesta(false, "El nombre del juego ya existe.", "", "Partida ", null);
-            } else {
-                if (gameDto.getId() != null && gameDto.getId() > 0) {
+            } else { // despues de verificar que no haya un game con ese nombre
+                
+                if (gameDto.getId() != null && gameDto.getId() > 0) { //Se revisa si el gameDto  id
                     et.rollback();
                     return new Respuesta(false, "Este game ya existe", "SaveGame NoResultException");
-                } else {
+                } else { // si no tiene id empezamos con la parte crear el 
                     game = new Game(gameDto);
-                    if (playerDto.getId() != null) {
+                    
+                    if (playerDto.getId() != null) {// revisa que el jugador al que se va a relacionar exista
                         Player player = em.find(Player.class, playerDto.getId());
-                        if (player == null) {
+                        
+                        if (player == null) { //Ve si el jugador se encontro
                             et.rollback();
                             return new Respuesta(false, "No se encontró el jugador asociado.", "SaveGame NoResultException");
                         }
@@ -94,6 +97,7 @@ public class GameService {
 //                        for (StackcardDto stackcardDto : stackCardDtoList) {
 //                            game.getStackCards().add(em.find(Card.class, stackcardDto.getId()));
 //                        }
+
                     } else {
                         et.rollback();
                         return new Respuesta(false, "El jugador no existe.", "SaveGame NoResultException");

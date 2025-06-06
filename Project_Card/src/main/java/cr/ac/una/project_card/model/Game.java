@@ -18,6 +18,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,6 +98,8 @@ public class Game implements Serializable {
         if (hasWon.equalsIgnoreCase("T") || hasWon.equalsIgnoreCase("F") || hasWon.equalsIgnoreCase("N")) {
             this.hasWon = gameDto.getHasWon();
         }
+        this.cards = new ArrayList<>();
+        this.stackCards = new ArrayList<>();
         this.difficulty = gameDto.getDifficulty();
         this.version = gameDto.getVersion();
     }

@@ -6,6 +6,7 @@ import cr.ac.una.project_card.model.Game;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.Player;
 import cr.ac.una.project_card.model.PlayerDto;
+import cr.ac.una.project_card.model.Stackcard;
 import cr.ac.una.project_card.model.StackcardDto;
 import cr.ac.una.project_card.util.EntityManagerHelper;
 import cr.ac.una.project_card.util.Respuesta;
@@ -14,7 +15,9 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.Query;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,8 +28,8 @@ public class GameService {
 
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
-    
-        public Respuesta getGameID(Long id) {
+
+    public Respuesta getGameID(Long id) {
         try {
             Query qryGame = em.createNamedQuery("Game.findById", Game.class);
             qryGame.setParameter("id", id);
@@ -61,7 +64,7 @@ public class GameService {
         }
     }
 
-    public Respuesta SaveGame(GameDto gameDto, PlayerDto playerDto/*, List<CardDto> cardDtoList */ ) {
+    public Respuesta SaveGame(GameDto gameDto, PlayerDto playerDto, List<CardDto> cardDtoList, List<StackcardDto> stackcardDtoList) {
         try {
             et = em.getTransaction();
             et.begin();
@@ -74,29 +77,44 @@ public class GameService {
                 et.rollback();
                 return new Respuesta(false, "El nombre del juego ya existe.", "", "Partida ", null);
             } else { // despues de verificar que no haya un game con ese nombre
-                
+
                 if (gameDto.getId() != null && gameDto.getId() > 0) { //Se revisa si el gameDto  id
                     et.rollback();
                     return new Respuesta(false, "Este game ya existe", "SaveGame NoResultException");
                 } else { // si no tiene id empezamos con la parte crear el 
                     game = new Game(gameDto);
-                    
-                    if (playerDto.getId() != null) {// revisa que el jugador al que se va a relacionar exista
+
+                    if (playerDto.getId() != null && !cardDtoList.isEmpty() && !stackcardDtoList.isEmpty()) {// revisa que el jugador, mazo y columnas a la que se va a relacionar exista
                         Player player = em.find(Player.class, playerDto.getId());
-                        
+
                         if (player == null) { //Ve si el jugador se encontro
                             et.rollback();
                             return new Respuesta(false, "No se encontró el jugador asociado.", "SaveGame NoResultException");
                         }
                         player.getGames().add(game);
                         game.setPlayer(player);
-                        
-//                        for (CardDto cardDto : cardDtoList) {
-//                            game.getCards().add(em.find(Card.class, cardDto.getId())); 
-//                        }
-//                        for (StackcardDto stackcardDto : stackCardDtoList) {
-//                            game.getStackCards().add(em.find(Card.class, stackcardDto.getId()));
-//                        }
+                        Set<Long> cardIds = new HashSet<>();
+                        for (CardDto cardDto : cardDtoList) { //Se relacionan todas las cartas del mazo al juego
+                            Card card = em.find(Card.class, cardDto.getId());
+                            if (!cardIds.add(cardDto.getId())) {
+                                System.out.println("Carta duplicada encontrada: " + cardDto.getId());
+                                continue; // Evitar añadir duplicados
+                            }
+                            if (card == null) { //Ve si el carta se encontro
+                                et.rollback();
+                                return new Respuesta(false, "No se encontró el carta asociado.", "SaveGame NoResultException");
+                            }
+                            game.getCards().add(card);
+                        }
+                        for (StackcardDto stackcardDto : stackcardDtoList) { // se relacionan todas columnas al juego
+                            Stackcard stackcard = em.find(Stackcard.class, stackcardDto.getId());
+                            if (stackcard == null) { //Ve si el carta se encontro
+                                et.rollback();
+                                return new Respuesta(false, "No se encontró el columna asociado.", "SaveGame NoResultException");
+                            }
+                            stackcard.setGame(game);
+                            game.getStackCards().add(stackcard);
+                        }
 
                     } else {
                         et.rollback();
@@ -104,7 +122,7 @@ public class GameService {
                     }
                     em.persist(game);
                 }
-                et.commit();
+                et.commit();// error
                 return new Respuesta(true, "", "", "Partida", new GameDto(game));
             }
         } catch (Exception ex) {

@@ -5,10 +5,13 @@ import cr.ac.una.project_card.model.Game;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.model.StackcardDto;
+import cr.ac.una.project_card.model.Stackcardxcard;
 import cr.ac.una.project_card.model.StackcardxcardDto;
 import cr.ac.una.project_card.service.CardService;
 import cr.ac.una.project_card.service.GameService;
 import cr.ac.una.project_card.service.PlayerService;
+import cr.ac.una.project_card.service.StackcardService;
+import cr.ac.una.project_card.service.StackcardxcardService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.ImagesUtil;
@@ -39,6 +42,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import javax.transaction.xa.Xid;
 
 /**
  * FXML Controller class
@@ -48,6 +52,7 @@ import javafx.util.Duration;
 public class CreateGameController extends Controller implements Initializable {
 
     private ImagesUtil imageUtility = new ImagesUtil();
+    Respuesta answer = new Respuesta();
     private Mensaje message = new Mensaje();
     private PlayerDto player;
     private String style;
@@ -61,14 +66,16 @@ public class CreateGameController extends Controller implements Initializable {
     private String nameGame;
     private Long difficulty;
     private Boolean lastNameValid = true;
-    
+    private Boolean hasColumns = true;
+    GameDto gameDto=new GameDto();
+
     private CardService cardService = new CardService();
     private List<CardDto> cards = new ArrayList<>(); // Mazo completo
     private List<CardDto> corazones = new ArrayList<>();
     private List<CardDto> picas = new ArrayList<>();
     private List<CardDto> treboles = new ArrayList<>();
     private List<CardDto> diamantes = new ArrayList<>();
-    private StackcardDto stackcardList1 = new StackcardDto();
+    /*private StackcardDto stackcardList1 = new StackcardDto();
     private StackcardDto stackcardList2 = new StackcardDto();
     private StackcardDto stackcardList3 = new StackcardDto();
     private StackcardDto stackcardList4 = new StackcardDto();
@@ -77,7 +84,7 @@ public class CreateGameController extends Controller implements Initializable {
     private StackcardDto stackcardList7 = new StackcardDto();
     private StackcardDto stackcardList8 = new StackcardDto();
     private StackcardDto stackcardList9 = new StackcardDto();
-    private StackcardDto stackcardList10 = new StackcardDto();
+    private StackcardDto stackcardList10 = new StackcardDto();*/
 
     @FXML
     private Button btnEasyMode;
@@ -128,37 +135,6 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionBtnStartGame(ActionEvent event) {
-        if (validatingDataBeforeStart()) {
-            Long time = 600L;
-            GameService gameService = new GameService();
-            if (difficulty == 2L) {
-                time = 992L;
-            } else if (difficulty == 3L) {
-                time = 1260L;
-            }
-
-            GameDto gameDto = new GameDto(nameGame, difficulty, time);
-            prepareGame(gameDto);
-            Respuesta answer = gameService.SaveGame(gameDto, player);
-            if (answer.getEstado()) {
-                gameDto = (GameDto) answer.getResultado("Partida");
-                Long dificultad = gameDto.getDifficulty();
-                PlayerService playerService = new PlayerService();
-                answer = playerService.getPlayerName(player.getName());
-                if (answer != null && answer.getEstado()) {
-                    this.player = (PlayerDto) answer.getResultado("Jugador");
-                    AppContext.getInstance().set("CurrentUser", player);
-                    AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
-                    FlowController.getInstance().goView("GameView");
-                }
-            } else {
-                message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
-            }
-        }
-    }
-
-    @FXML
     private void onActionBtnBack(ActionEvent event) {
         FlowController.getInstance().goView("MenuView");
     }
@@ -166,6 +142,204 @@ public class CreateGameController extends Controller implements Initializable {
     @FXML
     private void onActionBtnHowToPlay(ActionEvent event) {
         //POR IMPLEMENTAR, AGREGAR LAS INSTRUCCIONES
+    }
+
+    @FXML
+    private void onActionBtnStartGame(ActionEvent event) {
+
+        if (validatingDataBeforeStart()) { //  consultar por que solo no agarra todo el codigo
+            Long time = 600L;
+            if (difficulty == 2L) {
+                time = 992L;
+            } else if (difficulty == 3L) {
+                time = 1260L;
+            }
+
+            gameDto = new GameDto(nameGame, difficulty, time);
+            prepareGame(gameDto);
+            List<StackcardDto> columnList = mixCards();
+            List<StackcardxcardDto> stackcardDtoList = new ArrayList<>();
+
+            if (hasColumns) {
+                for (StackcardDto column : columnList) {
+                    stackcardDtoList.addAll(column.getStackCardxCards());
+                }
+                
+                StackcardxcardService stackcardxcardService = new StackcardxcardService();
+                answer = stackcardxcardService.SaveStackcardxCardList(stackcardDtoList);
+
+                if (answer.getEstado()) {
+                    GameService gameService = new GameService();
+                    answer = gameService.SaveGame(gameDto, player, cards, columnList);
+                    if (answer.getEstado()) {
+                        gameDto = (GameDto) answer.getResultado("Partida");
+                        Long dificultad = gameDto.getDifficulty();
+                        PlayerService playerService = new PlayerService();
+                        answer = playerService.getPlayerName(player.getName());
+                        if (answer != null && answer.getEstado()) {
+                            this.player = (PlayerDto) answer.getResultado("Jugador");
+                            AppContext.getInstance().set("CurrentUser", player);
+                            AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
+                            FlowController.getInstance().goView("GameView");
+                        }
+                    } else {
+                        message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
+                    }
+                } else {
+                    //mandar mensaje y mandarlo al menu de nuevo
+                }
+            }
+        }
+    }
+
+    private void prepareGame(GameDto game) {
+
+        Respuesta heartCardsAnswer = cardService.getCardType("C");
+        Respuesta diamondCardsAnswer = cardService.getCardType("D");
+        Respuesta spadeCardsAnswer = cardService.getCardType("P");
+        Respuesta clubCardsAnswer = cardService.getCardType("T");
+
+        if (heartCardsAnswer.getEstado() && diamondCardsAnswer.getEstado() && spadeCardsAnswer.getEstado() && clubCardsAnswer.getEstado()) {
+            corazones = (List<CardDto>) heartCardsAnswer.getResultado("Cartas");
+            diamantes = (List<CardDto>) diamondCardsAnswer.getResultado("Cartas");
+            picas = (List<CardDto>) spadeCardsAnswer.getResultado("Cartas");
+            treboles = (List<CardDto>) clubCardsAnswer.getResultado("Cartas");
+
+        } else {
+            message.showModal(Alert.AlertType.ERROR, "Error al cargar cartas", getStage(), "No se pudieron cargar las cartas necesarias.");
+            return;
+        }
+
+        loadCards(game);
+
+    } // primer
+
+    private void loadCards(GameDto game) {
+        try {
+            //Long difficulty = game.getDifficulty();
+            if (difficulty != 1) {
+                if (difficulty == 3) {
+                    cards.addAll(treboles);
+                    cards.addAll(diamantes);
+                }
+                while (cards.size() < 104) {
+                    List<CardDto> cardListAux = new ArrayList<>();
+                    Boolean enableSaveCards = true;
+                    for (int i = 1; i <= 13; i++) {
+                        CardDto cartaPicas = getCartaByNumber(picas, i);
+                        cardListAux.add(cartaPicas);
+
+                        CardDto cartaCorazones = getCartaByNumber(corazones, i);
+                        cardListAux.add(cartaCorazones);
+
+                        if (!(cartaCorazones != null && cartaPicas != null)) {
+                            enableSaveCards = false;
+                        }
+                    }
+                    System.out.println("seguardan las cartas: " + enableSaveCards);
+                    if (enableSaveCards) {
+                        cards.addAll(cardListAux);
+                    }
+                }
+            } else {
+                cards.addAll(picas);
+            }
+            game.setCards(cards);
+
+        } catch (Exception e) {
+            Mensaje mensaje = new Mensaje();
+            mensaje.show(Alert.AlertType.ERROR, "Dificultad nula", "La dificultad es nula");
+        }
+    } //segundo
+
+    private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
+        for (CardDto carta : tipo) {
+            if (carta.getNumber() != null && carta.getNumber() == number) {
+                return carta;
+            }
+        }
+        return null;
+    }//sexto
+
+    private List<StackcardDto> mixCards() {
+        //mezclar el mazo
+        List<StackcardDto> columnList = createColumns();
+        mixFirstCards(cards, columnList.get(0));
+        mixFirstCards(cards, columnList.get(1));
+        mixFirstCards(cards, columnList.get(2));
+        mixFirstCards(cards, columnList.get(3));
+        mixOtherCards(cards, columnList.get(4));
+        mixOtherCards(cards, columnList.get(5));
+        mixOtherCards(cards, columnList.get(6));
+        mixOtherCards(cards, columnList.get(7));
+        mixOtherCards(cards, columnList.get(8));
+        mixOtherCards(cards, columnList.get(9));
+        return columnList;
+    } // tercer
+
+    public void mixOtherCards(List<CardDto> cards, StackcardDto cardStack) {
+        if (!cards.isEmpty()) {
+            List<StackcardxcardDto> cardxcardList = new ArrayList();
+            for (int i = 0; i < 4; i++) {
+                CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
+                StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
+                newCard.setCard(selectedCard);
+                newCard.setStackCard(cardStack);
+                newCard.setPositionNumber((long) (i + 1));
+                newCard.setIsFaceUp(false);//las primeras 4 cartas en agregarse irán de espaldas
+                cardxcardList.add(newCard);
+            }
+            CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
+            StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
+            newCard.setCard(selectedCard);
+            newCard.setStackCard(cardStack);
+            newCard.setPositionNumber((long) 5);
+            newCard.setIsFaceUp(true);
+            cardxcardList.add(newCard);
+
+            cardStack.setStackCardxCards(cardxcardList);
+        }
+    }//cuarto
+
+    public void mixFirstCards(List<CardDto> cards, StackcardDto cardStack) {
+        if (!cards.isEmpty()) {
+            List<StackcardxcardDto> cardxcardList = new ArrayList();
+            for (int i = 0; i < 5; i++) {
+                CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
+                StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
+                newCard.setCard(selectedCard);
+                newCard.setStackCard(cardStack);
+                newCard.setPositionNumber((long) (i + 1));
+                newCard.setIsFaceUp(false);//las primeras 5 cartas en agregarse irán de espaldas
+                cardxcardList.add(newCard);
+            }
+            CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
+            StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
+            newCard.setCard(selectedCard);
+            newCard.setStackCard(cardStack);
+            newCard.setPositionNumber((long) 6);
+            newCard.setIsFaceUp(true);
+            cardxcardList.add(newCard);
+
+            cardStack.setStackCardxCards(cardxcardList);
+        }
+    }//quinto
+
+    public List<StackcardDto> createColumns() {
+        List<StackcardDto> columnList = new ArrayList<>();
+        StackcardService stackcardService = new StackcardService();
+        StackcardDto stackcardDto = new StackcardDto();
+        hasColumns = true;
+        for (int i = 1; i <= 11; i++) {
+            stackcardDto.setRowCardNumber(Long.valueOf(i));
+            Respuesta answer = stackcardService.SaveStackcard(stackcardDto);
+            if (answer.getEstado()) {
+                columnList.add((StackcardDto) answer.getResultado("Columna"));
+            } else {
+                hasColumns = false;
+            }
+        }
+        return columnList;
     }
 
     private Boolean validatingDataBeforeStart() {
@@ -345,7 +519,6 @@ public class CreateGameController extends Controller implements Initializable {
 //        updateStartButtonVisibility();
 //        lastNameValid = true;
 //    }
-    
     private void updateStartButtonVisibility() {
         btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null);
         System.out.println("Start button visible: " + btnStartGame.isVisible() + ", nameGame: " + nameGame + ", difficulty: " + difficulty);
@@ -394,140 +567,6 @@ public class CreateGameController extends Controller implements Initializable {
         System.out.println(hardCardBack);
     }
 
-    private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
-        for (CardDto carta : tipo) {
-            if (carta.getNumber() != null && carta.getNumber() == number) {
-                return carta;
-            }
-        }
-        return null;
-    }
-
-    public void mixFirstCards(List<CardDto> cards, StackcardDto cardStack) {
-        if (!cards.isEmpty()) {
-            List<StackcardxcardDto> cardxcardList = new ArrayList();
-            for (int i = 0; i < 5; i++) {
-                CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
-                StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
-                newCard.setCard(selectedCard);
-                newCard.setPositionNumber((long) (i + 1));
-                newCard.setIsFaceUp(false);//las primeras 5 cartas en agregarse irán de espaldas
-                cardxcardList.add(newCard);
-            }
-            CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
-            StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
-            newCard.setCard(selectedCard);
-            newCard.setPositionNumber((long) 6);
-            newCard.setIsFaceUp(true);
-            cardxcardList.add(newCard);
-
-            cardStack.setStackCardxCards(cardxcardList);
-        }
-    }
-
-    public void mixOtherCards(List<CardDto> cards, StackcardDto cardStack) {
-        if (!cards.isEmpty()) {
-            List<StackcardxcardDto> cardxcardList = new ArrayList();
-            for (int i = 0; i < 4; i++) {
-                CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
-                StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
-                newCard.setCard(selectedCard);
-                newCard.setPositionNumber((long) (i + 1));
-                newCard.setIsFaceUp(false);//las primeras 4 cartas en agregarse irán de espaldas
-                cardxcardList.add(newCard);
-            }
-            CardDto selectedCard = cards.remove(0);//saco una carta del mazo desde arriba
-            StackcardxcardDto newCard = new StackcardxcardDto();//creo una stackCardXcard
-            newCard.setCard(selectedCard);
-            newCard.setPositionNumber((long) 5);
-            newCard.setIsFaceUp(true);
-            cardxcardList.add(newCard);
-
-            cardStack.setStackCardxCards(cardxcardList);
-        }
-    }
-
-    private void mixCards() {
-        mixFirstCards(cards, stackcardList1);
-        mixFirstCards(cards, stackcardList2);
-        mixFirstCards(cards, stackcardList3);
-        mixFirstCards(cards, stackcardList4);
-        mixOtherCards(cards, stackcardList5);
-        mixOtherCards(cards, stackcardList6);
-        mixOtherCards(cards, stackcardList7);
-        mixOtherCards(cards, stackcardList8);
-        mixOtherCards(cards, stackcardList9);
-        mixOtherCards(cards, stackcardList10);
-    }
-
-    private void loadCards(GameDto game) {
-        try {
-            Long difficulty = game.getDifficulty();//parece ser que la dificultad es nula
-
-            if (difficulty != 1) {
-                if (difficulty == 3) {
-                    cards.addAll(treboles);
-                    cards.addAll(diamantes);
-                }
-                while (cards.size() < 104) {
-                    for (int i = 0; i < 13; i++) {
-                        CardDto cartaPicas = getCartaByNumber(picas, i + 1);
-                        if (cartaPicas != null) {
-                            cards.add(cartaPicas);
-                        }
-                        CardDto cartaCorazones = getCartaByNumber(corazones, i + 1);
-                        if (cartaCorazones != null) {
-                            cards.add(cartaCorazones);
-                        }
-                    }
-                }
-            } else {
-                cards.addAll(picas);
-            }
-            game.setCards(cards);
-
-        } catch (Exception e) {
-            Mensaje mensaje = new Mensaje();
-            mensaje.show(Alert.AlertType.ERROR, "Dificultad nula", "La dificultad es nula");
-        }
-    }
-
-    private void prepareGame(GameDto game) {
-        if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
-            player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
-            game = new GameDto();
-
-            GameService gameService = new GameService();
-            Respuesta answer = gameService.getGameID((Long) AppContext.getInstance().get("IdCurrentGame"));
-
-            if (answer != null && answer.getEstado()) {
-                game = (GameDto) answer.getResultado("Partida");
-                Long Dificultad = game.getDifficulty();
-                Respuesta heartCardsAnswer = cardService.getCardType("C");
-                Respuesta diamondCardsAnswer = cardService.getCardType("D");
-                Respuesta spadeCardsAnswer = cardService.getCardType("P");
-                Respuesta clubCardsAnswer = cardService.getCardType("T");
-
-                if (heartCardsAnswer.getEstado() && diamondCardsAnswer.getEstado() && spadeCardsAnswer.getEstado() && clubCardsAnswer.getEstado()) {
-                    corazones = (List<CardDto>) heartCardsAnswer.getResultado("Cartas");
-                    diamantes = (List<CardDto>) diamondCardsAnswer.getResultado("Cartas");
-                    picas = (List<CardDto>) spadeCardsAnswer.getResultado("Cartas");
-                    treboles = (List<CardDto>) clubCardsAnswer.getResultado("Cartas");
-
-                } else {
-                    message.showModal(Alert.AlertType.ERROR, "Error al cargar cartas", getStage(), "No se pudieron cargar las cartas necesarias.");
-                    return;
-                }
-
-                loadCards(game);
-            } else {
-                message.showModal(Alert.AlertType.INFORMATION, "Por favor inicie sesión", getStage(), "Para poder crear un juego es necesario iniciar sesión");
-                FlowController.getInstance().goView("MenuView");
-            }
-        }
-
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -535,32 +574,27 @@ public class CreateGameController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
-            player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
-            existingGames = player.getGameList();
-            initializeBackCardStyles(player);
+        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
+        existingGames = player.getGameList();
+        initializeBackCardStyles(player);
 
-            easyModeCard.setBackImagePath(easyCardBack);
-            mediumModeCard.setBackImagePath(mediumCardBack);
-            hardModeCard.setBackImagePath(hardCardBack);
+        easyModeCard.setBackImagePath(easyCardBack);
+        mediumModeCard.setBackImagePath(mediumCardBack);
+        hardModeCard.setBackImagePath(hardCardBack);
 
-            initialConditionsCards();
-            setupCardInteractions();
-            txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
-                nameGame = newValue.trim();
+        initialConditionsCards();
+        setupCardInteractions();
+        txfNameGame.textProperty().addListener((obs, oldValue, newValue) -> {
+            nameGame = newValue.trim();
 
-                boolean isValid;
-                if (nameGame.isEmpty()) {
-                    isValid = false;
-                } else {
-                    lastNameValid = true;
-                }
-                updateStartButtonVisibility();
-            });
-        } else {
-            message.showModal(Alert.AlertType.INFORMATION, "Por favor inicie sesión", getStage(), "Para poder crear un juego es necesario iniciar sesión");
-            FlowController.getInstance().goView("MenuView");
-        }
+            boolean isValid;
+            if (nameGame.isEmpty()) {
+                isValid = false;
+            } else {
+                lastNameValid = true;
+            }
+            updateStartButtonVisibility();
+        });
 
     }
 
@@ -640,6 +674,5 @@ public class CreateGameController extends Controller implements Initializable {
             });
         }
     }
-    
-    
+
 }

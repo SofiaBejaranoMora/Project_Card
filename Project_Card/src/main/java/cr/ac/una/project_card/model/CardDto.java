@@ -90,7 +90,7 @@ public class CardDto {
 
     @Override
     public String toString() {
-        return "CardDto{" + "number=" + number + ", type=" + type + '}';
+        return "CardDto{" + "number=" + number.get() + ", type=" + type + '}';
     }
 
     @Override

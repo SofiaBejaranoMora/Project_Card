@@ -15,6 +15,7 @@ import cr.ac.una.project_card.util.EntityManagerHelper;
 import cr.ac.una.project_card.util.Respuesta;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,11 +37,10 @@ public class StackcardxcardService {
                 et.rollback();
                 return new Respuesta(false, "Esta stackcardxCard ya existe", "SaveStackcardxCard NoResultException");
             } else {
-                
-                StackcardDto stackcardDto = stackcardxcardDto.getStackCard();
                 CardDto cardDto = stackcardxcardDto.getCard();
+                StackcardDto stackcardDto = stackcardxcardDto.getStackCard();
                 stackcardxcard = new Stackcardxcard(stackcardxcardDto);
-                
+
                 if (cardDto != null && stackcardDto != null) { // revisamos que la carta u columan al que se va a relacionar existab
                     Stackcard stackcard = em.find(Stackcard.class, stackcardDto.getId());
                     Card card = em.find(Card.class, cardDto.getId());
@@ -48,12 +48,13 @@ public class StackcardxcardService {
                     if (stackcard != null && card != null) { // revisamos si la columna y la carta se encontraron
                         card.getStackCardxCards().add(stackcardxcard);
                         stackcard.getStackCardxCards().add(stackcardxcard);
-                        
+                        stackcardxcard.setCard(card);
+                        stackcardxcard.setStackCard(stackcard);
                     } else {
                         et.rollback();
                         return new Respuesta(false, "No se encontró el jugador asociado.", "SaveGame NoResultException");
                     }
-                    
+
                 } else {
                     et.rollback();
                     return new Respuesta(false, "La columna o la carta no existe.", "SaveStackcardxCard NoResultException");
@@ -63,6 +64,56 @@ public class StackcardxcardService {
             et.commit();// para guardar en pase de datos
             return new Respuesta(true, " ", " ", "Stackcardxcard", new StackcardxcardDto(stackcardxcard));
         } catch (Exception ex) {
+            et.rollback(); // lo de vuelve como estaba antes del begin si no he hecho commit
+            Logger.getLogger(StackcardxcardService.class.getName()).log(Level.SEVERE, "Error guardando la stackcardxCard", ex);
+            return new Respuesta(false, "Error guardando la stackcardxCard.", "StackcardxCard " + ex.getMessage());
+        }
+    }
+
+    public Respuesta SaveStackcardxCardList(List<StackcardxcardDto> stackcardDtoList) {
+        try {
+            et = em.getTransaction();
+            et.begin();
+            if (stackcardDtoList.isEmpty()) {
+                et.rollback();
+                return new Respuesta(false, "La lista stackcardDtoList esta vacia", "SaveStackcardxCard NoResultException");
+            } else {
+                Stackcardxcard stackcardxcard;
+                for (StackcardxcardDto stackcardxcardDto : stackcardDtoList) {
+                    if (stackcardxcardDto.getId() != null && stackcardxcardDto.getId() > 0) {
+                        et.rollback();
+                        return new Respuesta(false, "Esta stackcardxCard ya existe: "+ stackcardxcardDto.getId(), "SaveStackcardxCard NoResultException");
+                    } else {
+                        CardDto cardDto = stackcardxcardDto.getCard();
+                        StackcardDto stackcardDto = stackcardxcardDto.getStackCard();
+                        stackcardxcard = new Stackcardxcard(stackcardxcardDto);
+
+                        if (cardDto != null && stackcardDto != null) { // revisamos que la carta u columan al que se va a relacionar existab
+                            Stackcard stackcard = em.find(Stackcard.class, stackcardDto.getId());
+                            Card card = em.find(Card.class, cardDto.getId());
+
+                            if (stackcard != null && card != null) { // revisamos si la columna y la carta se encontraron
+                                card.getStackCardxCards().add(stackcardxcard);
+                                stackcard.getStackCardxCards().add(stackcardxcard);
+                                stackcardxcard.setCard(card);
+                                stackcardxcard.setStackCard(stackcard);
+                            } else {
+                                et.rollback();
+                                return new Respuesta(false, "No se encontro la entidad de una columna o la carta a la que asociar el stackcardxcard.", "SaveStackcardxCardList NoResultException");
+                            }
+
+                        } else {
+                            et.rollback();
+                            return new Respuesta(false, "La columna o la carta no existe.", "SaveStackcardxCard NoResultException");
+                        }
+                        em.persist(stackcardxcard); // crear un registro nuevo;
+                    }
+                }
+                et.commit();// para guardar en pase de datos
+                return new Respuesta(true, " ", " ", "Stackcardxcard", null);
+            }
+        }
+        catch (Exception ex) {
             et.rollback(); // lo de vuelve como estaba antes del begin si no he hecho commit
             Logger.getLogger(StackcardxcardService.class.getName()).log(Level.SEVERE, "Error guardando la stackcardxCard", ex);
             return new Respuesta(false, "Error guardando la stackcardxCard.", "StackcardxCard " + ex.getMessage());

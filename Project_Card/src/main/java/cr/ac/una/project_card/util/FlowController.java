@@ -16,11 +16,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import cr.ac.una.project_card.controller.Controller;
+import cr.ac.una.project_card.model.Animation;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
 import io.github.palexdev.materialfx.css.themes.Themes;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 
 public class FlowController {
 
@@ -111,18 +113,22 @@ public class FlowController {
         switch (location) {
             case "Center": // esto es lo mismo para todas las partes(arriba,abajo,la izquierda y derecha)
                 Node loadedContent = loader.getRoot();
-
+                StackPane main = (StackPane) ((BorderPane) stage.getScene().getRoot()).getCenter();
                 if (loadedContent instanceof AnchorPane anchorPane) {
-                    VBox vBox = (VBox) ((BorderPane) stage.getScene().getRoot()).getCenter();
-                    vBox.getChildren().clear();
-                    vBox.getChildren().add(anchorPane);
-                    VBox.setVgrow(anchorPane, Priority.ALWAYS);
+                    VBox vBox = (VBox) main.getChildren().get(0);
+                    Animation.startTransition( (Pane) main.getChildren().get(1), () ->{
+                        vBox.getChildren().clear();
+                        vBox.getChildren().add(anchorPane);
+                        VBox.setVgrow(anchorPane, Priority.ALWAYS);
+                    });
+                   
                 } else {
-                    VBox vBox = (VBox) ((BorderPane) stage.getScene().getRoot()).getCenter();
-                    vBox.getChildren().clear();
-                    vBox.getChildren().add(loadedContent);
+                    VBox vBox = (VBox) main.getChildren().get(0);
+                    Animation.startTransition( (Pane) main.getChildren().get(1), () ->{
+                        vBox.getChildren().clear();
+                        vBox.getChildren().add(loadedContent);
+                   });
                 }
-                        
                 /*VBox vBox = ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter());
                 vBox.getChildren().clear();
                 vBox.getChildren().add(loader.getRoot());*/
@@ -154,7 +160,7 @@ public class FlowController {
         Controller controller = loader.getController();
         controller.initialize();
         Stage stage = new Stage();
-        stage.getIcons().add(new Image("cr/ac/una/taskprogramll/resources/LogoUNArojo.png"));
+        stage.getIcons().add(new Image(getClass().getResource("/cr/ac/una/project_card/resources/ProgramImages/CardsIcon.png").toExternalForm()));
         stage.setTitle(controller.getNombreVista());
         stage.setOnHidden((WindowEvent event) -> {
             controller.getStage().getScene().setRoot(new Pane());
@@ -174,7 +180,7 @@ public class FlowController {
         Controller controller = loader.getController();
         controller.initialize();
         Stage stage = new Stage();
-        stage.getIcons().add(new Image("cr/ac/una/taskprogramll/resources/LogoUNArojo.png"));
+        stage.getIcons().add(new Image(getClass().getResource("/cr/ac/una/project_card/resources/ProgramImages/CardsIcon.png").toExternalForm()));
         stage.setTitle(controller.getNombreVista());
         stage.setResizable(resizable);
         stage.setOnHidden((WindowEvent event) -> {

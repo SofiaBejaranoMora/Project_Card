@@ -1,17 +1,13 @@
 package cr.ac.una.project_card.controller;
 
-import cr.ac.una.project_card.model.Game;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.util.AppContext;
-import io.github.palexdev.materialfx.utils.FXCollectors;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
@@ -20,7 +16,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.TextAlignment;
 
 /** * * @author ashly */
 public class UserStatisticController extends Controller implements Initializable {

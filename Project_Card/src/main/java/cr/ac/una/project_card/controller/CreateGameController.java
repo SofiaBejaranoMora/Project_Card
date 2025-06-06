@@ -393,8 +393,8 @@ public class CreateGameController extends Controller implements Initializable {
         hardCardBack = "3" + style;
         System.out.println(hardCardBack);
     }
-    
-        private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
+
+    private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
         for (CardDto carta : tipo) {
             if (carta.getNumber() != null && carta.getNumber() == number) {
                 return carta;
@@ -402,7 +402,8 @@ public class CreateGameController extends Controller implements Initializable {
         }
         return null;
     }
-        public void mixFirstCards(List<CardDto> cards, StackcardDto cardStack) {
+
+    public void mixFirstCards(List<CardDto> cards, StackcardDto cardStack) {
         if (!cards.isEmpty()) {
             List<StackcardxcardDto> cardxcardList = new ArrayList();
             for (int i = 0; i < 5; i++) {
@@ -445,8 +446,6 @@ public class CreateGameController extends Controller implements Initializable {
             cardStack.setStackCardxCards(cardxcardList);
         }
     }
-    
-    
 
     private void mixCards() {
         mixFirstCards(cards, stackcardList1);
@@ -461,8 +460,6 @@ public class CreateGameController extends Controller implements Initializable {
         mixOtherCards(cards, stackcardList10);
     }
 
-
-    
     private void loadCards(GameDto game) {
         try {
             Long difficulty = game.getDifficulty();//parece ser que la dificultad es nula
@@ -494,7 +491,7 @@ public class CreateGameController extends Controller implements Initializable {
             mensaje.show(Alert.AlertType.ERROR, "Dificultad nula", "La dificultad es nula");
         }
     }
-    
+
     private void prepareGame(GameDto game) {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
@@ -531,7 +528,6 @@ public class CreateGameController extends Controller implements Initializable {
 
     }
 
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

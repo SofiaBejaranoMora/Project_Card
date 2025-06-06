@@ -24,7 +24,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         FlowController.getInstance().InitializeFlow(stage, null);
         Font.loadFont(App.class.getResourceAsStream("/cr/ac/una/project_card/resources/ProgramFonts/FredokaOne-Regular.ttf"), 12);
-        scene = new Scene(loadFXML("PrincipalView"), 600, 400);
+        scene = new Scene(loadFXML("PrincipalView"), 800, 500);
         MFXThemeManager.addOn(scene,Themes.DEFAULT,Themes.LEGACY);
         stage.setTitle("Solitario WiashlyCreations");
         stage.getIcons().add(new Image(getClass().getResource("/cr/ac/una/project_card/resources/ProgramImages/CardsIcon.png").toExternalForm()));

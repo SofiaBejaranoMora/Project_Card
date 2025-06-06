@@ -37,6 +37,20 @@ public class ImagesUtil {
         }
     }
 
+        public static String getCardPath(String style, String id) {
+        try {
+            String path = BASE_PATH + "ProgramImages/Cards/" + style + id + ".png";
+            if (ImagesUtil.class.getResource(path) == null) {
+                System.err.println("No se encontró la imagen en formato PNG" + id);
+                return null;
+            }
+            return ImagesUtil.class.getResource(path).toExternalForm();
+        } catch (Exception e) {
+            System.err.println("Error cargando imagen " + id + ": " + e.getMessage());
+            return null;
+        }
+    }
+        
     public static String getAchievement(String nameAchievement) {
         try {
             String path = BASE_PATH + "Achievements/" + nameAchievement + ".png";

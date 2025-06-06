@@ -152,11 +152,11 @@ public class GameController extends Controller implements Initializable {
     
     private void loadGame() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
+            Long gameId = (Long) AppContext.getInstance().get("IdCurrentGame");
             AppContext.getInstance().set("IdCurrentGame", null);//limpio el appcontext
 
             player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
             GameService gameService = new GameService();
-            Long gameId = (Long) AppContext.getInstance().get("IdCurrentGame");
 
             if (gameId != null) {
                 Respuesta answer = gameService.getGameID(gameId);
@@ -228,23 +228,13 @@ public class GameController extends Controller implements Initializable {
         return space;
     }
     
-    private String setupStyle() {
-        switch (player.getCardStyle()) {
-            case 1L -> {
-                return style + "N/";
-            }
-            case 2L -> {
-                return style + "M/";
-            }
-            case 3L -> {
-                return style + "V/";
-            }
-            default -> {
-                return style + "N/";
-            }
-        }
-    }
-    
+private String setupStyle() {
+    Long styleType = player.getCardStyle();
+    if (styleType.equals(2L)) return style + "M/";
+    else if (styleType.equals(3L)) return style + "V/";
+    else return style + "N/";
+}
+
     private void setupBackground(String rute) {
         BackgroundImage backgroundImage = new BackgroundImage(new Image(rute),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -268,11 +258,11 @@ public class GameController extends Controller implements Initializable {
             String rute = ImagesUtil.getBackground((String) AppContext.getInstance().get("Background"));
             setupBackground(rute);
         }
-        for(Node node: hBxBoard.getChildren()){
-            if(node instanceof VBox){
-                columns.add((VBox) node);
-            }
-        }
+//        for(Node node: hBxBoard.getChildren()){
+//            if(node instanceof VBox){
+//                columns.add((VBox) node);
+//            }
+//        }
     }
 
 }

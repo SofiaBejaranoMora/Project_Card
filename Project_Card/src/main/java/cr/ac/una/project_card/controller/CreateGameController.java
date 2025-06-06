@@ -345,6 +345,7 @@ public class CreateGameController extends Controller implements Initializable {
 //        updateStartButtonVisibility();
 //        lastNameValid = true;
 //    }
+    
     private void updateStartButtonVisibility() {
         btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null);
         System.out.println("Start button visible: " + btnStartGame.isVisible() + ", nameGame: " + nameGame + ", difficulty: " + difficulty);

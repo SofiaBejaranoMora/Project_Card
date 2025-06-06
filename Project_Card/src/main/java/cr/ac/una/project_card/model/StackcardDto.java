@@ -4,6 +4,7 @@
  */
 package cr.ac.una.project_card.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,6 +21,7 @@ public class StackcardDto {
     public StackcardDto() {
         this.id = new SimpleStringProperty("");
         this.rowCardNumber = new SimpleStringProperty("");
+        this.stackCardxCards = new ArrayList<>();
     }
 
     public StackcardDto(Stackcard stackcard) {

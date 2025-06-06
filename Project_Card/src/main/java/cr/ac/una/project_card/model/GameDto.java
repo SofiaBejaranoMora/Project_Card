@@ -4,6 +4,7 @@
  */
 package cr.ac.una.project_card.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javafx.beans.property.SimpleStringProperty;
@@ -33,6 +34,8 @@ public class GameDto {
         this.score = new SimpleStringProperty("");
         this.hasWon = new SimpleStringProperty("");
         this.difficulty = new SimpleStringProperty("");
+        this.cards = new ArrayList<>();
+        this.stackCards = new ArrayList<>();
     }
     
     public GameDto(String name, Long difficulty, Long time){

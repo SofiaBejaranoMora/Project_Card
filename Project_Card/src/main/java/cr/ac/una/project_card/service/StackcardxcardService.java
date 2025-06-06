@@ -4,10 +4,17 @@
  */
 package cr.ac.una.project_card.service;
 
+import cr.ac.una.project_card.util.EntityManagerHelper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+
 /**
  *
  * @author sofia
  */
 public class StackcardxcardService {
+
+    private EntityManager em = EntityManagerHelper.getInstance().getManager();
+    private EntityTransaction et;
     
 }

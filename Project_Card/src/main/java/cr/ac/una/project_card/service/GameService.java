@@ -61,7 +61,7 @@ public class GameService {
         }
     }
 
-    public Respuesta SaveGame(GameDto gameDto, PlayerDto playerDto/*, List<CardDto> cardDtoList , Lis<columnas> stackCardDtoList*/ ) {
+    public Respuesta SaveGame(GameDto gameDto, PlayerDto playerDto/*, List<CardDto> cardDtoList */ ) {
         try {
             et = em.getTransaction();
             et.begin();

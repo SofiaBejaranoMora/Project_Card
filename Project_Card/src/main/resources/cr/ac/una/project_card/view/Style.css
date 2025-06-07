@@ -277,6 +277,13 @@
     -fx-padding: 15px;
 }
 
+.chart-label {
+    -fx-fill: white; /* Color del texto dentro de los gráficos */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+
 #pctGamesData.chart .chart-title,
 #bctPlayGames .chart-title {
     -fx-text-fill: white;

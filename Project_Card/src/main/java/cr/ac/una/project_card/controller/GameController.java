@@ -60,6 +60,7 @@ public class GameController extends Controller implements Initializable {
     private CardService cardService = new CardService();
     private String style;
     private ColorAdjust colorAdjust = new ColorAdjust();
+    private MouseEvent mouse;
 
     // Listas de cartas por tipo
     private List<CardDto> corazones = new ArrayList<>();
@@ -160,7 +161,7 @@ public class GameController extends Controller implements Initializable {
             }
         }
     }
-
+    
     public Boolean enableAddingCardsColumns() {
         for (VBox currentVBox : columns) {
             if (currentVBox.getChildren().isEmpty()) {
@@ -247,6 +248,15 @@ public class GameController extends Controller implements Initializable {
         return null;
     }
 
+    private List<Pane> laderCards(Pane selected) {
+        List<Pane> laderList = new ArrayList<>();
+        VBox parent = (VBox) selected.getParent();
+        for (int i = parent.getChildren().indexOf(selected); i < parent.getChildren().size(); i++) {
+            laderList.add((Pane) parent.getChildren().get(i));
+        }
+        return laderList;
+    }
+    
     public void setupBoard() { //Alistará el tablero completo para el modo de juego
         Platform.runLater(() -> {
             for (int i = 0; i < 10; i++) {
@@ -276,10 +286,49 @@ public class GameController extends Controller implements Initializable {
             rute = ImagesUtil.getBackCardPath(setupStyle());
             card.setImage(new Image(rute));
         }
+        ImageView copyCard = new ImageView(card.getImage());
 
         card.fitWidthProperty().bind(width);
         card.setPreserveRatio(true);
         space.getChildren().add(card);
+        copyCard.setFitWidth(card.getImage().getWidth() * 0.065);
+        copyCard.setFitHeight(card.getImage().getHeight() * 0.065);
+        copyCard.setOpacity(1.0);
+
+        space.setOnMousePressed(pressEvent -> {
+            System.out.println("Entro en click");
+            root.getChildren().add(copyCard);
+            copyCard.setLayoutX(card.getLayoutX());
+            copyCard.setLayoutY(card.getLayoutY());
+            List<Pane> laderList = laderCards(space);
+            for (Pane pane : laderList) {
+                pane.setVisible(false);
+            }
+
+            space.setOnMouseDragged(dragEvent -> {
+                System.out.println("Hello drag");
+                copyCard.setLayoutX(dragEvent.getSceneX() - copyCard.getFitWidth() / 2);
+                copyCard.setLayoutY(dragEvent.getSceneY() - copyCard.getFitHeight() / 2);
+            });
+
+            space.setOnMouseReleased(releaseEvent -> {
+                System.out.println("Bye drag");
+                Point2D mousePosition = new Point2D(releaseEvent.getSceneX(), releaseEvent.getSceneY());
+                VBox currentColumn = getColumn(mousePosition);
+                //Método de movimientos validos
+                if (true && currentColumn != null) {
+                    VBox actualColumn = (VBox) space.getParent();
+                    for (Pane pane : laderList) {
+                    actualColumn.getChildren().remove(pane);
+                    currentColumn.getChildren().add(pane);
+                    }
+                }
+                root.getChildren().remove(copyCard);
+                for (Pane pane : laderList) {
+                    pane.setVisible(true);
+                }
+            });
+        });
         return space;
     }
 
@@ -294,6 +343,20 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
+    private void setupCardEvent(MouseEvent event) {
+        Point2D ubication = new Point2D(event.getX(), event.getY());
+        VBox currentColumn = getColumn(ubication);
+        Pane cardPane = new Pane();
+        for (Node node : currentColumn.getChildren()) {
+            if (node instanceof Pane) {
+                cardPane = (Pane) node;
+                if(cardPane.getChildren().get(0) instanceof  ImageView){
+                    ImageView cardImage = (ImageView) cardPane.getChildren().get(0);
+                }
+            }                
+        }
+    }
+    
     private void setupBackground(String rute) { //Manipula la ruta que del fondo para adecuarla al anchorpane
         BackgroundImage backgroundImage = new BackgroundImage(new Image(rute),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -325,6 +388,8 @@ public class GameController extends Controller implements Initializable {
                 columns.add((VBox) node);
             }
         }
+//        mouse.getEventType();
+//        setupCardEvent(mouse);
     }
 
 }

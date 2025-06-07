@@ -75,7 +75,7 @@
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin></ImageView>
-                  <HBox fx:id="hBoxSuits" alignment="CENTER" prefHeight="85.0" prefWidth="459.0" spacing="3.0" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
+                  <HBox fx:id="hBoxSuits" alignment="CENTER_RIGHT" prefHeight="85.0" prefWidth="459.0" spacing="5.0" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
                      <children>
                         <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
                         <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
@@ -84,7 +84,10 @@
                         <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
                         <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
                         <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
-                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin></ImageView>
                      </children>
                   </HBox>
                </children>

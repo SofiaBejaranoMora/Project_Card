@@ -8,6 +8,8 @@ import cr.ac.una.project_card.model.Player;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.model.Stackcard;
 import cr.ac.una.project_card.model.StackcardDto;
+import cr.ac.una.project_card.model.Stackcardxcard;
+import cr.ac.una.project_card.model.StackcardxcardDto;
 import cr.ac.una.project_card.util.EntityManagerHelper;
 import cr.ac.una.project_card.util.Respuesta;
 import jakarta.persistence.EntityManager;
@@ -15,6 +17,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.Query;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,7 +36,22 @@ public class GameService {
         try {
             Query qryGame = em.createNamedQuery("Game.findById", Game.class);
             qryGame.setParameter("id", id);
-            GameDto gameDto = new GameDto((Game) qryGame.getSingleResult());
+            Game game  =(Game) qryGame.getSingleResult();
+            GameDto gameDto = new GameDto(game);
+            List<StackcardDto> stackcardDtoList= new ArrayList<>();
+            for (Card card : game.getCards()) {
+                gameDto.getCards().add(new CardDto(card));
+            }
+            for (Stackcard stackcard: game.getStackCards()){
+                List<StackcardxcardDto> stackcardxcardDtoList=new ArrayList<>();
+                for(Stackcardxcard stackcardxcard: stackcard.getStackCardxCards()){
+                    stackcardxcardDtoList.add(new StackcardxcardDto(stackcardxcard));
+                }
+                StackcardDto stackcardDto= new StackcardDto(stackcard);
+                stackcardDto.setStackCardxCards(stackcardxcardDtoList);
+                stackcardDtoList.add(stackcardDto);
+            }
+            gameDto.setStackCards(stackcardDtoList);
             return new Respuesta(true, "", "", "Partida", gameDto);
         } catch (NoResultException ex) {
             return new Respuesta(false, "No existe una partida con el id ingresado.", "getGameID NoResultException");
@@ -93,13 +111,8 @@ public class GameService {
                         }
                         player.getGames().add(game);
                         game.setPlayer(player);
-                        Set<Long> cardIds = new HashSet<>();
                         for (CardDto cardDto : cardDtoList) { //Se relacionan todas las cartas del mazo al juego
                             Card card = em.find(Card.class, cardDto.getId());
-                            if (!cardIds.add(cardDto.getId())) {
-                                System.out.println("Carta duplicada encontrada: " + cardDto.getId());
-                                continue; // Evitar añadir duplicados
-                            }
                             if (card == null) { //Ve si el carta se encontro
                                 et.rollback();
                                 return new Respuesta(false, "No se encontró el carta asociado.", "SaveGame NoResultException");

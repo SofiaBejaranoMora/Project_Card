@@ -5,7 +5,6 @@ import cr.ac.una.project_card.model.Game;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.model.StackcardDto;
-import cr.ac.una.project_card.model.Stackcardxcard;
 import cr.ac.una.project_card.model.StackcardxcardDto;
 import cr.ac.una.project_card.service.CardService;
 import cr.ac.una.project_card.service.GameService;
@@ -14,19 +13,16 @@ import cr.ac.una.project_card.service.StackcardService;
 import cr.ac.una.project_card.service.StackcardxcardService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
+import cr.ac.una.project_card.util.Formato;
 import cr.ac.una.project_card.util.ImagesUtil;
 import cr.ac.una.project_card.util.Mensaje;
 import cr.ac.una.project_card.util.Respuesta;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
@@ -42,7 +38,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import javax.transaction.xa.Xid;
 
 /**
  * FXML Controller class
@@ -67,7 +62,7 @@ public class CreateGameController extends Controller implements Initializable {
     private Long difficulty;
     private Boolean lastNameValid = true;
     private Boolean hasColumns = true;
-    GameDto gameDto=new GameDto();
+    GameDto gameDto = new GameDto();
 
     private CardService cardService = new CardService();
     private List<CardDto> cards = new ArrayList<>(); // Mazo completo
@@ -75,16 +70,6 @@ public class CreateGameController extends Controller implements Initializable {
     private List<CardDto> picas = new ArrayList<>();
     private List<CardDto> treboles = new ArrayList<>();
     private List<CardDto> diamantes = new ArrayList<>();
-    /*private StackcardDto stackcardList1 = new StackcardDto();
-    private StackcardDto stackcardList2 = new StackcardDto();
-    private StackcardDto stackcardList3 = new StackcardDto();
-    private StackcardDto stackcardList4 = new StackcardDto();
-    private StackcardDto stackcardList5 = new StackcardDto();
-    private StackcardDto stackcardList6 = new StackcardDto();
-    private StackcardDto stackcardList7 = new StackcardDto();
-    private StackcardDto stackcardList8 = new StackcardDto();
-    private StackcardDto stackcardList9 = new StackcardDto();
-    private StackcardDto stackcardList10 = new StackcardDto();*/
 
     @FXML
     private Button btnEasyMode;
@@ -146,8 +131,7 @@ public class CreateGameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnStartGame(ActionEvent event) {
-
-        if (validatingDataBeforeStart()) { //  consultar por que solo no agarra todo el codigo
+        if (validatingDataBeforeStart()) {
             Long time = 600L;
             if (difficulty == 2L) {
                 time = 992L;
@@ -164,7 +148,7 @@ public class CreateGameController extends Controller implements Initializable {
                 for (StackcardDto column : columnList) {
                     stackcardDtoList.addAll(column.getStackCardxCards());
                 }
-                
+
                 StackcardxcardService stackcardxcardService = new StackcardxcardService();
                 answer = stackcardxcardService.SaveStackcardxCardList(stackcardDtoList);
 
@@ -216,7 +200,6 @@ public class CreateGameController extends Controller implements Initializable {
 
     private void loadCards(GameDto game) {
         try {
-            //Long difficulty = game.getDifficulty();
             if (difficulty != 1) {
                 if (difficulty == 3) {
                     cards.addAll(treboles);
@@ -252,10 +235,12 @@ public class CreateGameController extends Controller implements Initializable {
         }
     } //segundo
 
-    private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
-        for (CardDto carta : tipo) {
-            if (carta.getNumber() != null && carta.getNumber() == number) {
-                return carta;
+    private CardDto getCartaByNumber(List<CardDto> type, int number) {
+        for (CardDto cardDto : type) {
+            if (cardDto.getNumber() != null && cardDto.getNumber() == number) {
+                CardDto cardResultDto =cardDto;
+                type.remove(cardDto);
+                return cardResultDto;
             }
         }
         return null;
@@ -264,16 +249,14 @@ public class CreateGameController extends Controller implements Initializable {
     private List<StackcardDto> mixCards() {
         //mezclar el mazo
         List<StackcardDto> columnList = createColumns();
-        mixFirstCards(cards, columnList.get(0));
-        mixFirstCards(cards, columnList.get(1));
-        mixFirstCards(cards, columnList.get(2));
-        mixFirstCards(cards, columnList.get(3));
-        mixOtherCards(cards, columnList.get(4));
-        mixOtherCards(cards, columnList.get(5));
-        mixOtherCards(cards, columnList.get(6));
-        mixOtherCards(cards, columnList.get(7));
-        mixOtherCards(cards, columnList.get(8));
-        mixOtherCards(cards, columnList.get(9));
+        for (int i = 0; i < 10; i++) {
+            if(i<4){
+                mixFirstCards(cards, columnList.get(i));
+            }
+            else{
+                mixOtherCards(cards, columnList.get(i));
+            }
+        }
         return columnList;
     } // tercer
 
@@ -569,7 +552,7 @@ public class CreateGameController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        txfNameGame.delegateSetTextFormatter(Formato.getInstance().letrasFormat(20));
     }
 
     @Override

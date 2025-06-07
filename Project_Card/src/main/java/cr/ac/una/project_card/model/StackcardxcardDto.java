@@ -26,6 +26,8 @@ public class StackcardxcardDto {
         this.id.set(stackcardxcard.toString());
         this.isFaceUp.set(stackcardxcard.getIsFaceUp().equals("T"));
         this.positionNumber.set(stackcardxcard.getPositionNumber().toString());
+        this.card=new CardDto(stackcardxcard.getCard());
+        this.stackCard=new StackcardDto(stackcardxcard.getStackCard());
         this.version = stackcardxcard.getVersion();
     }
 

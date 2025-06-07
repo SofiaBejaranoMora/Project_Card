@@ -85,32 +85,8 @@ public class AchievementsController extends Controller implements Initializable 
     private void onActionBtnStatistics(ActionEvent event) {
         FlowController.getInstance().goView("UserStatisticView");
     }
-
-    private void onActionBtnSearchAchievementNotObtainedName(ActionEvent event) {
-        if ((txtSearchNotObtainedAchievementsName != null) && !txtSearchNotObtainedAchievementsName.getText().isBlank()) {
-            cmbSearchAchievementObtainedType.setValue("Todos");
-            // traer del service la lista y si es solo 1 sacamos el tipo que es y lo colocamos en set value
-            if (achievementNotObtainedList.size() == 1) {
-                cmbSearchNotObtainedAchievementType.setValue(achievementNotObtainedList.get(0).getType());
-            }
-        } else {
-            message.showModal(Alert.AlertType.INFORMATION, "¡Oops! ¿Y qué buscamos?", getStage(), "Aún no escribiste un nombre ni elegiste un tipo. Así no hay mucho que investigar...\nDale, elige algo y pongamos a trabajar la lupa");
-        }
-    }
-
-    private void onActionBtnSearchAchievementObtainedName(ActionEvent event) {
-        if ((txtSearchNameAchievementObtained != null) && !txtSearchNameAchievementObtained.getText().isBlank()) {
-            cmbSearchAchievementObtainedType.setValue("Todos");
-            // traer del service la lista y si es solo 1 sacamos el tipo que es y lo colocamos en set value
-            if (achievementObtainedList.size() == 1) {
-                cmbSearchAchievementObtainedType.setValue(achievementObtainedList.get(0).getType());
-            }
-        } else {
-            message.showModal(Alert.AlertType.INFORMATION, "¡Oops! ¿Y qué buscamos?", getStage(), "Aún no escribiste un nombre ni elegiste un tipo. Así no hay mucho que investigar...\nDale, elige algo y pongamos a trabajar la lupa");
-        }
-    }
-
-    @FXML
+    
+        @FXML
     private void onActionBtnSearchAchievementNotObtained(ActionEvent event) {
         String selectionType = cmbSearchNotObtainedAchievementType.getValue();
         String name = txtSearchNotObtainedAchievementsName.getText();
@@ -143,6 +119,30 @@ public class AchievementsController extends Controller implements Initializable 
                 this.achievementObtainedList = (List<AchievementDto>) answer.getResultado("Logro");
                 Loadachievement(achievementObtainedList, vBoxAchievementsObtained, 0.0);
             }
+        }
+    }
+
+    private void onActionBtnSearchAchievementNotObtainedName(ActionEvent event) {
+        if ((txtSearchNotObtainedAchievementsName != null) && !txtSearchNotObtainedAchievementsName.getText().isBlank()) {
+            cmbSearchAchievementObtainedType.setValue("Todos");
+            // traer del service la lista y si es solo 1 sacamos el tipo que es y lo colocamos en set value
+            if (achievementNotObtainedList.size() == 1) {
+                cmbSearchNotObtainedAchievementType.setValue(achievementNotObtainedList.get(0).getType());
+            }
+        } else {
+            message.showModal(Alert.AlertType.INFORMATION, "¡Oops! ¿Y qué buscamos?", getStage(), "Aún no escribiste un nombre ni elegiste un tipo. Así no hay mucho que investigar...\nDale, elige algo y pongamos a trabajar la lupa");
+        }
+    }
+
+    private void onActionBtnSearchAchievementObtainedName(ActionEvent event) {
+        if ((txtSearchNameAchievementObtained != null) && !txtSearchNameAchievementObtained.getText().isBlank()) {
+            cmbSearchAchievementObtainedType.setValue("Todos");
+            // traer del service la lista y si es solo 1 sacamos el tipo que es y lo colocamos en set value
+            if (achievementObtainedList.size() == 1) {
+                cmbSearchAchievementObtainedType.setValue(achievementObtainedList.get(0).getType());
+            }
+        } else {
+            message.showModal(Alert.AlertType.INFORMATION, "¡Oops! ¿Y qué buscamos?", getStage(), "Aún no escribiste un nombre ni elegiste un tipo. Así no hay mucho que investigar...\nDale, elige algo y pongamos a trabajar la lupa");
         }
     }
 

@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -62,17 +65,6 @@ public class GameController extends Controller implements Initializable {
     private List<CardDto> treboles = new ArrayList<>();
     private List<CardDto> diamantes = new ArrayList<>();
     private Boolean isBigScreen = false;
-
-//    StackcardDto stackcardList1 = new StackcardDto();
-//    StackcardDto stackcardList2 = new StackcardDto();
-//    StackcardDto stackcardList3 = new StackcardDto();
-//    StackcardDto stackcardList4 = new StackcardDto(); // Hasta aquí llevan 5 cartas de espaldas y la última de frente
-//    StackcardDto stackcardList5 = new StackcardDto();
-//    StackcardDto stackcardList6 = new StackcardDto();
-//    StackcardDto stackcardList7 = new StackcardDto();
-//    StackcardDto stackcardList8 = new StackcardDto();
-//    StackcardDto stackcardList9 = new StackcardDto();
-//    StackcardDto stackcardList10 = new StackcardDto();
     private List<StackcardDto> allStacks = new ArrayList<>();
 
     @FXML
@@ -207,19 +199,25 @@ public class GameController extends Controller implements Initializable {
         return null;
     }
        
-    private void setupBoard() { //Alistará el tablero completo para el modo de juego
-        for (int i = 0; i < 10; i++) {
-            columns.get(i).getChildren().clear();   //Limpia las columnas en caso de que existan cartas previas
-            for(StackcardxcardDto stackDto : allStacks.get(i).getStackCardxCards()) {
-                columns.get(i).getChildren().add(setupCard(stackDto.getIsFaceUp(), stackDto.getCard()));    //Da la carta en un pane para los VBox
+    public void setupBoard() { //Alistará el tablero completo para el modo de juego
+        Platform.runLater(() -> {
+            for (int i = 0; i < 10; i++) {
+                columns.get(i).getChildren().clear();   //Limpia las columnas en caso de que existan cartas previas
+                for (StackcardxcardDto stackDto : allStacks.get(i).getStackCardxCards()) {
+                    columns.get(i).getChildren().add(setupCard(stackDto.getIsFaceUp(), stackDto.getCard()));    //Da la carta en un pane para los VBox
+                }
             }
-        }
+        });
     }
     
     private Pane setupCard(Boolean isFaceUp, CardDto cardDto) { //Se encarga de generar automaticamente las carta en columnas
         Pane space = new Pane();
-        space.prefWidthProperty().bind(columns.get(0).widthProperty()); //Es para agarrar el ancho de un 
-        space.prefHeightProperty().bind(space.widthProperty().divide(3));
+        DoubleProperty width = new SimpleDoubleProperty();
+        width.bind(columns.get(0).widthProperty());
+        DoubleProperty height = new SimpleDoubleProperty();
+        height.bind(width.divide(3));
+        space.prefWidthProperty().bind(width);  //Es para agarrar el ancho de un 
+        space.prefHeightProperty().bind(height);
         
         ImageView card = new ImageView();
         String rute;
@@ -231,7 +229,7 @@ public class GameController extends Controller implements Initializable {
             card.setImage(new Image(rute));
         }
         
-        card.fitWidthProperty().bind(columns.get(0).widthProperty());
+        card.fitWidthProperty().bind(width);
         card.setPreserveRatio(true);
         space.getChildren().add(card);
         return space;
@@ -277,7 +275,6 @@ public class GameController extends Controller implements Initializable {
                 columns.add((VBox) node);
             }
         }
-        setupBoard();
     }
 
 }

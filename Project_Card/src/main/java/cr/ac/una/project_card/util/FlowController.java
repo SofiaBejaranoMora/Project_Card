@@ -16,6 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import cr.ac.una.project_card.controller.Controller;
+import cr.ac.una.project_card.controller.GameController;
 import cr.ac.una.project_card.model.Animation;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
 import io.github.palexdev.materialfx.css.themes.Themes;
@@ -117,6 +118,10 @@ public class FlowController {
                 if (loadedContent instanceof AnchorPane anchorPane) {
                     VBox vBox = (VBox) main.getChildren().get(0);
                     Animation.startTransition( (Pane) main.getChildren().get(1), () ->{
+                        if(viewName.equals("GameView")) {
+                            GameController game = (GameController) FlowController.getInstance().getController("GameView");
+                            game.setupBoard();
+                        }
                         vBox.getChildren().clear();
                         vBox.getChildren().add(anchorPane);
                         VBox.setVgrow(anchorPane, Priority.ALWAYS);

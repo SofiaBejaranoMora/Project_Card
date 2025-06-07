@@ -252,7 +252,6 @@ public class CreateGameController extends Controller implements Initializable {
                             enableSaveCards = false;
                         }
                     }
-                    System.out.println("seguardan las cartas: " + enableSaveCards);
                     if (enableSaveCards) {
                         cards.addAll(cardListAux);
                     }
@@ -568,7 +567,7 @@ public class CreateGameController extends Controller implements Initializable {
         hardModeCard.setIsFlipped(true);
         easyModeCard.updateImageView(mgvEasyMode);
         mediumModeCard.updateImageView(mgvMediumMode);
-        mediumModeCard.updateImageView(mgvHardMode);
+        hardModeCard.updateImageView(mgvHardMode);
     }
 
     private void initializeBackCardStyles(PlayerDto player) {
@@ -585,11 +584,8 @@ public class CreateGameController extends Controller implements Initializable {
         }
 
         easyCardBack = "1" + style;
-        System.out.println(easyCardBack);
         mediumCardBack = "2" + style;
-        System.out.println(mediumCardBack);
         hardCardBack = "3" + style;
-        System.out.println(hardCardBack);
     }
 
     @Override

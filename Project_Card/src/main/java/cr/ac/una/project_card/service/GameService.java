@@ -50,6 +50,7 @@ public class GameService {
                     stackcardxcardDtoList.add(new StackcardxcardDto(stackcardxcard));
                 }
                 StackcardDto stackcardDto= new StackcardDto(stackcard);
+                Collections.sort(stackcardxcardDtoList, Comparator.comparing(StackcardxcardDto::getPositionNumber));
                 stackcardDto.setStackCardxCards(stackcardxcardDtoList);
                 stackcardDtoList.add(stackcardDto);
             }

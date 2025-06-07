@@ -21,6 +21,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
@@ -247,7 +248,9 @@ public class CreateGameController extends Controller implements Initializable {
     }//sexto
 
     private List<StackcardDto> mixCards() {
-        //mezclar el mazo
+     
+        Collections.shuffle(cards); // Mezcla la lista de manera ramdon
+        
         List<StackcardDto> columnList = createColumns();
         for (int i = 0; i < 10; i++) {
             if(i<4){

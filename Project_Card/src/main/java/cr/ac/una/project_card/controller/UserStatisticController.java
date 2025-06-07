@@ -139,6 +139,7 @@ public class UserStatisticController extends Controller implements Initializable
         bctPlayGames.getData().clear();
         bctPlayGames.getData().add(series);
     }
+    
     private void configureFirstTab(){
         configurePastelGraphic();
         configureVictoriesPercentage();

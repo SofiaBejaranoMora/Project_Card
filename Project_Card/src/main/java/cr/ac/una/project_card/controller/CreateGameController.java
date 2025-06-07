@@ -167,6 +167,7 @@ public class CreateGameController extends Controller implements Initializable {
                             this.player = (PlayerDto) answer.getResultado("Jugador");
                             AppContext.getInstance().set("CurrentUser", player);
                             AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
+                            cleanView();
                             FlowController.getInstance().goView("GameView");
                         }
                     } else {
@@ -565,6 +566,7 @@ public class CreateGameController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cleanView();
         txfNameGame.delegateSetTextFormatter(Formato.getInstance().letrasFormat(20));
     }
 

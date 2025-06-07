@@ -17,6 +17,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,15 +30,35 @@ public class PlayerService {
 
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
-    
-        public Respuesta getPlayerId(Long id) {
+
+    public Respuesta loadAllPlayer() {
+        try {
+            Query qryPlayer = em.createNamedQuery("Achievement.findAll", Achievement.class);
+            List<Player> playerList = qryPlayer.getResultList();
+            List<PlayerDto> playerDtoList = new ArrayList<>();
+            for (Player player : playerList) {
+                playerDtoList.add(new PlayerDto(player));
+            }
+            return new Respuesta(true, " ", " ", "jugadores", playerDtoList);
+        } catch (NoResultException ex) {
+            return new Respuesta(false, "No existen jugadores.", "NoResultException/loadAllPlayer");
+        } catch (Exception ex) {
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error obteniendo los jugadores", ex);
+            return new Respuesta(false, "Error obtener jugadores.", "loadAllPlayer" + ex.getMessage());
+        }
+    }
+
+    public Respuesta getPlayerId(Long id) {
         try {
             Query qryPlayer = em.createNamedQuery("Player.findById", Player.class);
             qryPlayer.setParameter("id", id);
             Player player = (Player) qryPlayer.getSingleResult();
             PlayerDto playerDto = new PlayerDto(player);
+            Long accumulatedPointPlayer= 0L;
             for (Game game : player.getGames()) {
-                playerDto.getGameList().add(new GameDto(game));
+                GameDto gameDto=new GameDto(game);
+                accumulatedPointPlayer+=gameDto.getScore();
+                playerDto.getGameList().add(gameDto);
             }
             for (Achievement achievement : player.getAchievements()) {
                 playerDto.getAchievementList().add(new AchievementDto(achievement));
@@ -60,8 +81,11 @@ public class PlayerService {
             qryPlayer.setParameter("name", name);
             Player player = (Player) qryPlayer.getSingleResult();
             PlayerDto playerDto = new PlayerDto(player);
+            Long accumulatedPointPlayer= 0L;
             for (Game game : player.getGames()) {
-                playerDto.getGameList().add(new GameDto(game));
+                GameDto gameDto=new GameDto(game);
+                accumulatedPointPlayer+=gameDto.getScore();
+                playerDto.getGameList().add(gameDto);
             }
             for (Achievement achievement : player.getAchievements()) {
                 playerDto.getAchievementList().add(new AchievementDto(achievement));
@@ -138,4 +162,5 @@ public class PlayerService {
             return new Respuesta(false, "Error guardando el jugador.", "Jugador " + ex.getMessage());
         }
     }
+
 }

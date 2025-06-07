@@ -63,12 +63,20 @@
     -fx-image: url("../resources/ProgramImages/MinimizeScreenIcon.png");
 }
 
+.FullSuitIcon {
+    -fx-image: url("../resources/ProgramImages/FullSuitIcon.png");
+}
+
 .btnBackG > VBox > ImageView {
     -fx-image: url("../resources/ProgramImages/BackIcon.png");
 }
 
-.btnSettings > VBox > ImageView {
-    -fx-image: url("../resources/ProgramImages/SettingsIcon.png");
+.btnMenuSettings > ImageView {
+    -fx-image: url("../resources/ProgramImages/BlackSettingsIcon.png");
+}
+
+.btnGameSettings > VBox > ImageView {
+    -fx-image: url("../resources/ProgramImages/WhiteSettingsIcon.png");
 }
 
 .btnClues > VBox >  ImageView {
@@ -263,6 +271,7 @@
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
+
 #tblLoadGames .table-cell {
     -fx-background-color: transparent;
 }

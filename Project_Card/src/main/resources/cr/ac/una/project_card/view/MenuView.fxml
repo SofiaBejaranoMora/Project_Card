@@ -18,11 +18,14 @@
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <MFXButton id="SystemButton" fx:id="btnSettings" onAction="#onActionBtnSettings" prefHeight="43.0" prefWidth="47.0" stylesheets="@Style.css" text=" . . . " VBox.vgrow="ALWAYS">
+                        <Button id="SystemButton" fx:id="btnSettings" mnemonicParsing="false" onAction="#onActionBtnSettings" prefHeight="49.0" prefWidth="53.0" styleClass="btnMenuSettings" stylesheets="@Style.css">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="ExitIcon" />
+                           </graphic>
                            <VBox.margin>
                               <Insets left="5.0" top="5.0" />
                            </VBox.margin>
-                        </MFXButton>
+                        </Button>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">

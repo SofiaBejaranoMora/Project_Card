@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -185,8 +184,7 @@ public class SettingsController extends Controller implements Initializable {
     }
  
     private void fitCards(Button btn) {
-        btn.setMinWidth(96);
-        btn.setMinHeight(106);
+        btn.setMinWidth(126);
         btn.prefWidthProperty().bind(root.widthProperty().divide(4.4));
         btn.prefHeightProperty().bind(root.widthProperty().divide(5).multiply(17).divide(14.5));
 
@@ -198,8 +196,7 @@ public class SettingsController extends Controller implements Initializable {
     }
 
     private void fitBackgrounds(Button btn) {
-        btn.setMinWidth(135);
-        btn.setMinHeight(80);
+        btn.setMinWidth(173);
         btn.prefWidthProperty().bind(root.widthProperty().divide(4.9));
         btn.prefHeightProperty().bind(root.widthProperty().divide(5).multiply(17).divide(27));
 

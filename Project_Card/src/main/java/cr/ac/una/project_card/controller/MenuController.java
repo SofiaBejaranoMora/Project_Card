@@ -19,7 +19,7 @@ public class MenuController extends Controller implements Initializable {
     private Mensaje message = new Mensaje();
 
     @FXML
-    private MFXButton btnSettings;
+    private Button btnSettings;
     @FXML
     private MFXButton btnNew;
     @FXML

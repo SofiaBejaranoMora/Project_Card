@@ -179,12 +179,14 @@ public class GameController extends Controller implements Initializable {
         Integer index = start.getChildren().indexOf(panel);
         for (int i = start.getChildren().size(); i >= index; i--) {
             arrive.getChildren().add(start.getChildren().remove(i));    //Agregar el -1pt por el movimiento de carta
+            game.setScore(game.getScore() - 1);
         }
     }
     
     private void deleteFullSuit(VBox from) {     //Borra un palo completo, cuando se alcanza la escalera de As a K
         List<Node> cards = from.getChildren();
         for (int i = cards.size(); i > 13; i--) {
+            game.setScore(game.getScore() + 100);
             cards.remove(i);    //Agregar los 100pts por completar palos
         }
     }
@@ -269,6 +271,8 @@ public class GameController extends Controller implements Initializable {
             String rute = ImagesUtil.getBackground((String) AppContext.getInstance().get("Background"));
             setupBackground(rute);
         }
+        String rute = ImagesUtil.getBackCardPath(setupStyle());
+        mgvMaze.setImage(new Image(rute));
         columns.clear();
         for(Node node: hBxBoard.getChildren()){
             if(node instanceof VBox){

@@ -69,19 +69,22 @@
                   <VBox prefHeight="48.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="16.0" prefWidth="600.0" spacing="7.0">
+            <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0" spacing="7.0">
                <children>
-                  <ImageView fx:id="mgvMaze" fitHeight="80.0" fitWidth="60.0" onMouseClicked="#onMouseClickedMgvMaze" pickOnBounds="true" preserveRatio="true" />
-                  <HBox fx:id="hBoxSuits" alignment="CENTER" prefHeight="85.0" prefWidth="459.0" spacing="3.0" HBox.hgrow="ALWAYS">
+                  <ImageView fx:id="mgvMaze" fitHeight="80.0" fitWidth="60.0" onMouseClicked="#onMouseClickedMgvMaze" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin></ImageView>
+                  <HBox fx:id="hBoxSuits" alignment="CENTER" prefHeight="85.0" prefWidth="459.0" spacing="3.0" stylesheets="@Style.css" HBox.hgrow="ALWAYS">
                      <children>
-                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="85.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="80.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" styleClass="FullSuitIcon" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>
@@ -103,7 +106,7 @@
             <HBox id="GameHBox" alignment="CENTER" prefHeight="45.0" prefWidth="720.0" stylesheets="@Style.css">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <MFXButton id="GameButton" fx:id="btnSettings" onAction="#onActionBtnSettings" prefHeight="42.0" prefWidth="231.0" styleClass="btnSettings" stylesheets="@Style.css" text="Ajustes" HBox.hgrow="ALWAYS">
+                  <MFXButton id="GameButton" fx:id="btnSettings" onAction="#onActionBtnSettings" prefHeight="42.0" prefWidth="231.0" styleClass="btnGameSettings" stylesheets="@Style.css" text="Ajustes" HBox.hgrow="ALWAYS">
                      <graphic>
                         <VBox prefHeight="30.0" prefWidth="30.0">
                            <children>

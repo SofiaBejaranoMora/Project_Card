@@ -54,9 +54,19 @@ public class UserStatisticController extends Controller implements Initializable
         double accumulatedPoints = player.getAccumulatedPoint() != null ? player.getAccumulatedPoint().doubleValue() : 0;
         int gameCount = 0;
         for (GameDto game : player.getGameList()) {
-            double score = game.getScore() != null ? game.getScore().doubleValue() : 0;
-            double percentage = accumulatedPoints > 0 ? (score / accumulatedPoints) * 100 : 0;
-            String nombreJuego = "Juego " + (gameCount + 1); // Placeholder dinámico
+            double score;
+            if (game.getScore() != null) {
+                score = game.getScore().doubleValue();
+            } else {
+                score = 0;
+            }
+            double percentage;
+            if (accumulatedPoints > 0) {
+                percentage = (score / accumulatedPoints) * 100;
+            } else {
+                percentage = 0;
+            }
+            String nombreJuego = game.getName();
             pieChartData.add(new PieChart.Data(nombreJuego, percentage));
             gameCount++;
         }
@@ -83,9 +93,9 @@ public class UserStatisticController extends Controller implements Initializable
         }
 
         if (totalGames > 0) {
-            lblVictories.setText(String.format("%.1f%%", percentage));
+            lblVictories.setText(Double.toString(percentage));
         } else {
-            lblVictories.setText("0%");
+            lblVictories.setText("0");
         }
 
         String nota;

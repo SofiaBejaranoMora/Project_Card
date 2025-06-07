@@ -260,3 +260,49 @@
 #tblLoadGames .table-cell {
     -fx-background-color: transparent;
 }
+
+#pctGamesData.chart, 
+#bctPlayGames,  #bctAveragePoints.chart{
+    -fx-background-color: rgba(30, 30, 30, 0.7); /* Fondo oscuro semitransparente */
+    -fx-border-color: rgba(100, 149, 237, 0.6); /* Borde azul neón */
+    -fx-border-width: 1.5px;
+    -fx-effect: dropshadow(gaussian, rgba(100, 149, 237, 0.3), 12, 0.2, 0, 2);
+    -fx-padding: 15px;
+}
+
+#pctGamesData.chart .chart-title,
+#bctPlayGames .chart-title {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+#pctGamesData.chart {
+    -fx-background-radius: 100px;
+    -fx-border-radius: 100px;
+}
+
+#bctPlayGames {
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.series0 { -fx-bar-fill: #4ecdc4; -fx-pie-color: #4ecdc4; }
+.series1 { -fx-bar-fill: #ff6b6b; -fx-pie-color: #ff6b6b; }
+.series2 { -fx-bar-fill: #ffe66d; -fx-pie-color: #ffe66d; }
+
+#pctGamesData.chart:hover,
+#bctPlayGames:hover,
+#bctAveragePoints.chart:hover {
+    -fx-border-color: rgba(100, 149, 237, 0.9);
+    -fx-effect: dropshadow(gaussian, rgba(100, 149, 237, 0.5), 15, 0.3, 0, 3);
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}

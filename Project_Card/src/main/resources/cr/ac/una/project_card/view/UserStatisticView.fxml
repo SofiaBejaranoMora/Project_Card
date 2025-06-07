@@ -58,8 +58,11 @@
                                        <children>
                                           <HBox alignment="CENTER" prefHeight="95.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <PieChart fx:id="pctGamesData" prefHeight="125.0" prefWidth="314.0" HBox.hgrow="ALWAYS" />
+                                                <PieChart fx:id="pctGamesData" prefHeight="125.0" prefWidth="314.0" title="Puntos por partida" HBox.hgrow="ALWAYS" />
                                              </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="40.0" />
+                                             </padding>
                                           </HBox>
                                           <HBox alignment="CENTER" prefHeight="95.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                              <children>

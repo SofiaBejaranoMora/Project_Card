@@ -4,11 +4,7 @@ package cr.ac.una.project_card.util;
 public class ImagesUtil {
     
     private static final String BASE_PATH = "/cr/ac/una/project_card/resources/";
-    /**
-     * Devuelve la URL de una imagen en src/main/resources/cr/ac/una/taskprogramll/resources/.
-     * @param imageName Nombre del archivo (e.g., "stillBack.png").
-     * @return URL como String para Image, o null si no se encuentra.
-     */
+   
     public static String getCardDifficultPath(String id) {
         try {
             String path = BASE_PATH + "ProgramImages/Cards/" + id + ".png";

@@ -3,6 +3,7 @@ package cr.ac.una.project_card.controller;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.util.AppContext;
+import cr.ac.una.project_card.util.FlowController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -112,7 +113,6 @@ public class UserStatisticController extends Controller implements Initializable
         lblNote.setText(nota);
     }
    
-
     private void configurePlayedGames() {
         int playedGames = 0;
         int notPlayedGames = 0;
@@ -145,6 +145,7 @@ public class UserStatisticController extends Controller implements Initializable
         configureVictoriesPercentage();
         configurePlayedGames();
     }
+    
     
     private void configureAcumulatePoints() {
         Long totalPoints = (player != null && player.getAccumulatedPoint() != null) ? player.getAccumulatedPoint() : 0L;
@@ -222,7 +223,6 @@ public class UserStatisticController extends Controller implements Initializable
         bctAveragePoints.getData().clear();
         bctAveragePoints.getData().addAll(scoreSeries, averageSeries);
     }
-
     
     private void configureSecondTab(){
         configureAcumulatePoints();
@@ -231,11 +231,13 @@ public class UserStatisticController extends Controller implements Initializable
     }
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        
+     FlowController.getInstance().goView("MenuView");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
     }
     
     @Override

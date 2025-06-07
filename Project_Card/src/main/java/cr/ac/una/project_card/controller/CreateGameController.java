@@ -50,6 +50,7 @@ public class CreateGameController extends Controller implements Initializable {
     private ImagesUtil imageUtility = new ImagesUtil();
     Respuesta answer = new Respuesta();
     private Mensaje message = new Mensaje();
+    
     private PlayerDto player;
     private String style;
     private String easyCardBack;
@@ -122,6 +123,7 @@ public class CreateGameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        cleanView();
         FlowController.getInstance().goView("MenuView");
     }
 
@@ -165,6 +167,7 @@ public class CreateGameController extends Controller implements Initializable {
                             this.player = (PlayerDto) answer.getResultado("Jugador");
                             AppContext.getInstance().set("CurrentUser", player);
                             AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
+                            cleanView();
                             FlowController.getInstance().goView("GameView");
                         }
                     } else {
@@ -408,7 +411,6 @@ public class CreateGameController extends Controller implements Initializable {
                 if (!card.isFlipped()) {
                     rollCard(button, imageView, card);
                 }
-                System.out.println("Card deselected: " + card.getFrontImagePath());
             } else {
                 allCards.forEach(otherCard -> {
                     if (otherCard != card) {
@@ -427,7 +429,6 @@ public class CreateGameController extends Controller implements Initializable {
                 applyGlowEffect(button);
                 button.setFocusTraversable(true);
                 button.requestFocus();
-                System.out.println("Card selected: " + card.getFrontImagePath() + ", Glow applied: " + (button.getEffect() != null) + ", Flipped: " + card.isFlipped());
             }
             event.consume();
         });
@@ -450,7 +451,6 @@ public class CreateGameController extends Controller implements Initializable {
         button.setStyle("");
         button.applyCss();
         button.layout();
-        System.out.println("Removed glow from button: " + button.getId());
     }
 
     private void signDifficulty(Long dificultad) {
@@ -509,6 +509,17 @@ public class CreateGameController extends Controller implements Initializable {
         btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null);
         System.out.println("Start button visible: " + btnStartGame.isVisible() + ", nameGame: " + nameGame + ", difficulty: " + difficulty);
     }
+    
+    private void cleanView(){
+        txfNameGame.setText("");
+        easyModeCard.setIsFlipped(true);
+        mediumModeCard.setIsFlipped(true);
+        hardModeCard.setIsFlipped(true);
+        easyModeCard.updateImageView(mgvEasyMode);
+        mediumModeCard.updateImageView(mgvMediumMode);
+        hardModeCard.updateImageView(mgvHardMode);
+        difficulty=null;
+    }
 
     private void setupCardInteractions() {
         List<CardView> allCards = List.of(easyModeCard, mediumModeCard, hardModeCard);
@@ -555,6 +566,7 @@ public class CreateGameController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cleanView();
         txfNameGame.delegateSetTextFormatter(Formato.getInstance().letrasFormat(20));
     }
 

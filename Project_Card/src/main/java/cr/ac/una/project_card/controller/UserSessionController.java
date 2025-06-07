@@ -1,6 +1,7 @@
 package cr.ac.una.project_card.controller;
 
 import cr.ac.una.project_card.model.PlayerDto;
+import cr.ac.una.project_card.service.AchievementsService;
 import cr.ac.una.project_card.service.PlayerService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
@@ -15,6 +16,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -89,7 +91,9 @@ public class UserSessionController extends Controller implements Initializable {
             Respuesta answer = playerService.SavePlayer(player);
 
             if (answer.getEstado()) {
+
                 this.player = (PlayerDto) answer.getResultado("Jugador");
+                uploadRegistrationAchievement(playerService, answer);
                 AppContext.getInstance().set("CurrentUser", player);
                 buttonManager(3);
                 lblCurrentPoints.setText("0");
@@ -183,6 +187,34 @@ public class UserSessionController extends Controller implements Initializable {
         btnStartSession.setVisible(situation == 2);
         btnRegisterUser.setVisible(situation == 1);
         stp.setVisible(situation == 1);
+    }
+
+    private void uploadRegistrationAchievement(PlayerService playerService, Respuesta answer) {
+        AchievementsService achievementsService = new AchievementsService();
+        answer = playerService.loadAllPlayer(); // error
+        if (answer.getEstado()) {
+            List<PlayerDto> playerDtoList = (List<PlayerDto>) answer.getResultado("jugadores");
+            if (playerDtoList.size() == 1) {
+                answer = achievementsService.addPlayerAchieveme(player, "Jugador de oro");
+                if (answer.getEstado()) {
+                    answer = playerService.getPlayerId(player.getId());
+                    player = (PlayerDto) answer.getResultado("Jugador");
+                    if (answer.getEstado()) {
+                        //animació
+                    }
+                }
+            }
+            if (playerDtoList.size() == 2) {
+                answer = achievementsService.addPlayerAchieveme(player, "Segundo lugar");
+                if (answer.getEstado()) {
+                    answer = playerService.getPlayerId(player.getId());
+                    player = (PlayerDto) answer.getResultado("Jugador");
+                    if (answer.getEstado()) {
+                        //animació
+                    }
+                }
+            }
+        }
     }
 
     private Boolean savePorfileImage() {

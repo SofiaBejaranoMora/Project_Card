@@ -33,7 +33,7 @@ public class PlayerService {
 
     public Respuesta loadAllPlayer() {
         try {
-            Query qryPlayer = em.createNamedQuery("Achievement.findAll", Achievement.class);
+            Query qryPlayer = em.createNamedQuery("Player.findAll", Achievement.class);
             List<Player> playerList = qryPlayer.getResultList();
             List<PlayerDto> playerDtoList = new ArrayList<>();
             for (Player player : playerList) {
@@ -63,6 +63,7 @@ public class PlayerService {
             for (Achievement achievement : player.getAchievements()) {
                 playerDto.getAchievementList().add(new AchievementDto(achievement));
             }
+            playerDto.setAccumulatedPoint(accumulatedPointPlayer);
             return new Respuesta(true, " ", " ", "Jugador", playerDto);
         } catch (NoResultException ex) {
             return new Respuesta(false, "No existe un jugador con las credenciales ingresadas.", "getPlayerName NoResultException");
@@ -90,6 +91,7 @@ public class PlayerService {
             for (Achievement achievement : player.getAchievements()) {
                 playerDto.getAchievementList().add(new AchievementDto(achievement));
             }
+            playerDto.setAccumulatedPoint(accumulatedPointPlayer);
             return new Respuesta(true, " ", " ", "Jugador", playerDto);
         } catch (NoResultException ex) {
             return new Respuesta(false, "No existe un jugador con las credenciales ingresadas.", "getPlayerName NoResultException");

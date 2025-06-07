@@ -85,22 +85,24 @@ public class AchievementsController extends Controller implements Initializable 
     private void onActionBtnStatistics(ActionEvent event) {
         FlowController.getInstance().goView("UserStatisticView");
     }
-    
-        @FXML
+
+    @FXML
     private void onActionBtnSearchAchievementNotObtained(ActionEvent event) {
         String selectionType = cmbSearchNotObtainedAchievementType.getValue();
         String name = txtSearchNotObtainedAchievementsName.getText();
         if (((selectionType != null) && !selectionType.isBlank()) || ((name != null) && !name.isEmpty())) {
             if (selectionType == null || selectionType.equals("Todos")) {
-                answer = achievementsService.getAchievemenSearchParameter(name, "");
+                answer = achievementsService.getAchievemenSearchParameter(name, "",player.getId(), false);
             } else {
-                answer = achievementsService.getAchievemenSearchParameter(name, selectionType);
+                answer = achievementsService.getAchievemenSearchParameter(name, selectionType,player.getId(), false);
             }
             if (answer.getEstado()) {
                 vBoxAchievementsNotObtained.getChildren().clear();
                 this.achievementNotObtainedList = (List<AchievementDto>) answer.getResultado("Logro");
                 Loadachievement(achievementNotObtainedList, vBoxAchievementsNotObtained, -1.0);
             }
+        } else {
+            message.showModal(Alert.AlertType.INFORMATION, "¡Oops! ¿Y qué buscamos?", getStage(), "Aún no escribiste un nombre ni elegiste un tipo. Así no hay mucho que investigar...\nDale, elige algo y pongamos a trabajar la lupa");
         }
     }
 
@@ -110,36 +112,14 @@ public class AchievementsController extends Controller implements Initializable 
         String name = txtSearchNameAchievementObtained.getText();
         if (((selectionType != null) && !selectionType.isBlank()) || ((name != null) && !name.isEmpty())) {
             if (selectionType == null || selectionType.equals("Todos")) {
-                answer = achievementsService.getAchievemenSearchParameter(name, "");
+                answer = achievementsService.getAchievemenSearchParameter(name, "",player.getId(), true);
             } else {
-                answer = achievementsService.getAchievemenSearchParameter(name, selectionType);
+                answer = achievementsService.getAchievemenSearchParameter(name, selectionType,player.getId(), true);
             }
             if (answer.getEstado()) {
                 vBoxAchievementsObtained.getChildren().clear();
                 this.achievementObtainedList = (List<AchievementDto>) answer.getResultado("Logro");
                 Loadachievement(achievementObtainedList, vBoxAchievementsObtained, 0.0);
-            }
-        }
-    }
-
-    private void onActionBtnSearchAchievementNotObtainedName(ActionEvent event) {
-        if ((txtSearchNotObtainedAchievementsName != null) && !txtSearchNotObtainedAchievementsName.getText().isBlank()) {
-            cmbSearchAchievementObtainedType.setValue("Todos");
-            // traer del service la lista y si es solo 1 sacamos el tipo que es y lo colocamos en set value
-            if (achievementNotObtainedList.size() == 1) {
-                cmbSearchNotObtainedAchievementType.setValue(achievementNotObtainedList.get(0).getType());
-            }
-        } else {
-            message.showModal(Alert.AlertType.INFORMATION, "¡Oops! ¿Y qué buscamos?", getStage(), "Aún no escribiste un nombre ni elegiste un tipo. Así no hay mucho que investigar...\nDale, elige algo y pongamos a trabajar la lupa");
-        }
-    }
-
-    private void onActionBtnSearchAchievementObtainedName(ActionEvent event) {
-        if ((txtSearchNameAchievementObtained != null) && !txtSearchNameAchievementObtained.getText().isBlank()) {
-            cmbSearchAchievementObtainedType.setValue("Todos");
-            // traer del service la lista y si es solo 1 sacamos el tipo que es y lo colocamos en set value
-            if (achievementObtainedList.size() == 1) {
-                cmbSearchAchievementObtainedType.setValue(achievementObtainedList.get(0).getType());
             }
         } else {
             message.showModal(Alert.AlertType.INFORMATION, "¡Oops! ¿Y qué buscamos?", getStage(), "Aún no escribiste un nombre ni elegiste un tipo. Así no hay mucho que investigar...\nDale, elige algo y pongamos a trabajar la lupa");
@@ -153,10 +133,9 @@ public class AchievementsController extends Controller implements Initializable 
         VBox.setMargin(hbox, new Insets(15));
 
         // Agregar la Imagen
-       
         System.out.println(rute);
         ImageView imageView = new ImageView();
-        imageView.setImage(new Image(rute+achievement.getImageName()+".png"));
+        imageView.setImage(new Image(rute + achievement.getImageName() + ".png"));
         imageView.setFitWidth(64);
         imageView.setFitHeight(64);
         imageView.setPreserveRatio(true);
@@ -205,7 +184,7 @@ public class AchievementsController extends Controller implements Initializable 
         vbox.setMaxWidth(Double.MAX_VALUE);
 
         // Agragar el vbox y imagen al Hbox
-        hbox.getChildren().addAll(imageView,vbox);
+        hbox.getChildren().addAll(imageView, vbox);
         hbox.prefWidthProperty().bind(vBoxPrincipal.widthProperty().multiply(0.98));
         HBox.setHgrow(hbox, Priority.ALWAYS);
 

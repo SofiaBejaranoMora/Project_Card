@@ -16,7 +16,8 @@
          <children>
             <HBox id="GameHBox" alignment="CENTER" prefHeight="48.0" prefWidth="720.0" stylesheets="@Style.css">
                <children>
-                  <MFXButton id="GameButton" fx:id="btnBack" onAction="#onActionBtnBack" styleClass="btnBackG" stylesheets="@Style.css" text="Regresar">
+                  <VBox prefHeight="48.0" prefWidth="41.0" HBox.hgrow="ALWAYS" />
+                  <MFXButton id="GameButton" fx:id="btnBack" onAction="#onActionBtnBack" prefHeight="42.0" prefWidth="191.0" styleClass="btnBackG" stylesheets="@Style.css" text="Regresar">
                      <graphic>
                         <VBox prefHeight="30.0" prefWidth="30.0">
                            <children>
@@ -25,32 +26,36 @@
                         </VBox>
                      </graphic>
                      <HBox.margin>
-                        <Insets right="15.0" />
+                        <Insets />
                      </HBox.margin>
                   </MFXButton>
+                  <VBox prefHeight="48.0" prefWidth="52.0" HBox.hgrow="ALWAYS" />
                   <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="WebIcon">
                      <HBox.margin>
-                        <Insets left="15.0" right="5.0" />
+                        <Insets />
                      </HBox.margin>
                   </ImageView>
-                  <Label id="GameLabel" fx:id="lblDificult" stylesheets="@Style.css" text="Spider">
+                  <Label id="GameLabel" fx:id="lblDificult" prefHeight="47.0" prefWidth="196.0" stylesheets="@Style.css" text="Spider">
                      <HBox.margin>
-                        <Insets right="15.0" />
+                        <Insets />
                      </HBox.margin>
                   </Label>
-                  <Label id="GameLabel" fx:id="lblPoints" stylesheets="@Style.css" text="Puntuación ">
+                  <VBox prefHeight="48.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
+                  <Label id="GameLabel" fx:id="lblPoints" prefHeight="47.0" prefWidth="212.0" stylesheets="@Style.css" text="Puntuación ">
                      <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
+                        <Insets />
                      </HBox.margin>
                   </Label>
-                  <Label id="GameLabel" fx:id="lblTimer" stylesheets="@Style.css" text="Tiempo:">
+                  <VBox prefHeight="48.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
+                  <Label id="GameLabel" fx:id="lblTimer" prefHeight="47.0" prefWidth="189.0" stylesheets="@Style.css" text="Tiempo:">
                      <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
+                        <Insets />
                      </HBox.margin>
                   </Label>
+                  <VBox prefHeight="48.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
                   <Button id="GameButton" fx:id="btnSizeScreen" mnemonicParsing="false" onAction="#onActionBtnSizeScreen" stylesheets="@Style.css">
                      <HBox.margin>
-                        <Insets left="15.0" />
+                        <Insets />
                      </HBox.margin>
                      <graphic>
                         <StackPane prefHeight="30.0" prefWidth="30.0">
@@ -61,6 +66,7 @@
                         </StackPane>
                      </graphic>
                   </Button>
+                  <VBox prefHeight="48.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0" spacing="7.0">
@@ -96,7 +102,8 @@
             </HBox>
             <HBox id="GameHBox" alignment="CENTER" prefHeight="45.0" prefWidth="720.0" stylesheets="@Style.css">
                <children>
-                  <MFXButton id="GameButton" fx:id="btnSettings" onAction="#onActionBtnSettings" styleClass="btnSettings" stylesheets="@Style.css" text="Ajustes">
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <MFXButton id="GameButton" fx:id="btnSettings" onAction="#onActionBtnSettings" prefHeight="42.0" prefWidth="231.0" styleClass="btnSettings" stylesheets="@Style.css" text="Ajustes" HBox.hgrow="ALWAYS">
                      <graphic>
                         <VBox prefHeight="30.0" prefWidth="30.0">
                            <children>
@@ -105,10 +112,11 @@
                         </VBox>
                      </graphic>
                      <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
+                        <Insets />
                      </HBox.margin>
                   </MFXButton>
-                  <MFXButton id="GameButton" fx:id="btnClues" onAction="#onActionBtnClues" styleClass="btnClues" stylesheets="@Style.css" text="Pistas">
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <MFXButton id="GameButton" fx:id="btnClues" onAction="#onActionBtnClues" prefHeight="42.0" prefWidth="226.0" styleClass="btnClues" stylesheets="@Style.css" text="Pistas" HBox.hgrow="ALWAYS">
                      <graphic>
                         <VBox prefHeight="30.0" prefWidth="30.0">
                            <children>
@@ -117,10 +125,11 @@
                         </VBox>
                      </graphic>
                      <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
+                        <Insets />
                      </HBox.margin>
                   </MFXButton>
-                  <MFXButton id="GameButton" fx:id="btnUndo" onAction="#onActionBtnUndo" styleClass="btnUndo" stylesheets="@Style.css" text="Deshacer">
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <MFXButton id="GameButton" fx:id="btnUndo" onAction="#onActionBtnUndo" prefHeight="42.0" prefWidth="239.0" styleClass="btnUndo" stylesheets="@Style.css" text="Deshacer" HBox.hgrow="ALWAYS">
                      <graphic>
                         <VBox prefHeight="30.0" prefWidth="30.0">
                            <children>
@@ -129,9 +138,10 @@
                         </VBox>
                      </graphic>
                      <HBox.margin>
-                        <Insets left="15.0" right="15.0" />
+                        <Insets />
                      </HBox.margin>
                   </MFXButton>
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </children>

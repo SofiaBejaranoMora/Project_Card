@@ -9,14 +9,14 @@ import javafx.scene.layout.Pane;
 
 /** * FXML Controller class * * @author ashly */
 public class PrincipalController extends Controller implements Initializable {
-
+    
     @FXML
     private BorderPane root;
     @FXML
     private Pane transitionPane;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {        
+    public void initialize(URL url, ResourceBundle rb) {
         transitionPane.setMouseTransparent(true);
     }    
 

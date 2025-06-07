@@ -18,6 +18,7 @@ import cr.ac.una.project_card.util.Respuesta;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -50,7 +51,7 @@ public class GameController extends Controller implements Initializable {
     private GameDto game;
     private ImagesUtil getBackground;
     private Mensaje message = new Mensaje();
-    private List<VBox> columns;
+    private List<VBox> columns = new ArrayList<>();
     private List<CardDto> cards = new ArrayList<>(); // Mazo completo
     private CardService cardService = new CardService();
     private String style;
@@ -72,6 +73,7 @@ public class GameController extends Controller implements Initializable {
     StackcardDto stackcardList8 = new StackcardDto();
     StackcardDto stackcardList9 = new StackcardDto();
     StackcardDto stackcardList10 = new StackcardDto();
+    private List<StackcardDto> allStacks = new ArrayList<>(Arrays.asList(stackcardList1, stackcardList2, stackcardList3, stackcardList4, stackcardList5, stackcardList6, stackcardList7, stackcardList8, stackcardList9, stackcardList10));
 
     @FXML
     private MFXButton btnBack;
@@ -203,13 +205,18 @@ public class GameController extends Controller implements Initializable {
         return null;
     }
        
-    private void setupBoard() {
-        
+    private void setupBoard() { //Alistará el tablero completo para el modo de juego
+        for (int i = 0; i < 10; i++) {
+            columns.get(i).getChildren().clear();   //Limpia las columnas en caso de que existan cartas previas
+            for(StackcardxcardDto stackDto : allStacks.get(i).getStackCardxCards()) {
+                columns.get(i).getChildren().add(setupCard(stackDto.getIsFaceUp(), stackDto.getCard()));    //Da la carta en un pane para los VBox
+            }
+        }
     }
     
-    private Pane setupCard(Boolean isFaceUp, CardDto cardDto) {
+    private Pane setupCard(Boolean isFaceUp, CardDto cardDto) { //Se encarga de generar automaticamente las carta en columnas
         Pane space = new Pane();
-        space.prefWidthProperty().bind(columns.get(0).widthProperty());
+        space.prefWidthProperty().bind(columns.get(0).widthProperty()); //Es para agarrar el ancho de un 
         space.prefHeightProperty().bind(space.widthProperty().divide(3));
         
         ImageView card = new ImageView();
@@ -228,14 +235,18 @@ public class GameController extends Controller implements Initializable {
         return space;
     }
     
-private String setupStyle() {
-    Long styleType = player.getCardStyle();
-    if (styleType.equals(2L)) return style + "M/";
-    else if (styleType.equals(3L)) return style + "V/";
-    else return style + "N/";
-}
+    private String setupStyle() {
+        Long styleType = player.getCardStyle();
+        if (styleType.equals(2L)) {
+            return style + "M/";
+        } else if (styleType.equals(3L)) {
+            return style + "V/";
+        } else {
+            return style + "N/";
+        }
+    }
 
-    private void setupBackground(String rute) {
+    private void setupBackground(String rute) { //Manipula la ruta que del fondo para adecuarla al anchorpane
         BackgroundImage backgroundImage = new BackgroundImage(new Image(rute),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
@@ -258,11 +269,13 @@ private String setupStyle() {
             String rute = ImagesUtil.getBackground((String) AppContext.getInstance().get("Background"));
             setupBackground(rute);
         }
-//        for(Node node: hBxBoard.getChildren()){
-//            if(node instanceof VBox){
-//                columns.add((VBox) node);
-//            }
-//        }
+        columns.clear();
+        for(Node node: hBxBoard.getChildren()){
+            if(node instanceof VBox){
+                columns.add((VBox) node);
+            }
+        }
+        setupBoard();
     }
 
 }

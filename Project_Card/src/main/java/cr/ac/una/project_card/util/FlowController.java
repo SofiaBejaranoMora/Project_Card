@@ -129,9 +129,6 @@ public class FlowController {
                         vBox.getChildren().add(loadedContent);
                    });
                 }
-                /*VBox vBox = ((VBox) ((BorderPane) stage.getScene().getRoot()).getCenter());
-                vBox.getChildren().clear();
-                vBox.getChildren().add(loader.getRoot());*/
                 break;
             case "Top":
                 break;

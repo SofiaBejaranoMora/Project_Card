@@ -61,9 +61,23 @@ public class ImagesUtil {
         }
     }
 
-        public static String getBackground(String nameBackground) {
+    public static String getBackground(String nameBackground) {
         try {
             String path = BASE_PATH + "ProgramImages/" + nameBackground + ".jpg";
+            if (ImagesUtil.class.getResource(path) == null) {
+                System.err.println("No se encontró la imagen en formato JPG " + nameBackground);
+                return null;
+            }
+            return ImagesUtil.class.getResource(path).toExternalForm();
+        } catch (Exception e) {
+            System.err.println("Error cargando imagen " + nameBackground + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static String getAnimationImage(String nameBackground) {
+        try {
+            String path = BASE_PATH + "ProgramImages/" + nameBackground + ".png";
             if (ImagesUtil.class.getResource(path) == null) {
                 System.err.println("No se encontró la imagen en formato PNG " + nameBackground);
                 return null;

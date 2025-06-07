@@ -9,6 +9,13 @@
     -fx-font-family: "Fredoka One";
 }
 
+.StartUpBackground {
+    -fx-background-image: url("../resources/ProgramImages/StartUpBackground.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 100% 100%;
+    -fx-background-position: center center;
+}
+
 .SystemBackground {
     -fx-background-image: url("../resources/ProgramImages/SystemBackground.jpg");
     -fx-background-repeat: no-repeat;

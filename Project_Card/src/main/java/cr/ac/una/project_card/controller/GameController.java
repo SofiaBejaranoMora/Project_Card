@@ -63,17 +63,17 @@ public class GameController extends Controller implements Initializable {
     private List<CardDto> diamantes = new ArrayList<>();
     private Boolean isBigScreen = false;
 
-    StackcardDto stackcardList1 = new StackcardDto();
-    StackcardDto stackcardList2 = new StackcardDto();
-    StackcardDto stackcardList3 = new StackcardDto();
-    StackcardDto stackcardList4 = new StackcardDto(); // Hasta aquí llevan 5 cartas de espaldas y la última de frente
-    StackcardDto stackcardList5 = new StackcardDto();
-    StackcardDto stackcardList6 = new StackcardDto();
-    StackcardDto stackcardList7 = new StackcardDto();
-    StackcardDto stackcardList8 = new StackcardDto();
-    StackcardDto stackcardList9 = new StackcardDto();
-    StackcardDto stackcardList10 = new StackcardDto();
-    private List<StackcardDto> allStacks = new ArrayList<>(Arrays.asList(stackcardList1, stackcardList2, stackcardList3, stackcardList4, stackcardList5, stackcardList6, stackcardList7, stackcardList8, stackcardList9, stackcardList10));
+//    StackcardDto stackcardList1 = new StackcardDto();
+//    StackcardDto stackcardList2 = new StackcardDto();
+//    StackcardDto stackcardList3 = new StackcardDto();
+//    StackcardDto stackcardList4 = new StackcardDto(); // Hasta aquí llevan 5 cartas de espaldas y la última de frente
+//    StackcardDto stackcardList5 = new StackcardDto();
+//    StackcardDto stackcardList6 = new StackcardDto();
+//    StackcardDto stackcardList7 = new StackcardDto();
+//    StackcardDto stackcardList8 = new StackcardDto();
+//    StackcardDto stackcardList9 = new StackcardDto();
+//    StackcardDto stackcardList10 = new StackcardDto();
+    private List<StackcardDto> allStacks = new ArrayList<>();
 
     @FXML
     private MFXButton btnBack;
@@ -164,6 +164,8 @@ public class GameController extends Controller implements Initializable {
                 Respuesta answer = gameService.getGameID(gameId);
                 if (answer != null && answer.getEstado()) {
                     this.game = (GameDto) answer.getResultado("Partida");
+                    allStacks= game.getStackCards();
+                    
                     lblDificult.setText("Dificultad: " + game.getDifficulty());
                     //TODO
                 } else {

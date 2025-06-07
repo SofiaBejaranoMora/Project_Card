@@ -21,6 +21,7 @@ import cr.ac.una.project_card.util.Respuesta;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -280,7 +281,7 @@ public class CreateGameController extends Controller implements Initializable {
 
     private List<StackcardDto> mixCards() {
 
-        Collections.shuffle(cards); // Mezcla la lista de manera ramdon
+        Collections.shuffle(cards,new SecureRandom());  // Mezcla la lista de manera ramdon
 
         List<StackcardDto> columnList = createColumns();
         for (int i = 0; i < 10; i++) {

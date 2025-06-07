@@ -143,6 +143,7 @@ public class AchievementsController extends Controller implements Initializable 
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setSaturation(Saturation);
         imageView.setEffect(colorAdjust);
+        
         // VBox del texto
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.TOP_LEFT);

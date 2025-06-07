@@ -20,6 +20,12 @@ public class StackcardxcardDto {
         this.isFaceUp = new SimpleBooleanProperty(false);
         this.positionNumber = new SimpleStringProperty("");
     }
+    
+    public StackcardxcardDto(Boolean isFaceUp, Long positionNumber) {
+        this();
+        this.isFaceUp.set(isFaceUp);
+        this.positionNumber.set(positionNumber.toString());
+    }
 
     public StackcardxcardDto(Stackcardxcard stackcardxcard) {
         this();

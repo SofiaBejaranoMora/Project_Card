@@ -1,11 +1,8 @@
 package cr.ac.una.project_card.controller;
 
-import cr.ac.una.project_card.model.Card;
 import cr.ac.una.project_card.model.CardDto;
 import cr.ac.una.project_card.model.GameDto;
-import cr.ac.una.project_card.model.Player;
 import cr.ac.una.project_card.model.PlayerDto;
-import cr.ac.una.project_card.model.Stackcard;
 import cr.ac.una.project_card.model.StackcardDto;
 import cr.ac.una.project_card.model.StackcardxcardDto;
 import cr.ac.una.project_card.service.CardService;
@@ -18,13 +15,14 @@ import cr.ac.una.project_card.util.Respuesta;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -32,6 +30,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -46,7 +45,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/** * * FXML Controller class * * @author ashly */
+/**
+ * * * FXML Controller class * * @author ashly
+ */
 public class GameController extends Controller implements Initializable {
 
     // Variables del juego
@@ -54,10 +55,11 @@ public class GameController extends Controller implements Initializable {
     private GameDto game;
     private ImagesUtil getBackground;
     private Mensaje message = new Mensaje();
-    private List<VBox> columns = new ArrayList<>();
+    private List<VBox> columns = new ArrayList<>(); // columnas
     private List<CardDto> cards = new ArrayList<>(); // Mazo completo
     private CardService cardService = new CardService();
     private String style;
+    private ColorAdjust colorAdjust = new ColorAdjust();
 
     // Listas de cartas por tipo
     private List<CardDto> corazones = new ArrayList<>();
@@ -133,7 +135,40 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onMouseClickedMgvMaze(MouseEvent event) {
+        if (!cards.isEmpty()) {
+            
+            if (enableAddingCardsColumns()) {
+                StackcardxcardDto newStackcardxcardDto;
+                for (int i = 0; i < 10; i++) {
+                    newStackcardxcardDto= new StackcardxcardDto(true,Long.valueOf(i));
+                    newStackcardxcardDto.setCard(cards.remove(cards.size()-1));// se agrega la ultima carta del mazo a la nueva StackcardxcardDto y se elimina del mazo
+                    allStacks.get(i).getStackCardxCards().add(newStackcardxcardDto);
+                    columns.get(i).getChildren().add(setupCard(newStackcardxcardDto.getIsFaceUp(),newStackcardxcardDto.getCard()));
+                    if (cards.isEmpty()) {
+                        colorAdjust.setSaturation(-1);
+                        colorAdjust.setBrightness(-0.3);
+                        colorAdjust.setContrast(-0.2);
+                        mgvMaze.setEffect(colorAdjust);
+                        return;
+                    }
+                }
+            }
+            else{
+                message.showModal(Alert.AlertType.WARNING, "¡Alto ahí, tahúr impaciente!", getStage(), "“No puedes repartir si una columna está vacía.”\n\n"
+                    + "Las reglas del juego son claras: antes de tocar el mazo, asegúrate de que todas las columnas tengan al menos una carta. Arrastra una carta a esa columna vacía... "
+                        + "¡y entonces sí, reparte como un verdadero maestro del Solitario!");
+            }
+        }
     }
+
+    public Boolean enableAddingCardsColumns() {
+        for (VBox currentVBox : columns) {
+            if (currentVBox.getChildren().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    } // lo hice ahorita
 
     private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
         for (CardDto carta : tipo) {
@@ -143,7 +178,7 @@ public class GameController extends Controller implements Initializable {
         }
         return null;
     }
-    
+
     private void loadGame() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             Long gameId = (Long) AppContext.getInstance().get("IdCurrentGame");
@@ -156,8 +191,19 @@ public class GameController extends Controller implements Initializable {
                 Respuesta answer = gameService.getGameID(gameId);
                 if (answer != null && answer.getEstado()) {
                     this.game = (GameDto) answer.getResultado("Partida");
-                    allStacks= game.getStackCards();
-                    
+
+                     this.cards.addAll(game.getCards()); // lo puse ahorita
+                     Collections.shuffle(cards); 
+                    mgvMaze.setEffect(null);
+                    if (cards.isEmpty()) {
+                        colorAdjust.setSaturation(-1);
+                        colorAdjust.setBrightness(-0.3);
+                        colorAdjust.setContrast(-0.2);
+                        mgvMaze.setEffect(colorAdjust);
+                    }
+
+                    allStacks = game.getStackCards();
+
                     lblDificult.setText("Dificultad: " + game.getDifficulty());
                     //TODO
                 } else {
@@ -182,7 +228,7 @@ public class GameController extends Controller implements Initializable {
             game.setScore(game.getScore() - 1);
         }
     }
-    
+
     private void deleteFullSuit(VBox from) {     //Borra un palo completo, cuando se alcanza la escalera de As a K
         List<Node> cards = from.getChildren();
         for (int i = cards.size(); i > 13; i--) {
@@ -190,8 +236,8 @@ public class GameController extends Controller implements Initializable {
             cards.remove(i);    //Agregar los 100pts por completar palos
         }
     }
- 
-    private VBox getColumn(Point2D ubication){   //Extrae los VBox y los identifica como si fueran columnas
+
+    private VBox getColumn(Point2D ubication) {   //Extrae los VBox y los identifica como si fueran columnas
         for (VBox column : columns) {
             Point2D parentUbication = column.sceneToLocal(ubication);
             if (column.contains(parentUbication)) {
@@ -200,7 +246,7 @@ public class GameController extends Controller implements Initializable {
         }
         return null;
     }
-       
+
     public void setupBoard() { //Alistará el tablero completo para el modo de juego
         Platform.runLater(() -> {
             for (int i = 0; i < 10; i++) {
@@ -211,7 +257,7 @@ public class GameController extends Controller implements Initializable {
             }
         });
     }
-    
+
     private Pane setupCard(Boolean isFaceUp, CardDto cardDto) { //Se encarga de generar automaticamente las carta en columnas
         Pane space = new Pane();
         DoubleProperty width = new SimpleDoubleProperty();
@@ -220,23 +266,23 @@ public class GameController extends Controller implements Initializable {
         height.bind(width.divide(3));
         space.prefWidthProperty().bind(width);  //Es para agarrar el ancho de un 
         space.prefHeightProperty().bind(height);
-        
+
         ImageView card = new ImageView();
         String rute;
-        if(isFaceUp){
+        if (isFaceUp) {
             rute = ImagesUtil.getCardPath(player.getCardStyle() + "/", cardDto.getNumber() + cardDto.getType());
             card.setImage(new Image(rute));
         } else {
             rute = ImagesUtil.getBackCardPath(setupStyle());
             card.setImage(new Image(rute));
         }
-        
+
         card.fitWidthProperty().bind(width);
         card.setPreserveRatio(true);
         space.getChildren().add(card);
         return space;
     }
-    
+
     private String setupStyle() {
         Long styleType = player.getCardStyle();
         if (styleType.equals(2L)) {
@@ -254,7 +300,7 @@ public class GameController extends Controller implements Initializable {
                 BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
         root.setBackground(new Background(backgroundImage));
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -262,8 +308,8 @@ public class GameController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-       loadGame();
-       style = game.getDifficulty() + "";
+        loadGame();
+        style = game.getDifficulty() + "";
         if (AppContext.getInstance().get("Background") == null) {
             String rute = ImagesUtil.getBackground("GrassBackground");
             setupBackground(rute);
@@ -274,8 +320,8 @@ public class GameController extends Controller implements Initializable {
         String rute = ImagesUtil.getBackCardPath(setupStyle());
         mgvMaze.setImage(new Image(rute));
         columns.clear();
-        for(Node node: hBxBoard.getChildren()){
-            if(node instanceof VBox){
+        for (Node node : hBxBoard.getChildren()) {
+            if (node instanceof VBox) {
                 columns.add((VBox) node);
             }
         }

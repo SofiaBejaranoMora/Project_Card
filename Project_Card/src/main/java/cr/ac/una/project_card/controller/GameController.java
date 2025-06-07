@@ -224,7 +224,7 @@ public class GameController extends Controller implements Initializable {
         ImageView card = new ImageView();
         String rute;
         if(isFaceUp){
-            rute = ImagesUtil.getCardPath(setupStyle(), cardDto.getNumber() + cardDto.getType());
+            rute = ImagesUtil.getCardPath(player.getCardStyle() + "/", cardDto.getNumber() + cardDto.getType());
             card.setImage(new Image(rute));
         } else {
             rute = ImagesUtil.getBackCardPath(setupStyle());
@@ -240,11 +240,11 @@ public class GameController extends Controller implements Initializable {
     private String setupStyle() {
         Long styleType = player.getCardStyle();
         if (styleType.equals(2L)) {
-            return style + "M/";
+            return style + "M";
         } else if (styleType.equals(3L)) {
-            return style + "V/";
+            return style + "V";
         } else {
-            return style + "N/";
+            return style + "N";
         }
     }
 

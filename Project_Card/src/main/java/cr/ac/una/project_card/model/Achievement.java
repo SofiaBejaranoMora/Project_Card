@@ -27,10 +27,13 @@ import java.util.List;
     @NamedQuery(name = "Achievement.findByType", query = "SELECT a FROM Achievement a WHERE a.type = :type"),
     @NamedQuery(name = "Achievement.findByNameAndTypeNotPlayerID", query = "SELECT a FROM Achievement a " +
             "WHERE a.name LIKE :name AND a.type LIKE :type AND NOT EXISTS (SELECT p FROM a.players p WHERE p.id = :playerId)"),
+    
     @NamedQuery(name = "Achievement.findByNameAndTypePlayerId", query = "SELECT a FROM Achievement a " +
             "WHERE a.name LIKE :name AND a.type LIKE :type AND EXISTS (SELECT p FROM a.players p WHERE p.id = :playerId)"),
+    
     @NamedQuery(name = "Achievement.findByNameIdNot", query = "SELECT a FROM Achievement a WHERE NOT EXISTS ("
             + "SELECT p FROM a.players p WHERE p.id = :playerId)"),
+    
     @NamedQuery(name = "Achievement.findByName", query = "SELECT a FROM Achievement a WHERE a.name = :name"), /*@NamedQuery(name = "Achievement.findById", query = "SELECT a FROM Achievement a WHERE a.id = :id"),
     @NamedQuery(name = "Achievement.findByAchImagename", query = "SELECT a FROM Achievement a WHERE a.achImagename = :achImagename"),
     @NamedQuery(name = "Achievement.findByAchDescription", query = "SELECT a FROM Achievement a WHERE a.achDescription = :achDescription"),

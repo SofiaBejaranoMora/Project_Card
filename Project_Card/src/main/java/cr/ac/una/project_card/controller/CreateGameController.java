@@ -6,6 +6,7 @@ import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.model.StackcardDto;
 import cr.ac.una.project_card.model.StackcardxcardDto;
+import cr.ac.una.project_card.service.AchievementsService;
 import cr.ac.una.project_card.service.CardService;
 import cr.ac.una.project_card.service.GameService;
 import cr.ac.una.project_card.service.PlayerService;
@@ -50,7 +51,7 @@ public class CreateGameController extends Controller implements Initializable {
     private ImagesUtil imageUtility = new ImagesUtil();
     Respuesta answer = new Respuesta();
     private Mensaje message = new Mensaje();
-    
+
     private PlayerDto player;
     private String style;
     private String easyCardBack;
@@ -165,6 +166,7 @@ public class CreateGameController extends Controller implements Initializable {
                         answer = playerService.getPlayerName(player.getName());
                         if (answer != null && answer.getEstado()) {
                             this.player = (PlayerDto) answer.getResultado("Jugador");
+                            uploadGameAchievement(playerService,answer);
                             AppContext.getInstance().set("CurrentUser", player);
                             AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
                             cleanView();
@@ -178,6 +180,33 @@ public class CreateGameController extends Controller implements Initializable {
                 }
             }
         }
+    }
+
+    private void uploadGameAchievement(PlayerService playerService, Respuesta answer) {
+        AchievementsService achievementsService = new AchievementsService();
+        
+            if (player.getGameList().size() == 1) {
+                answer = achievementsService.addPlayerAchieveme(player, "Estrenandose");
+                if (answer.getEstado()) {
+                    answer = playerService.getPlayerId(player.getId());
+                    player = (PlayerDto) answer.getResultado("Jugador");
+                    if (answer.getEstado()) {
+                        //animació
+                    }
+                }
+            }
+            
+            if (player.getGameList().size() == 15) {
+                answer = achievementsService.addPlayerAchieveme(player, "Vicio");
+                if (answer.getEstado()) {
+                    answer = playerService.getPlayerId(player.getId());
+                    player = (PlayerDto) answer.getResultado("Jugador");
+                    if (answer.getEstado()) {
+                        //animació
+                    }
+                }
+            }
+            
     }
 
     private void prepareGame(GameDto game) {
@@ -242,7 +271,7 @@ public class CreateGameController extends Controller implements Initializable {
     private CardDto getCartaByNumber(List<CardDto> type, int number) {
         for (CardDto cardDto : type) {
             if (cardDto.getNumber() != null && cardDto.getNumber() == number) {
-                CardDto cardResultDto =cardDto;
+                CardDto cardResultDto = cardDto;
                 type.remove(cardDto);
                 return cardResultDto;
             }
@@ -251,15 +280,14 @@ public class CreateGameController extends Controller implements Initializable {
     }//sexto
 
     private List<StackcardDto> mixCards() {
-     
+
         Collections.shuffle(cards); // Mezcla la lista de manera ramdon
-        
+
         List<StackcardDto> columnList = createColumns();
         for (int i = 0; i < 10; i++) {
-            if(i<4){
+            if (i < 4) {
                 mixFirstCards(cards, columnList.get(i));
-            }
-            else{
+            } else {
                 mixOtherCards(cards, columnList.get(i));
             }
         }
@@ -509,8 +537,8 @@ public class CreateGameController extends Controller implements Initializable {
         btnStartGame.setVisible(!nameGame.isEmpty() && difficulty != null);
         System.out.println("Start button visible: " + btnStartGame.isVisible() + ", nameGame: " + nameGame + ", difficulty: " + difficulty);
     }
-    
-    private void cleanView(){
+
+    private void cleanView() {
         txfNameGame.setText("");
         easyModeCard.setIsFlipped(true);
         mediumModeCard.setIsFlipped(true);
@@ -518,7 +546,7 @@ public class CreateGameController extends Controller implements Initializable {
         easyModeCard.updateImageView(mgvEasyMode);
         mediumModeCard.updateImageView(mgvMediumMode);
         hardModeCard.updateImageView(mgvHardMode);
-        difficulty=null;
+        difficulty = null;
     }
 
     private void setupCardInteractions() {

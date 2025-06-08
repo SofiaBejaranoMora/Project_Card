@@ -364,47 +364,51 @@ public class GameController extends Controller implements Initializable {
         card.fitWidthProperty().bind(width);
         card.setPreserveRatio(true);
         space.getChildren().add(card);
-        
+        ImageView copyCard = new ImageView();
+        List<Pane>[] laderList = new ArrayList[1];
+
         space.setOnMousePressed(pressEvent -> {
-            ImageView copyCard = new ImageView(card.getImage());
-            copyCard.setFitWidth(card.getImage().getWidth() * 0.065);
-            copyCard.setFitHeight(card.getImage().getHeight() * 0.065);
-            copyCard.setOpacity(1.0);
+            if (isValidSequence((VBox) space.getParent(), space)) {
+                copyCard.setImage(card.getImage());
+                copyCard.setFitWidth(card.getImage().getWidth() * 0.065);
+                copyCard.setFitHeight(card.getImage().getHeight() * 0.065);
+                copyCard.setOpacity(1.0);
 
-            System.out.println("Entro en click");
-            root.getChildren().add(copyCard);
-            copyCard.setLayoutX(pressEvent.getSceneX() - copyCard.getFitWidth() / 2);
-            copyCard.setLayoutY(pressEvent.getSceneY() - copyCard.getFitHeight() / 2);
-            List<Pane> laderList = laderCards(space);
-            for (Pane pane : laderList) {
-                pane.setVisible(false);
+                System.out.println("Entro en click");
+                root.getChildren().add(copyCard);
+                copyCard.setLayoutX(pressEvent.getSceneX() - copyCard.getFitWidth() / 2);
+                copyCard.setLayoutY(pressEvent.getSceneY() - copyCard.getFitHeight() / 2);
+                laderList[0] = laderCards(space);
+                for (Pane pane : laderList[0]) {
+                    pane.setVisible(false);
+                }
             }
+        });
+        
+        space.setOnMouseDragged(dragEvent -> {
+            System.out.println("Hello drag");
+            copyCard.setLayoutX(dragEvent.getSceneX() - copyCard.getFitWidth() / 2);
+            copyCard.setLayoutY(dragEvent.getSceneY() - copyCard.getFitHeight() / 2);
+        });
 
-            space.setOnMouseDragged(dragEvent -> {
-                System.out.println("Hello drag");
-                copyCard.setLayoutX(dragEvent.getSceneX() - copyCard.getFitWidth() / 2);
-                copyCard.setLayoutY(dragEvent.getSceneY() - copyCard.getFitHeight() / 2);
-            });
-
-            space.setOnMouseReleased(releaseEvent -> {
-                System.out.println("Bye drag");
-                Point2D mousePosition = new Point2D(releaseEvent.getSceneX(), releaseEvent.getSceneY());
-                VBox currentColumn = getColumn(mousePosition);
-                VBox actualColumn = (VBox) space.getParent();
-                //Método de movimientos validos
-                if (true && currentColumn != null) {
-                    for (Pane pane : laderList) {
-                        actualColumn.getChildren().remove(pane);
-                        currentColumn.getChildren().add(pane);
-                    }
-                    turnCards(actualColumn);
-                    //Agregar el -1pt para mantener los puntos al día
+        space.setOnMouseReleased(releaseEvent -> {
+            System.out.println("Bye drag");
+            Point2D mousePosition = new Point2D(releaseEvent.getSceneX(), releaseEvent.getSceneY());
+            VBox currentColumn = getColumn(mousePosition);
+            VBox actualColumn = (VBox) space.getParent();
+            //Método de movimientos validos
+            if (true && currentColumn != null) {
+                for (Pane pane : laderList[0]) {
+                    actualColumn.getChildren().remove(pane);
+                    currentColumn.getChildren().add(pane);
                 }
-                root.getChildren().remove(copyCard);
-                for (Pane pane : laderList) {
-                    pane.setVisible(true);
-                }
-            });
+                turnCards(actualColumn);
+                //Agregar el -1pt para mantener los puntos al día
+            }
+            root.getChildren().remove(copyCard);
+            for (Pane pane : laderList[0]) {
+                pane.setVisible(true);
+            }
         });
         return space;
     }

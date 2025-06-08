@@ -9,7 +9,7 @@ module cr.ac.una.project_card {
     requires jakarta.persistence;
     requires com.oracle.database.jdbc;
     requires java.instrument;
-
+    requires javafx.media;
     
     opens cr.ac.una.project_card.controller to javafx.fxml;
     opens cr.ac.una.project_card to javafx.graphics;

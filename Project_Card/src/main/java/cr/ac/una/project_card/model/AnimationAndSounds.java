@@ -1,6 +1,7 @@
 package cr.ac.una.project_card.model;
 
 import cr.ac.una.project_card.util.ImagesUtil;
+import javafx.scene.media.AudioClip;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -9,11 +10,14 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
 import javafx.util.Duration;
 
 /** * * * @author ashly */
-public class Animation {
+public class AnimationAndSounds {
 
+private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/Sounds/";
+    
     public static void move(Node node, Point2D rute, Double duration) {
         Timeline timeline = new Timeline();
 
@@ -63,5 +67,32 @@ public class Animation {
 
         startTransition.play();
     }
+
+    public void buttonSound() {
+        AudioClip clip = new AudioClip(saveRoute+"buttonSound.mp3");
+        clip.play();
+    }
+    
+    public void clueSound() {
+        AudioClip clip = new AudioClip(saveRoute+"clueSound.mp3");
+        clip.play();
+    }
+    
+    public void achievementSound() {
+        AudioClip clip = new AudioClip(saveRoute+"achievementSound.mp3");
+        clip.play();
+    }
+    
+    public void multiUseSound() {
+        AudioClip clip = new AudioClip(saveRoute+"multiUseSound.mp3");
+        clip.play();
+    }
+
+    public void playMusic(String musicFile) {
+        Media media = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer player = new MediaPlayer(media);
+        player.play();
+    }
+
 }
 

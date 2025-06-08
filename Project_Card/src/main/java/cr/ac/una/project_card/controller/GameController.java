@@ -16,6 +16,7 @@ import cr.ac.una.project_card.util.Mensaje;
 import cr.ac.una.project_card.util.Respuesta;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -131,6 +132,7 @@ public class GameController extends Controller implements Initializable {
                     Respuesta answerPlayer = servicePlayer.getPlayerId(player.getId());
                     if (answerPlayer != null && answerPlayer.getEstado()) {
                         this.player = (PlayerDto) answerPlayer.getResultado("Jugador");
+                        cleanList();
                         AppContext.getInstance().set("CurrentUser", player);
                         message.showModal(Alert.AlertType.INFORMATION, "¡La jugada quedó registrada!", getStage(), "Tus cartas están a salvo, listas para esperar tu próximo movimiento. Todo quedó guardado correctamente.\n\n"
                                 + "¡Nos vemos en la próxima mano!");
@@ -199,7 +201,6 @@ public class GameController extends Controller implements Initializable {
                     for (int i = 0; i < 10; i++) {
                         newStackcardxcardDto = newStackcardxcardDtoList.get(i);
                         allStacks.get(i).getStackCardxCards().add(newStackcardxcardDto);
-                        allStackcardxcard.add(newStackcardxcardDto);
                         columns.get(i).getChildren().add(setupCard(newStackcardxcardDto));
                         //animación
                         if (newStackcardxcardDtoList.isEmpty()) {
@@ -213,6 +214,14 @@ public class GameController extends Controller implements Initializable {
                         + "¡y entonces sí, reparte como un verdadero maestro del Solitario!");
             }
         }
+    }
+    
+    public void cleanList(){
+        allStacks.clear();
+        allStackcardxcard.clear();
+        ladderList.clear();
+        columns.clear();
+        cards.clear();
     }
 
     public List<StackcardxcardDto> SaveStackcardxcardList() {
@@ -525,7 +534,7 @@ public class GameController extends Controller implements Initializable {
                     this.game = (GameDto) answer.getResultado("Partida");
                     allStackcardxcard = new ArrayList<>();
                     this.cards.addAll(game.getCards());
-                    Collections.shuffle(cards);
+                    Collections.shuffle(cards, new SecureRandom());
                     mgvMaze.setEffect(null);
                     if (cards.isEmpty()) {
                         colorAdjust.setSaturation(-1);

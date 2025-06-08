@@ -166,7 +166,7 @@ public class GameController extends Controller implements Initializable {
     public Boolean hasSaveStackcardxcardList(List<StackcardxcardDto> newStackcardxcardDtoList) {
         StackcardxcardDto newStackcardxcardDto;
         for (int i = 0; i < 10; i++) {
-            newStackcardxcardDto = new StackcardxcardDto(true, Long.valueOf(i));
+            newStackcardxcardDto = new StackcardxcardDto(true,Long.valueOf( columns.get(i).getChildren().size()+(i+1)));
             newStackcardxcardDto.setCard(cards.remove(cards.size() - 1));
             newStackcardxcardDto.setStackCard(allStacks.get(i));
             newStackcardxcardDtoList.add(newStackcardxcardDto);

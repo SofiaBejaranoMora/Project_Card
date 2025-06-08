@@ -178,7 +178,6 @@ public class UserSessionController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
-        //Crear un metodo de limpiar.
         FlowController.getInstance().goView("MenuView");
     }
 
@@ -210,7 +209,7 @@ public class UserSessionController extends Controller implements Initializable {
                     answer = playerService.getPlayerId(player.getId());
                     player = (PlayerDto) answer.getResultado("Jugador");
                     if (answer.getEstado()) {
-                        //animació
+                        //animación
                     }
                 }
             }

@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -46,6 +48,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * * * FXML Controller class * * @author ashly
@@ -65,6 +68,10 @@ public class GameController extends Controller implements Initializable {
     private MouseEvent mouse;
     private List<StackcardxcardDto> allStackcardxcard;
     private List<Pane> ladderList = new ArrayList<>();
+    private Timeline currentTime;
+    private int timeLimit;
+    private int timeCalculate;
+    private Boolean isTimerStarted = false;
 
     // Listas de cartas por tipo
     private List<CardDto> corazones = new ArrayList<>();
@@ -106,6 +113,9 @@ public class GameController extends Controller implements Initializable {
     @FXML
     private void onActionBtnBack(ActionEvent event) {
         if ((game != null) && (allStackcardxcard != null && !allStackcardxcard.isEmpty())) {
+            currentTime.stop();
+            isTimerStarted = false;
+            game.setTime(game.getTime() - Long.valueOf(timeCalculate));
             GameService serviceGame = new GameService();
             StackcardxcardService serviceStackcardxcard = new StackcardxcardService();
             Respuesta answerGame = serviceGame.EditGameId(game, cards);
@@ -374,6 +384,29 @@ public class GameController extends Controller implements Initializable {
         }
     }
     
+    private Boolean isContinueGame() {        
+        timeLimit = game.getTime().intValue();
+        int timeUsed = 0;
+        if (game.getDifficulty() == null) {
+            return false;
+        } else {
+            if(game.getDifficulty() == 3L){
+                timeUsed = (int) 1260L - timeLimit;
+            }
+            else if(game.getDifficulty() == 2L){
+                timeUsed = (int) 992L - timeLimit;
+            } else {
+                timeUsed = (int) 600L - timeLimit;
+            }
+        }
+        if(timeUsed != 0 && timeUsed != 1260 && timeUsed != 992 && timeUsed != 600) {
+            timeCalculate = timeUsed;
+            lblTimer.setText(timerFormat(timeUsed));
+            return true;
+        }
+        return  false;
+    }
+    
     public StackcardxcardDto searchStackcardxcardDto(Pane pane) {
         if (pane.getId() != null && !pane.getId().isBlank()) {
             Long idPane = Long.valueOf(pane.getId());
@@ -513,6 +546,13 @@ public class GameController extends Controller implements Initializable {
         ladderList.clear();
 
         space.setOnMousePressed(pressEvent -> { // Evento al hacer clic en la carta
+            if (!isTimerStarted) {
+                isTimerStarted = true;
+                setupTimer();
+                currentTime.play();
+            } else {
+                currentTime.play();
+            }
             if (isValidSequence((VBox) space.getParent(), space)) {
                 copyCard.setImage(card.getImage());
                 copyCard.setFitWidth(card.getImage().getWidth() * 0.065);
@@ -528,6 +568,7 @@ public class GameController extends Controller implements Initializable {
                 for (Pane pane : ladderList) {
                     pane.setVisible(false);
                 }
+
             }
         });
 
@@ -598,6 +639,22 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
+    private String timerFormat(int totalSeconds) {
+        return String.format("Tiempo: %02d:%02d", (totalSeconds / 60), (totalSeconds % 60));
+    }
+    
+    private void setupTimer() {        
+        currentTime = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            timeCalculate++;
+            lblTimer.setText(timerFormat(timeCalculate));
+            if (timeCalculate == timeLimit) {
+                currentTime.stop();
+            }
+            //Logros
+        }));
+        currentTime.setCycleCount(timeLimit);
+    }
+    
     private void setupBackground(String rute) { //Manipula la ruta que del fondo para adecuarla al anchorpane
         BackgroundImage backgroundImage = new BackgroundImage(new Image(rute),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -623,6 +680,9 @@ public class GameController extends Controller implements Initializable {
         }
         String rute = ImagesUtil.getBackCardPath(setupStyle());
         mgvMaze.setImage(new Image(rute));
+        if(!isContinueGame() && !isTimerStarted){
+            lblTimer.setText("Tiempo: 00:00");
+        }
         columns.clear();
         for (Node node : hBxBoard.getChildren()) {
             if (node instanceof VBox) {

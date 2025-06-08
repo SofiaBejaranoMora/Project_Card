@@ -425,15 +425,15 @@ public class GameController extends Controller implements Initializable {
         space.setOnMouseReleased(releaseEvent -> {  // Evento al soltar la carta
             System.out.println("Bye drag");
             Point2D mousePosition = new Point2D(releaseEvent.getSceneX(), releaseEvent.getSceneY());
-            VBox currentColumn = getColumn(mousePosition);
-            VBox actualColumn = (VBox) space.getParent();
+            VBox newColumn = getColumn(mousePosition);  //Vbox llegada
+            VBox actualColumn = (VBox) space.getParent();   //Vbox salida
 
-            if (currentColumn != null && enableCardMove(currentColumn, space)) {
+            if (newColumn != null && enableCardMove(newColumn, space)) {
                 for (Pane pane : ladderList[0]) {
                     actualColumn.getChildren().remove(pane);
-                    currentColumn.getChildren().add(pane);
+                    newColumn.getChildren().add(pane);
                 }
-                turnCards(actualColumn);
+                turnCards(actualColumn);    //Voltea las cartas de espaldas
                 // Agregar el -1pt para mantener los puntos al día
             }
 

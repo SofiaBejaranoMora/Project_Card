@@ -197,6 +197,9 @@ public class GameController extends Controller implements Initializable {
     }
     
     public Boolean enableCardMove(VBox newColumn, Pane firstPane){
+        if(!(newColumn!=null && firstPane!=null)){
+            return false;
+        }
         if(!columns.contains(newColumn)){
             //Mensaje
             return false;
@@ -211,6 +214,10 @@ public class GameController extends Controller implements Initializable {
         StackcardxcardDto lastCardNewColumn= searchStackcardxcardDto((Pane) node);
         StackcardxcardDto firstCardPane= searchStackcardxcardDto(firstPane);
         if (!(lastCardNewColumn!=null && firstCardPane!=null)){ // revisa que se encuentren las cartas
+            return false;
+        }
+        
+        if(!(lastCardNewColumn.getCard()!=null &&firstCardPane.getCard()!=null)){
             return false;
         }
         

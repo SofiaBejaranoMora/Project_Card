@@ -209,15 +209,44 @@ public class GameController extends Controller implements Initializable {
         return null;
     }
 
-    private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
-        for (CardDto carta : tipo) {
-            if (carta.getNumber() != null && carta.getNumber() == number) {
-                return carta;
+    private boolean isValidSequence(VBox sourceColumn, Pane cardPane) {
+        try {
+            int indexPane = sourceColumn.getChildren().indexOf(cardPane);
+            if (indexPane == -1) {
+                message.showModal(Alert.AlertType.ERROR, "Error en verificación", getStage(), "No se encontró la carta en la columna.");
+                return false;
             }
-        }
-        return null;
-    }
+            int sourceIndex = columns.indexOf(sourceColumn);
+            List<StackcardxcardDto> cards = allStacks.get(sourceIndex).getStackCardxCards();
+            if (indexPane >= cards.size()) {
+                message.showModal(Alert.AlertType.ERROR, "Error en verificación", getStage(), "Índice de carta inválido.");
+                return false;
+            }
 
+            for (int i = indexPane; i < cards.size(); i++) {
+                if (!cards.get(i).getIsFaceUp()) {
+                    message.showModal(Alert.AlertType.WARNING, "Movimiento inválido", getStage(), "No se pueden mover cartas boca abajo.");
+                    return false;
+                }
+            }
+            String suitType = cards.get(indexPane).getCard().getType();
+            Long expectedNumber = cards.get(indexPane).getCard().getNumber();
+            for (int i = indexPane + 1; i < cards.size(); i++) {
+                String currentSuit = cards.get(i).getCard().getType();
+                Long currentNumber = cards.get(i).getCard().getNumber();
+                if (!currentSuit.equals(suitType) || currentNumber != expectedNumber - 1) {
+                    message.showModal(Alert.AlertType.WARNING, "Movimiento inválido", getStage(), "Las cartas no forman una escalera válida.");
+                    return false;
+                }
+                expectedNumber = currentNumber;
+            }
+            return true;
+        } catch (Exception e) {
+            message.showModal(Alert.AlertType.ERROR, "Error en verificación", getStage(), "No se pudo verificar la secuencia de cartas: " + e.getMessage());
+            return false;
+        }
+    }
+    
     private void loadGame() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             Long gameId = (Long) AppContext.getInstance().get("IdCurrentGame");

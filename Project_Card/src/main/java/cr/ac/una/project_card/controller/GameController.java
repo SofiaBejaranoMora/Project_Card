@@ -195,19 +195,6 @@ public class GameController extends Controller implements Initializable {
         }
         return true;
     }
-
-    public StackcardxcardDto searchStackcardxcardDto(Pane pane) {
-        if (pane.getId() != null && !pane.getId().isBlank()) {
-            Long idPane = Long.valueOf(pane.getId());
-            for (StackcardxcardDto currentStackcardxcard : allStackcardxcard) {
-                if (currentStackcardxcard.getId().equals(idPane)) {
-                    return currentStackcardxcard;
-                }
-            }
-            return null;
-        }
-        return null;
-    }
     
     public Boolean enableCardMove(VBox newColumn, Pane firstPane){
         if(!columns.contains(newColumn)){
@@ -234,7 +221,7 @@ public class GameController extends Controller implements Initializable {
         return false;
     }
 
-    private boolean isValidSequence(VBox sourceColumn, Pane cardPane) {
+    private Boolean isValidSequence(VBox sourceColumn, Pane cardPane) {
         try {
             int indexPane = sourceColumn.getChildren().indexOf(cardPane);
             if (indexPane == -1) {
@@ -272,6 +259,19 @@ public class GameController extends Controller implements Initializable {
         }
     }
     
+    public StackcardxcardDto searchStackcardxcardDto(Pane pane) {
+        if (pane.getId() != null && !pane.getId().isBlank()) {
+            Long idPane = Long.valueOf(pane.getId());
+            for (StackcardxcardDto currentStackcardxcard : allStackcardxcard) {
+                if (currentStackcardxcard.getId().equals(idPane)) {
+                    return currentStackcardxcard;
+                }
+            }
+            return null;
+        }
+        return null;
+    }
+
     private void loadGame() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             Long gameId = (Long) AppContext.getInstance().get("IdCurrentGame");
@@ -331,7 +331,7 @@ public class GameController extends Controller implements Initializable {
         return null;
     }
 
-    private List<Pane> laderCards(Pane selected) {
+    private List<Pane> ladderCards(Pane selected) {
         List<Pane> laderList = new ArrayList<>();
         VBox parent = (VBox) selected.getParent();
         for (int i = parent.getChildren().indexOf(selected); i < parent.getChildren().size(); i++) {
@@ -362,7 +362,7 @@ public class GameController extends Controller implements Initializable {
             }
         });
     }
-//Recordatorio pa'mi: Ash acomodese esta vaina mijita no sea vaga
+    
     private Pane setupCard(StackcardxcardDto stackcardxcardDto) {   // Se encarga de generar automáticamente las cartas en columnas
         Boolean isFaceUp = stackcardxcardDto.getIsFaceUp();
         CardDto cardDto = stackcardxcardDto.getCard();
@@ -387,8 +387,7 @@ public class GameController extends Controller implements Initializable {
         } else {
             cardPath = ImagesUtil.getBackCardPath(setupStyle());
         }
-
-        //card.setImage(new Image(cardPath));
+        card.setImage(new Image(cardPath));
 
         space.setId(String.valueOf(stackcardxcardDto.getId()));
         card.fitWidthProperty().bind(width);
@@ -410,7 +409,7 @@ public class GameController extends Controller implements Initializable {
                 copyCard.setLayoutX(pressEvent.getSceneX() - copyCard.getFitWidth() / 2);
                 copyCard.setLayoutY(pressEvent.getSceneY() - copyCard.getFitHeight() / 2);
 
-                ladderList[0] = laderCards(space);
+                ladderList[0] = ladderCards(space);
                 for (Pane pane : ladderList[0]) {
                     pane.setVisible(false);
                 }

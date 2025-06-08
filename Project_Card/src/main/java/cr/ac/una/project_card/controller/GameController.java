@@ -276,19 +276,16 @@ public class GameController extends Controller implements Initializable {
         try {
             int indexPane = sourceColumn.getChildren().indexOf(cardPane);
             if (indexPane == -1) {
-                message.showModal(Alert.AlertType.ERROR, "Error en verificación", getStage(), "No se encontró la carta en la columna.");
                 return false;
             }
             int sourceIndex = columns.indexOf(sourceColumn);
             List<StackcardxcardDto> cards = allStacks.get(sourceIndex).getStackCardxCards();
             if (indexPane >= cards.size()) {
-                message.showModal(Alert.AlertType.ERROR, "Error en verificación", getStage(), "Índice de carta inválido.");
                 return false;
             }
 
             for (int i = indexPane; i < cards.size(); i++) {
                 if (!cards.get(i).getIsFaceUp()) {
-                    message.showModal(Alert.AlertType.WARNING, "Movimiento inválido", getStage(), "No se pueden mover cartas boca abajo.");
                     return false;
                 }
             }
@@ -298,18 +295,85 @@ public class GameController extends Controller implements Initializable {
                 String currentSuit = cards.get(i).getCard().getType();
                 Long currentNumber = cards.get(i).getCard().getNumber();
                 if (!currentSuit.equals(suitType) || currentNumber != expectedNumber - 1) {
-                    message.showModal(Alert.AlertType.WARNING, "Movimiento inválido", getStage(), "Las cartas no forman una escalera válida.");
                     return false;
                 }
                 expectedNumber = currentNumber;
             }
             return true;
         } catch (Exception e) {
-            message.showModal(Alert.AlertType.ERROR, "Error en verificación", getStage(), "No se pudo verificar la secuencia de cartas: " + e.getMessage());
             return false;
         }
     }
 
+    private Boolean isValidColumnMove(VBox destColumn, String sourceSuit, Long sourceNumber) {
+        try {
+            if (destColumn.getChildren().isEmpty()) {
+                return true;
+            }
+            Pane topPane = (Pane) destColumn.getChildren().get(destColumn.getChildren().size() - 1);
+            StackcardxcardDto topCard = searchStackcardxcardDto(topPane);
+            if (topCard != null) {
+                String destSuit = topCard.getCard().getType();
+                Long destNumber = topCard.getCard().getNumber();
+                if (destSuit == sourceSuit || destNumber == sourceNumber + 1) {
+                    return true;
+                }
+                return false;
+            }
+            return false; 
+        } catch (Exception e) {
+            message.showModal(Alert.AlertType.ERROR, "Error en verificación", getStage(), "No se pudo verificar el movimiento: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private Boolean hasValidMoves() {
+        try {
+            for (int col = 0; col < columns.size(); col++) {
+                VBox column = columns.get(col);
+                List<StackcardxcardDto> cards = allStacks.get(col).getStackCardxCards();
+                if (!cards.isEmpty() && cards.get(cards.size() - 1).getIsFaceUp()) {
+                    int startIndex = cards.size() - 1;
+                    while (startIndex > 0 && cards.get(startIndex - 1).getIsFaceUp()) {
+                        startIndex--;
+                    }
+                    if (isValidSequence(column, (Pane) column.getChildren().get(startIndex))) {
+                        for (int destCol = 0; destCol < columns.size(); destCol++) {
+                            if (destCol != col) {
+                                VBox destColumn = columns.get(destCol);
+                                StackcardxcardDto topCard;
+                                if (destColumn.getChildren().isEmpty()) {
+                                    topCard = null;
+                                } else {
+                                    topCard = searchStackcardxcardDto((Pane) destColumn.getChildren().get(destColumn.getChildren().size() - 1));
+                                }
+                                boolean canMove;
+                                List<Node> children = destColumn.getChildren();
+
+                                if (children.isEmpty()) {
+                                    canMove = true;
+                                } else {
+                                    if (topCard != null) {
+                                        canMove = isValidColumnMove(destColumn, cards.get(startIndex).getCard().getType(), cards.get(startIndex).getCard().getNumber());
+                                    } else {
+                                        canMove = false; 
+                                    }
+                                }
+                                if (canMove) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            message.showModal(Alert.AlertType.ERROR, "Error al verificar movimientos", getStage(), "Algo falló al buscar jugadas: " + e.getMessage());
+            return false;
+        }
+    }
+    
     public StackcardxcardDto searchStackcardxcardDto(Pane pane) {
         if (pane.getId() != null && !pane.getId().isBlank()) {
             Long idPane = Long.valueOf(pane.getId());

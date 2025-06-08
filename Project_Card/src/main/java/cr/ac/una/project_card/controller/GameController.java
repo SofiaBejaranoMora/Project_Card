@@ -489,14 +489,16 @@ public class GameController extends Controller implements Initializable {
     }
 
     private void turnCards(VBox actualColumn) {
-        Pane toTurn = (Pane) actualColumn.getChildren().get(actualColumn.getChildren().size() - 1);
-        StackcardxcardDto ubication = searchStackcardxcardDto(toTurn);
-        CardDto cardDto = ubication.getCard();
-        if (!ubication.getIsFaceUp()) {
-            ubication.setIsFaceUp(true);
-            String rute = ImagesUtil.getCardPath(player.getCardStyle() + "/", cardDto.getNumber() + cardDto.getType());
-            ImageView card = (ImageView) toTurn.getChildren().get(0);
-            card.setImage(new Image(rute));
+        if (actualColumn.getChildren().size() - 1 >= 0) {
+            Pane toTurn = (Pane) actualColumn.getChildren().get(actualColumn.getChildren().size() - 1);
+            StackcardxcardDto ubication = searchStackcardxcardDto(toTurn);
+            CardDto cardDto = ubication.getCard();
+            if (!ubication.getIsFaceUp()) {
+                ubication.setIsFaceUp(true);
+                String rute = ImagesUtil.getCardPath(player.getCardStyle() + "/", cardDto.getNumber() + cardDto.getType());
+                ImageView card = (ImageView) toTurn.getChildren().get(0);
+                card.setImage(new Image(rute));
+            }
         }
     }
 

@@ -144,6 +144,12 @@ public class CreateGameController extends Controller implements Initializable {
                 time = 1260L;
             }
 
+            corazones.clear();
+            picas.clear();
+            treboles.clear();
+            diamantes.clear();
+            cards.clear();
+
             gameDto = new GameDto(nameGame, difficulty, time);
             prepareGame(gameDto);
             List<StackcardDto> columnList = mixCards();
@@ -607,11 +613,6 @@ public class CreateGameController extends Controller implements Initializable {
         easyModeCard.setBackImagePath(easyCardBack);
         mediumModeCard.setBackImagePath(mediumCardBack);
         hardModeCard.setBackImagePath(hardCardBack);
-        corazones=new ArrayList<>();
-        picas=new ArrayList<>();
-        treboles=new ArrayList<>();
-        diamantes=new ArrayList<>();
-        cards=new ArrayList<>();
 
         initialConditionsCards();
         setupCardInteractions();

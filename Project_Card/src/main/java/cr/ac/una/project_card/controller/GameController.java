@@ -362,37 +362,43 @@ public class GameController extends Controller implements Initializable {
             }
         });
     }
-
-    private Pane setupCard(StackcardxcardDto stackcardxcardDto) { //Se encarga de generar automaticamente las carta en columnas
+//Recordatorio pa'mi: Ash acomodese esta vaina mijita no sea vaga
+    private Pane setupCard(StackcardxcardDto stackcardxcardDto) {   // Se encarga de generar automáticamente las cartas en columnas
         Boolean isFaceUp = stackcardxcardDto.getIsFaceUp();
         CardDto cardDto = stackcardxcardDto.getCard();
         allStackcardxcard.add(stackcardxcardDto);
-        Pane space = new Pane();
+
+        Pane space = new Pane();    // Configuración del espacio donde irá la carta
         DoubleProperty width = new SimpleDoubleProperty();
         width.bind(columns.get(0).widthProperty());
+
         DoubleProperty height = new SimpleDoubleProperty();
         height.bind(width.divide(3));
-        space.prefWidthProperty().bind(width);  //Es para agarrar el ancho de un 
-        space.prefHeightProperty().bind(height);
 
-        ImageView card = new ImageView();
-        String rute;
+        space.prefWidthProperty().bind(width);  // Es para agarrar el ancho de un 
+        space.prefHeightProperty().bind(height);
+        
+        ImageView card = new ImageView();   // Configuración de la imagen de la carta
+        String cardPath;
+
         if (isFaceUp) {
-            rute = ImagesUtil.getCardPath(player.getCardStyle() + "/", cardDto.getNumber() + cardDto.getType());
-            card.setImage(new Image(rute));
+            cardPath = ImagesUtil.getCardPath(player.getCardStyle() + "/",
+            cardDto.getNumber() + cardDto.getType());
         } else {
-            rute = ImagesUtil.getBackCardPath(setupStyle());
-            card.setImage(new Image(rute));
+            cardPath = ImagesUtil.getBackCardPath(setupStyle());
         }
+
+        //card.setImage(new Image(cardPath));
 
         space.setId(String.valueOf(stackcardxcardDto.getId()));
         card.fitWidthProperty().bind(width);
         card.setPreserveRatio(true);
         space.getChildren().add(card);
-        ImageView copyCard = new ImageView();
-        List<Pane>[] laderList = new ArrayList[1];
 
-        space.setOnMousePressed(pressEvent -> {
+        ImageView copyCard = new ImageView();   // Imagen duplicada para el arrastre de cartas
+        List<Pane>[] ladderList = new ArrayList[1];
+
+        space.setOnMousePressed(pressEvent -> { // Evento al hacer clic en la carta
             if (isValidSequence((VBox) space.getParent(), space)) {
                 copyCard.setImage(card.getImage());
                 copyCard.setFitWidth(card.getImage().getWidth() * 0.065);
@@ -403,38 +409,41 @@ public class GameController extends Controller implements Initializable {
                 root.getChildren().add(copyCard);
                 copyCard.setLayoutX(pressEvent.getSceneX() - copyCard.getFitWidth() / 2);
                 copyCard.setLayoutY(pressEvent.getSceneY() - copyCard.getFitHeight() / 2);
-                laderList[0] = laderCards(space);
-                for (Pane pane : laderList[0]) {
+
+                ladderList[0] = laderCards(space);
+                for (Pane pane : ladderList[0]) {
                     pane.setVisible(false);
                 }
             }
         });
-        
-        space.setOnMouseDragged(dragEvent -> {
+
+        space.setOnMouseDragged(dragEvent -> {  // Evento al arrastrar la carta
             System.out.println("Hello drag");
             copyCard.setLayoutX(dragEvent.getSceneX() - copyCard.getFitWidth() / 2);
             copyCard.setLayoutY(dragEvent.getSceneY() - copyCard.getFitHeight() / 2);
         });
 
-        space.setOnMouseReleased(releaseEvent -> {
+        space.setOnMouseReleased(releaseEvent -> {  // Evento al soltar la carta
             System.out.println("Bye drag");
             Point2D mousePosition = new Point2D(releaseEvent.getSceneX(), releaseEvent.getSceneY());
             VBox currentColumn = getColumn(mousePosition);
             VBox actualColumn = (VBox) space.getParent();
-            //Método de movimientos validos
-            if (true && currentColumn != null) {
-                for (Pane pane : laderList[0]) {
+
+            if (currentColumn != null && enableCardMove(currentColumn, space)) {
+                for (Pane pane : ladderList[0]) {
                     actualColumn.getChildren().remove(pane);
                     currentColumn.getChildren().add(pane);
                 }
                 turnCards(actualColumn);
-                //Agregar el -1pt para mantener los puntos al día
+                // Agregar el -1pt para mantener los puntos al día
             }
+
             root.getChildren().remove(copyCard);
-            for (Pane pane : laderList[0]) {
+            for (Pane pane : ladderList[0]) {
                 pane.setVisible(true);
             }
         });
+
         return space;
     }
 

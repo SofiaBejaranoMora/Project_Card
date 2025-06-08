@@ -6,15 +6,17 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 /** * * * @author ashly */
-public class AnimationAndSounds {
+public class AnimationAndSound {
 
 private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/Sounds/";
     
@@ -67,32 +69,60 @@ private String saveRoute = System.getProperty("user.dir") + "/src/main/resources
 
         startTransition.play();
     }
+    
+    public static void turnCardsAnimation(ImageView card, Image newCard) {
+        card.setRotationAxis(new Point3D(1, 0, 0));
+        card.setRotate(0);
+        Timeline firstPartRotate = new Timeline();
+        firstPartRotate.getKeyFrames().add(
+                new KeyFrame(Duration.millis(1500),
+                new KeyValue(card.rotateProperty(), 90)));
+        
+        Timeline secondPartRotate = new Timeline();
+        secondPartRotate.getKeyFrames().add(
+                new KeyFrame(Duration.millis(1500),
+                new KeyValue(card.rotateProperty(), 0)));
+        
+        firstPartRotate.setOnFinished(e -> {
+            card.setImage(newCard);
+            secondPartRotate.play();
+        });
+        firstPartRotate.play();
+    }
 
+    public static void startUpGif() {
+        
+    }
+
+    public static void changeViewGif() {
+        
+    }
+    
     public void buttonSound() {
-        AudioClip clip = new AudioClip(saveRoute+"buttonSound.mp3");
+        AudioClip clip = new AudioClip(saveRoute + "buttonSound.mp3");
         clip.play();
     }
     
     public void clueSound() {
-        AudioClip clip = new AudioClip(saveRoute+"clueSound.mp3");
+        AudioClip clip = new AudioClip(saveRoute + "clueSound.mp3");
         clip.play();
     }
     
     public void achievementSound() {
-        AudioClip clip = new AudioClip(saveRoute+"achievementSound.mp3");
+        AudioClip clip = new AudioClip(saveRoute + "achievementSound.mp3");
         clip.play();
     }
     
     public void multiUseSound() {
-        AudioClip clip = new AudioClip(saveRoute+"multiUseSound.mp3");
+        AudioClip clip = new AudioClip(saveRoute + "multiUseSound.mp3");
         clip.play();
     }
 
-    public void playMusic(String musicFile) {
-        Media media = new Media(new File(musicFile).toURI().toString());
+    public void playMusic() {
+        Media media = new Media(saveRoute + "backSound.mp4");
         MediaPlayer player = new MediaPlayer(media);
+        player.setCycleCount(MediaPlayer.INDEFINITE);
         player.play();
     }
 
 }
-

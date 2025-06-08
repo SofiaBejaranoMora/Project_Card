@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import cr.ac.una.project_card.controller.Controller;
 import cr.ac.una.project_card.controller.GameController;
-import cr.ac.una.project_card.model.AnimationAndSounds;
+import cr.ac.una.project_card.model.AnimationAndSound;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
 import io.github.palexdev.materialfx.css.themes.Themes;
 import javafx.scene.Node;
@@ -116,7 +116,7 @@ public class FlowController {
                 StackPane main = (StackPane) ((BorderPane) stage.getScene().getRoot()).getCenter();
                 if (loadedContent instanceof AnchorPane anchorPane) {
                     VBox vBox = (VBox) main.getChildren().get(0);
-                    AnimationAndSounds.startTransition( (Pane) main.getChildren().get(1), () ->{
+                    AnimationAndSound.startTransition( (Pane) main.getChildren().get(1), () ->{
                         if(viewName.equals("GameView")) {
                             GameController game = (GameController) FlowController.getInstance().getController("GameView");
                             game.setupBoard();
@@ -128,7 +128,7 @@ public class FlowController {
                    
                 } else {
                     VBox vBox = (VBox) main.getChildren().get(0);
-                    AnimationAndSounds.startTransition( (Pane) main.getChildren().get(1), () ->{
+                    AnimationAndSound.startTransition( (Pane) main.getChildren().get(1), () ->{
                         vBox.getChildren().clear();
                         vBox.getChildren().add(loadedContent);
                    });

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -569,14 +570,16 @@ public class GameController extends Controller implements Initializable {
         }
     }
     
-    private void moveToFullSuit(Node fullSuitImage, Point2D ubication) {
-        List<Node> suits = hBoxSuits.getChildren();
-        for (int i = suits.size(); i >= 0; i--) {
-            if(suits.contains(i)){
-                
+    private void moveToFullSuit(ImageView fillSuitImage, Point2D ubication) {
+        List<ImageView> suits = hBoxSuits.getChildren().stream()
+                .filter(node -> node instanceof ImageView)
+                .map(node -> (ImageView) node)
+                .collect(Collectors.toList());
+        for (ImageView suit : suits) {
+            if(suit.contains(ubication)){
+                suit.setImage((Image) fillSuitImage.getImage());
             }
         }
-        
     }
 
     private VBox getColumn(Point2D ubication) {   //Extrae los VBox y los identifica como si fueran columnas

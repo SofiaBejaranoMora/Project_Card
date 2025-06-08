@@ -27,7 +27,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -479,7 +482,22 @@ public class CreateGameController extends Controller implements Initializable {
         button.setStyle("-fx-border-color: blue; -fx-border-width: 3; -fx-border-radius: 5;");
         button.applyCss();
         button.layout();
-        System.out.println("Applying glow to button: " + button.getId() + ", Effect: " + button.getEffect());
+        
+              Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0), new KeyValue(glow.radiusProperty(), 30.0)),
+                new KeyFrame(Duration.seconds(0.5), new KeyValue(glow.radiusProperty(), 45.0)),
+                new KeyFrame(Duration.seconds(1), new KeyValue(glow.radiusProperty(), 30.0)),
+                new KeyFrame(Duration.seconds(1.5), new KeyValue(glow.radiusProperty(), 45.0)),
+                new KeyFrame(Duration.seconds(2), new KeyValue(glow.radiusProperty(), 30.0)),
+                new KeyFrame(Duration.seconds(2.5), new KeyValue(glow.radiusProperty(), 10.0)),
+                new KeyFrame(Duration.seconds(3), new KeyValue(glow.radiusProperty(), 0.0))
+        );
+
+
+        timeline.setCycleCount(1);
+        timeline.setOnFinished(event -> button.setEffect(null)); // Elimina el efecto al finalizar
+        timeline.play();
+
     }
 
     private void removeGlowEffect(Button button) {

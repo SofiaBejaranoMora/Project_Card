@@ -116,13 +116,8 @@ public class GameService {
                         player.getGames().add(game);
                         game.setPlayer(player);
 
-                        Set<Long> idsVistas = new HashSet<>();
                         for (CardDto cardDto : cardDtoList) { //Se relacionan todas las cartas del mazo al juego
                             Long id = cardDto.getId();
-                            if (!idsVistas.add(id)) {
-                                System.out.println("⚠️ Carta duplicada con ID: " + id);
-                                continue;
-                            }
                             Card card = em.find(Card.class, cardDto.getId());
                             if (card == null) { //Ve si el carta se encontro
                                 et.rollback();

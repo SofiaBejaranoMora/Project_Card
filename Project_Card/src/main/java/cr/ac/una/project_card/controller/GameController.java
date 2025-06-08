@@ -208,6 +208,31 @@ public class GameController extends Controller implements Initializable {
         }
         return null;
     }
+    
+    public Boolean enableCardMove(VBox newColumn, Pane firstPane){
+        if(!columns.contains(newColumn)){
+            //Mensaje
+            return false;
+        }
+        if(newColumn.getChildren().isEmpty()){
+            return true;
+        }
+        Node node=newColumn.getChildren().getLast();
+        if(!(node instanceof  Pane)){ // revisa si el node es diferente a un Pane
+            return false;
+        }
+        StackcardxcardDto lastCardNewColumn= searchStackcardxcardDto((Pane) node);
+        StackcardxcardDto firstCardPane= searchStackcardxcardDto(firstPane);
+        if (!(lastCardNewColumn!=null && firstCardPane!=null)){ // revisa que se encuentren las cartas
+            return false;
+        }
+        
+        if (lastCardNewColumn.getCard().getNumber()>firstCardPane.getCard().getNumber()) {
+            return true;
+        }
+        
+        return false;
+    }
 
     private boolean isValidSequence(VBox sourceColumn, Pane cardPane) {
         try {

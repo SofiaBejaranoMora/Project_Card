@@ -136,17 +136,17 @@ public class GameController extends Controller implements Initializable {
                 } else {
                     message.showModal(Alert.AlertType.ERROR, "Esta jugada se nos escapó de las manos…", getStage(), "No pudimos guardar tu partida esta vez."
                             + " Asegúrate de estar conectado y haber iniciado sesión para no perder tu progreso.\n\n"
-                            + "¡La próxima mano será mejor!" + "PLAYER");
+                            + "¡La próxima mano será mejor!");
                 }
             } else {
                 message.showModal(Alert.AlertType.ERROR, "Esta jugada se nos escapó de las manos…", getStage(), "No pudimos guardar tu partida esta vez."
                         + " Asegúrate de estar conectado y haber iniciado sesión para no perder tu progreso.\n\n"
-                        + "¡La próxima mano será mejor!" + "ESTADOS");
+                        + "¡La próxima mano será mejor!");
             }
         } else {
             message.showModal(Alert.AlertType.ERROR, "Esta jugada se nos escapó de las manos…", getStage(), "No pudimos guardar tu partida esta vez."
                     + " Asegúrate de estar conectado y haber iniciado sesión para no perder tu progreso.\n\n"
-                    + "¡La próxima mano será mejor!" + "NULOS");
+                    + "¡La próxima mano será mejor!");
         }
         FlowController.getInstance().goView("MenuView");
     }
@@ -188,7 +188,8 @@ public class GameController extends Controller implements Initializable {
             if (enableAddingCardsColumns()) {
                 StackcardxcardDto newStackcardxcardDto;
                 List<StackcardxcardDto> newStackcardxcardDtoList = new ArrayList<>();
-                if (hasSaveStackcardxcardList(newStackcardxcardDtoList)) {
+                newStackcardxcardDtoList = SaveStackcardxcardList();
+                if (newStackcardxcardDtoList!=null) {
                     for (int i = 0; i < 10; i++) {
                         newStackcardxcardDto = newStackcardxcardDtoList.get(i);
                         allStacks.get(i).getStackCardxCards().add(newStackcardxcardDto);
@@ -208,8 +209,9 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
-    public Boolean hasSaveStackcardxcardList(List<StackcardxcardDto> newStackcardxcardDtoList) {
+    public List<StackcardxcardDto> SaveStackcardxcardList() {
         StackcardxcardDto newStackcardxcardDto;
+        List<StackcardxcardDto> newStackcardxcardDtoList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             newStackcardxcardDto = new StackcardxcardDto(true, Long.valueOf(columns.get(i).getChildren().size() + (i + 1)));
             newStackcardxcardDto.setCard(cards.remove(cards.size() - 1));
@@ -229,11 +231,11 @@ public class GameController extends Controller implements Initializable {
             answer = stackcardxcardService.getListStackcardxCard((List<StackcardxcardDto>) answer.getResultado("Stackcardxcard"));
             if (answer.getEstado()) {
                 newStackcardxcardDtoList.clear();
-                newStackcardxcardDtoList.addAll((List<StackcardxcardDto>) answer.getResultado("StackcardxCard"));
-                return true;
+                newStackcardxcardDtoList=(List<StackcardxcardDto>) answer.getResultado("StackcardxCard");
+                return newStackcardxcardDtoList;
             }
         }
-        return false;
+        return null;
     }
 
     public Boolean enableAddingCardsColumns() {

@@ -64,6 +64,7 @@ public class GameController extends Controller implements Initializable {
     private ColorAdjust colorAdjust = new ColorAdjust();
     private MouseEvent mouse;
     private List<StackcardxcardDto> allStackcardxcard;
+    private List<Pane> ladderList = new ArrayList<>();
 
     // Listas de cartas por tipo
     private List<CardDto> corazones = new ArrayList<>();
@@ -445,7 +446,7 @@ public class GameController extends Controller implements Initializable {
         space.getChildren().add(card);
 
         ImageView copyCard = new ImageView();   // Imagen duplicada para el arrastre de cartas
-        List<Pane>[] ladderList = new ArrayList[1];
+        ladderList.clear();
 
         space.setOnMousePressed(pressEvent -> { // Evento al hacer clic en la carta
             if (isValidSequence((VBox) space.getParent(), space)) {
@@ -459,8 +460,8 @@ public class GameController extends Controller implements Initializable {
                 copyCard.setLayoutX(pressEvent.getSceneX() - copyCard.getFitWidth() / 2);
                 copyCard.setLayoutY(pressEvent.getSceneY() - copyCard.getFitHeight() / 2);
 
-                ladderList[0] = ladderCards(space);
-                for (Pane pane : ladderList[0]) {
+                ladderList = ladderCards(space);
+                for (Pane pane : ladderList) {
                     pane.setVisible(false);
                 }
             }
@@ -479,7 +480,7 @@ public class GameController extends Controller implements Initializable {
             VBox actualColumn = (VBox) space.getParent();   //Vbox salida
 
             if (newColumn != null && enableCardMove(newColumn, space)) {
-                for (Pane pane : ladderList[0]) {
+                for (Pane pane : ladderList) {
                     removeCardCurrenColumn(actualColumn, pane);
                     addCardCurrenColumn(newColumn, pane);
                 }
@@ -488,7 +489,7 @@ public class GameController extends Controller implements Initializable {
             }
 
             root.getChildren().remove(copyCard);
-            for (Pane pane : ladderList[0]) {
+            for (Pane pane : ladderList) {
                 pane.setVisible(true);
             }
         });

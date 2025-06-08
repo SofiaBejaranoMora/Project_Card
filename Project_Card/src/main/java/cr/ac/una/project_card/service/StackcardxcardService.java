@@ -79,6 +79,7 @@ public class StackcardxcardService {
                 return new Respuesta(false, "La lista stackcardDtoList esta vacia", "SaveStackcardxCard NoResultException");
             } else {
                 Stackcardxcard stackcardxcard;
+                List<StackcardxcardDto> resultStackcardDtoList = new ArrayList<>();
                 for (StackcardxcardDto stackcardxcardDto : stackcardDtoList) {
                     if (stackcardxcardDto.getId() != null && stackcardxcardDto.getId() > 0) {
                         et.rollback();
@@ -88,29 +89,30 @@ public class StackcardxcardService {
                         StackcardDto stackcardDto = stackcardxcardDto.getStackCard();
                         stackcardxcard = new Stackcardxcard(stackcardxcardDto);
 
-                        if (cardDto != null && stackcardDto != null) { // revisamos que la carta u columan al que se va a relacionar existab
-                            Stackcard stackcard = em.find(Stackcard.class, stackcardDto.getId());
-                            Card card = em.find(Card.class, cardDto.getId());
-
-                            if (stackcard != null && card != null) { // revisamos si la columna y la carta se encontraron
-                                card.getStackCardxCards().add(stackcardxcard);
-                                stackcard.getStackCardxCards().add(stackcardxcard);
-                                stackcardxcard.setCard(card);
-                                stackcardxcard.setStackCard(stackcard);
-                            } else {
-                                et.rollback();
-                                return new Respuesta(false, "No se encontro la entidad de una columna o la carta a la que asociar el stackcardxcard.", "SaveStackcardxCardList NoResultException");
-                            }
-
-                        } else {
+                        if (cardDto == null && stackcardDto == null) {
                             et.rollback();
                             return new Respuesta(false, "La columna o la carta no existe.", "SaveStackcardxCard NoResultException");
                         }
+                        // revisamos que la carta u columan al que se va a relacionar existab
+                        Stackcard stackcard = em.find(Stackcard.class, stackcardDto.getId());
+                        Card card = em.find(Card.class, cardDto.getId());
+
+                        if (stackcard == null && card == null) { // revisamos si la columna y la carta se encontraron
+                            et.rollback();
+                            return new Respuesta(false, "No se encontro la entidad de una columna o la carta a la que asociar el stackcardxcard.", "SaveStackcardxCardList NoResultException");
+                        }
+                        
+                        card.getStackCardxCards().add(stackcardxcard);
+                        stackcard.getStackCardxCards().add(stackcardxcard);
+                        stackcardxcard.setCard(card);
+                        stackcardxcard.setStackCard(stackcard);
+
                         em.persist(stackcardxcard); // crear un registro nuevo;
+                        resultStackcardDtoList.add(new StackcardxcardDto(stackcardxcard));
                     }
                 }
                 et.commit();// para guardar en pase de datos
-                return new Respuesta(true, " ", " ", "Stackcardxcard", null);
+                return new Respuesta(true, " ", " ", "Stackcardxcard", resultStackcardDtoList);
             }
         } catch (Exception ex) {
             et.rollback(); // lo de vuelve como estaba antes del begin si no he hecho commit

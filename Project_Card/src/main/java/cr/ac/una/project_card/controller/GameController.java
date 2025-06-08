@@ -7,6 +7,7 @@ import cr.ac.una.project_card.model.StackcardDto;
 import cr.ac.una.project_card.model.StackcardxcardDto;
 import cr.ac.una.project_card.service.CardService;
 import cr.ac.una.project_card.service.GameService;
+import cr.ac.una.project_card.service.StackcardxcardService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.ImagesUtil;
@@ -61,6 +62,7 @@ public class GameController extends Controller implements Initializable {
     private String style;
     private ColorAdjust colorAdjust = new ColorAdjust();
     private MouseEvent mouse;
+    private List<StackcardxcardDto> allStackcardxcard;
 
     // Listas de cartas por tipo
     private List<CardDto> corazones = new ArrayList<>();
@@ -137,31 +139,54 @@ public class GameController extends Controller implements Initializable {
     @FXML
     private void onMouseClickedMgvMaze(MouseEvent event) {
         if (!cards.isEmpty()) {
-            
+
             if (enableAddingCardsColumns()) {
                 StackcardxcardDto newStackcardxcardDto;
-                for (int i = 0; i < 10; i++) {
-                    newStackcardxcardDto= new StackcardxcardDto(true,Long.valueOf(i));
-                    newStackcardxcardDto.setCard(cards.remove(cards.size()-1));// se agrega la ultima carta del mazo a la nueva StackcardxcardDto y se elimina del mazo
-                    allStacks.get(i).getStackCardxCards().add(newStackcardxcardDto);
-                    columns.get(i).getChildren().add(setupCard(newStackcardxcardDto.getIsFaceUp(),newStackcardxcardDto.getCard()));
-                    if (cards.isEmpty()) {
-                        colorAdjust.setSaturation(-1);
-                        colorAdjust.setBrightness(-0.3);
-                        colorAdjust.setContrast(-0.2);
-                        mgvMaze.setEffect(colorAdjust);
-                        return;
+                List<StackcardxcardDto> newStackcardxcardDtoList = new ArrayList<>();
+                if (hasSaveStackcardxcardList(newStackcardxcardDtoList)) {
+                    for (int i = 0; i < 10; i++) {
+                        newStackcardxcardDto = newStackcardxcardDtoList.get(i);
+                        allStacks.get(i).getStackCardxCards().add(newStackcardxcardDto);
+                        allStackcardxcard.add(newStackcardxcardDto);
+                        columns.get(i).getChildren().add(setupCard(newStackcardxcardDto));
+                        //animación
+                        if (newStackcardxcardDtoList.isEmpty()) {
+                            return;
+                        }
                     }
                 }
-            }
-            else{
-                message.showModal(Alert.AlertType.WARNING, "¡Alto ahí, tahúr impaciente!", getStage(), "“No puedes repartir si una columna está vacía.”\n\n"
-                    + "Las reglas del juego son claras: antes de tocar el mazo, asegúrate de que todas las columnas tengan al menos una carta. Arrastra una carta a esa columna vacía... "
+            } else {
+                message.showModal(Alert.AlertType.WARNING, "¡Alto ahí, tahúr impaciente!", getStage(), "¡No puedes repartir si una columna está vacía.!\n\n"
+                        + "Las reglas del juego son claras: antes de tocar el mazo, asegúrate de que todas las columnas tengan al menos una carta. Arrastra una carta a esa columna vacía... "
                         + "¡y entonces sí, reparte como un verdadero maestro del Solitario!");
             }
         }
     }
-    
+
+    public Boolean hasSaveStackcardxcardList(List<StackcardxcardDto> newStackcardxcardDtoList) {
+        StackcardxcardDto newStackcardxcardDto;
+        for (int i = 0; i < 10; i++) {
+            newStackcardxcardDto = new StackcardxcardDto(true, Long.valueOf(i));
+            newStackcardxcardDto.setCard(cards.remove(cards.size() - 1));
+            newStackcardxcardDto.setStackCard(allStacks.get(i));
+            newStackcardxcardDtoList.add(newStackcardxcardDto);
+            if (cards.isEmpty()) {
+                colorAdjust.setSaturation(-1);
+                colorAdjust.setBrightness(-0.3);
+                colorAdjust.setContrast(-0.2);
+                mgvMaze.setEffect(colorAdjust);
+                break;
+            }
+        }
+        StackcardxcardService stackcardxcardService = new StackcardxcardService();
+        Respuesta answer = stackcardxcardService.SaveStackcardxCardList(newStackcardxcardDtoList);
+        if (answer.getEstado()) {
+            newStackcardxcardDtoList = (List<StackcardxcardDto>) answer.getResultado("Stackcardxcard");
+            return true;
+        }
+        return false;
+    }
+
     public Boolean enableAddingCardsColumns() {
         for (VBox currentVBox : columns) {
             if (currentVBox.getChildren().isEmpty()) {
@@ -169,7 +194,20 @@ public class GameController extends Controller implements Initializable {
             }
         }
         return true;
-    } // lo hice ahorita
+    }
+
+    public StackcardxcardDto searchStackcardxcardDto(Pane pane) {
+        if (pane.getId() != null && !pane.getId().isBlank()) {
+            Long idPane = Long.valueOf(pane.getId());
+            for (StackcardxcardDto currentStackcardxcard : allStackcardxcard) {
+                if (currentStackcardxcard.getId().equals(idPane)) {
+                    return currentStackcardxcard;
+                }
+            }
+            return null;
+        }
+        return null;
+    }
 
     private CardDto getCartaByNumber(List<CardDto> tipo, int number) {
         for (CardDto carta : tipo) {
@@ -192,9 +230,9 @@ public class GameController extends Controller implements Initializable {
                 Respuesta answer = gameService.getGameID(gameId);
                 if (answer != null && answer.getEstado()) {
                     this.game = (GameDto) answer.getResultado("Partida");
-
-                     this.cards.addAll(game.getCards()); // lo puse ahorita
-                     Collections.shuffle(cards); 
+                    allStackcardxcard = new ArrayList<>();
+                    this.cards.addAll(game.getCards());
+                    Collections.shuffle(cards);
                     mgvMaze.setEffect(null);
                     if (cards.isEmpty()) {
                         colorAdjust.setSaturation(-1);
@@ -256,19 +294,22 @@ public class GameController extends Controller implements Initializable {
         }
         return laderList;
     }
-    
+
     public void setupBoard() { //Alistará el tablero completo para el modo de juego
         Platform.runLater(() -> {
             for (int i = 0; i < 10; i++) {
                 columns.get(i).getChildren().clear();   //Limpia las columnas en caso de que existan cartas previas
                 for (StackcardxcardDto stackDto : allStacks.get(i).getStackCardxCards()) {
-                    columns.get(i).getChildren().add(setupCard(stackDto.getIsFaceUp(), stackDto.getCard()));    //Da la carta en un pane para los VBox
+                    columns.get(i).getChildren().add(setupCard(stackDto));    //Da la carta en un pane para los VBox
                 }
             }
         });
     }
 
-    private Pane setupCard(Boolean isFaceUp, CardDto cardDto) { //Se encarga de generar automaticamente las carta en columnas
+    private Pane setupCard(StackcardxcardDto stackcardxcardDto) { //Se encarga de generar automaticamente las carta en columnas
+        Boolean isFaceUp = stackcardxcardDto.getIsFaceUp();
+        CardDto cardDto = stackcardxcardDto.getCard();
+        allStackcardxcard.add(stackcardxcardDto);
         Pane space = new Pane();
         DoubleProperty width = new SimpleDoubleProperty();
         width.bind(columns.get(0).widthProperty());
@@ -286,6 +327,7 @@ public class GameController extends Controller implements Initializable {
             rute = ImagesUtil.getBackCardPath(setupStyle());
             card.setImage(new Image(rute));
         }
+
         ImageView copyCard = new ImageView(card.getImage());
 
         card.fitWidthProperty().bind(width);
@@ -319,8 +361,8 @@ public class GameController extends Controller implements Initializable {
                 if (true && currentColumn != null) {
                     VBox actualColumn = (VBox) space.getParent();
                     for (Pane pane : laderList) {
-                    actualColumn.getChildren().remove(pane);
-                    currentColumn.getChildren().add(pane);
+                        actualColumn.getChildren().remove(pane);
+                        currentColumn.getChildren().add(pane);
                     }
                 }
                 root.getChildren().remove(copyCard);
@@ -350,13 +392,13 @@ public class GameController extends Controller implements Initializable {
         for (Node node : currentColumn.getChildren()) {
             if (node instanceof Pane) {
                 cardPane = (Pane) node;
-                if(cardPane.getChildren().get(0) instanceof  ImageView){
+                if (cardPane.getChildren().get(0) instanceof ImageView) {
                     ImageView cardImage = (ImageView) cardPane.getChildren().get(0);
                 }
-            }                
+            }
         }
     }
-    
+
     private void setupBackground(String rute) { //Manipula la ruta que del fondo para adecuarla al anchorpane
         BackgroundImage backgroundImage = new BackgroundImage(new Image(rute),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,

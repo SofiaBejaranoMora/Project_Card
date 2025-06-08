@@ -259,15 +259,6 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
-    private void movedCard(VBox arrive, Pane panel) {   //Comprueba si se mueve o no una carta de un VBox a otro
-        VBox start = (VBox) panel.getParent();
-        Integer index = start.getChildren().indexOf(panel);
-        for (int i = start.getChildren().size(); i >= index; i--) {
-            arrive.getChildren().add(start.getChildren().remove(i));    //Agregar el -1pt por el movimiento de carta
-            game.setScore(game.getScore() - 1);
-        }
-    }
-
     private void deleteFullSuit(VBox from) {     //Borra un palo completo, cuando se alcanza la escalera de As a K
         List<Node> cards = from.getChildren();
         for (int i = cards.size(); i > 13; i--) {
@@ -295,6 +286,18 @@ public class GameController extends Controller implements Initializable {
         return laderList;
     }
 
+    private void turnCards(VBox actualColumn) {
+        Pane toTurn = (Pane) actualColumn.getChildren().get(actualColumn.getChildren().size() - 1);
+        StackcardxcardDto ubication = searchStackcardxcardDto(toTurn);
+        CardDto cardDto = ubication.getCard();
+        if (!ubication.getIsFaceUp()) {
+            ubication.setIsFaceUp(true);
+            String rute = ImagesUtil.getCardPath(player.getCardStyle() + "/", cardDto.getNumber() + cardDto.getType());
+            ImageView card = (ImageView) toTurn.getChildren().get(0);
+            card.setImage(new Image(rute));
+        }
+    }
+    
     public void setupBoard() { //Alistará el tablero completo para el modo de juego
         Platform.runLater(() -> {
             for (int i = 0; i < 10; i++) {
@@ -328,20 +331,21 @@ public class GameController extends Controller implements Initializable {
             card.setImage(new Image(rute));
         }
 
-        ImageView copyCard = new ImageView(card.getImage());
-
+        space.setId(String.valueOf(stackcardxcardDto.getId()));
         card.fitWidthProperty().bind(width);
         card.setPreserveRatio(true);
         space.getChildren().add(card);
-        copyCard.setFitWidth(card.getImage().getWidth() * 0.065);
-        copyCard.setFitHeight(card.getImage().getHeight() * 0.065);
-        copyCard.setOpacity(1.0);
-
+        
         space.setOnMousePressed(pressEvent -> {
+            ImageView copyCard = new ImageView(card.getImage());
+            copyCard.setFitWidth(card.getImage().getWidth() * 0.065);
+            copyCard.setFitHeight(card.getImage().getHeight() * 0.065);
+            copyCard.setOpacity(1.0);
+
             System.out.println("Entro en click");
             root.getChildren().add(copyCard);
-            copyCard.setLayoutX(card.getLayoutX());
-            copyCard.setLayoutY(card.getLayoutY());
+            copyCard.setLayoutX(pressEvent.getSceneX() - copyCard.getFitWidth() / 2);
+            copyCard.setLayoutY(pressEvent.getSceneY() - copyCard.getFitHeight() / 2);
             List<Pane> laderList = laderCards(space);
             for (Pane pane : laderList) {
                 pane.setVisible(false);
@@ -357,13 +361,15 @@ public class GameController extends Controller implements Initializable {
                 System.out.println("Bye drag");
                 Point2D mousePosition = new Point2D(releaseEvent.getSceneX(), releaseEvent.getSceneY());
                 VBox currentColumn = getColumn(mousePosition);
+                VBox actualColumn = (VBox) space.getParent();
                 //Método de movimientos validos
                 if (true && currentColumn != null) {
-                    VBox actualColumn = (VBox) space.getParent();
                     for (Pane pane : laderList) {
                         actualColumn.getChildren().remove(pane);
                         currentColumn.getChildren().add(pane);
                     }
+                    turnCards(actualColumn);
+                    //Agregar el -1pt para mantener los puntos al día
                 }
                 root.getChildren().remove(copyCard);
                 for (Pane pane : laderList) {
@@ -382,20 +388,6 @@ public class GameController extends Controller implements Initializable {
             return style + "V";
         } else {
             return style + "N";
-        }
-    }
-
-    private void setupCardEvent(MouseEvent event) {
-        Point2D ubication = new Point2D(event.getX(), event.getY());
-        VBox currentColumn = getColumn(ubication);
-        Pane cardPane = new Pane();
-        for (Node node : currentColumn.getChildren()) {
-            if (node instanceof Pane) {
-                cardPane = (Pane) node;
-                if (cardPane.getChildren().get(0) instanceof ImageView) {
-                    ImageView cardImage = (ImageView) cardPane.getChildren().get(0);
-                }
-            }
         }
     }
 
@@ -430,8 +422,6 @@ public class GameController extends Controller implements Initializable {
                 columns.add((VBox) node);
             }
         }
-//        mouse.getEventType();
-//        setupCardEvent(mouse);
     }
 
 }

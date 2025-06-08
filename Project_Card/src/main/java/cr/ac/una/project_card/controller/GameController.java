@@ -166,7 +166,7 @@ public class GameController extends Controller implements Initializable {
     public Boolean hasSaveStackcardxcardList(List<StackcardxcardDto> newStackcardxcardDtoList) {
         StackcardxcardDto newStackcardxcardDto;
         for (int i = 0; i < 10; i++) {
-            newStackcardxcardDto = new StackcardxcardDto(true,Long.valueOf( columns.get(i).getChildren().size()+(i+1)));
+            newStackcardxcardDto = new StackcardxcardDto(true, Long.valueOf(columns.get(i).getChildren().size() + (i + 1)));
             newStackcardxcardDto.setCard(cards.remove(cards.size() - 1));
             newStackcardxcardDto.setStackCard(allStacks.get(i));
             newStackcardxcardDtoList.add(newStackcardxcardDto);
@@ -195,36 +195,36 @@ public class GameController extends Controller implements Initializable {
         }
         return true;
     }
-    
-    public Boolean enableCardMove(VBox newColumn, Pane firstPane){
-        if(!(newColumn!=null && firstPane!=null)){
+
+    public Boolean enableCardMove(VBox newColumn, Pane firstPane) {
+        if (!(newColumn != null && firstPane != null)) {
             return false;
         }
-        if(!columns.contains(newColumn)){
+        if (!columns.contains(newColumn)) {
             //Mensaje
             return false;
         }
-        if(newColumn.getChildren().isEmpty()){
+        if (newColumn.getChildren().isEmpty()) {
             return true;
         }
-        Node node=newColumn.getChildren().getLast();
-        if(!(node instanceof  Pane)){ // revisa si el node es diferente a un Pane
+        Node node = newColumn.getChildren().getLast();
+        if (!(node instanceof Pane)) { // revisa si el node es diferente a un Pane
             return false;
         }
-        StackcardxcardDto lastCardNewColumn= searchStackcardxcardDto((Pane) node);
-        StackcardxcardDto firstCardPane= searchStackcardxcardDto(firstPane);
-        if (!(lastCardNewColumn!=null && firstCardPane!=null)){ // revisa que se encuentren las cartas
+        StackcardxcardDto lastCardNewColumn = searchStackcardxcardDto((Pane) node);
+        StackcardxcardDto firstCardPane = searchStackcardxcardDto(firstPane);
+        if (!(lastCardNewColumn != null && firstCardPane != null)) { // revisa que se encuentren las cartas
             return false;
         }
-        
-        if(!(lastCardNewColumn.getCard()!=null &&firstCardPane.getCard()!=null)){
+
+        if (!(lastCardNewColumn.getCard() != null && firstCardPane.getCard() != null)) {
             return false;
         }
-        
-        if (lastCardNewColumn.getCard().getNumber()>firstCardPane.getCard().getNumber()) {
+
+        if (lastCardNewColumn.getCard().getNumber() > firstCardPane.getCard().getNumber()) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -265,7 +265,7 @@ public class GameController extends Controller implements Initializable {
             return false;
         }
     }
-    
+
     public StackcardxcardDto searchStackcardxcardDto(Pane pane) {
         if (pane.getId() != null && !pane.getId().isBlank()) {
             Long idPane = Long.valueOf(pane.getId());
@@ -358,18 +358,18 @@ public class GameController extends Controller implements Initializable {
             card.setImage(new Image(rute));
         }
     }
-    
+
     public void setupBoard() { //Alistará el tablero completo para el modo de juego
         Platform.runLater(() -> {
             for (int i = 0; i < 10; i++) {
                 columns.get(i).getChildren().clear();   //Limpia las columnas en caso de que existan cartas previas
-                for (StackcardxcardDto stackDto : allStacks.get(i).getStackCardxCards()) {
-                    columns.get(i).getChildren().add(setupCard(stackDto));    //Da la carta en un pane para los VBox
+                for (StackcardxcardDto stackDtoxCard : allStacks.get(i).getStackCardxCards()) {
+                    columns.get(i).getChildren().add(setupCard(stackDtoxCard));    //Da la carta en un pane para los VBox
                 }
             }
         });
     }
-    
+
     private Pane setupCard(StackcardxcardDto stackcardxcardDto) {   // Se encarga de generar automáticamente las cartas en columnas
         Boolean isFaceUp = stackcardxcardDto.getIsFaceUp();
         CardDto cardDto = stackcardxcardDto.getCard();
@@ -384,13 +384,13 @@ public class GameController extends Controller implements Initializable {
 
         space.prefWidthProperty().bind(width);  // Es para agarrar el ancho de un 
         space.prefHeightProperty().bind(height);
-        
+
         ImageView card = new ImageView();   // Configuración de la imagen de la carta
         String cardPath;
 
         if (isFaceUp) {
             cardPath = ImagesUtil.getCardPath(player.getCardStyle() + "/",
-            cardDto.getNumber() + cardDto.getType());
+                    cardDto.getNumber() + cardDto.getType());
         } else {
             cardPath = ImagesUtil.getBackCardPath(setupStyle());
         }
@@ -437,8 +437,8 @@ public class GameController extends Controller implements Initializable {
 
             if (newColumn != null && enableCardMove(newColumn, space)) {
                 for (Pane pane : ladderList[0]) {
-                    actualColumn.getChildren().remove(pane);    //Borra las cartas de la columna pasada
-                    newColumn.getChildren().add(pane);              //Agrega las cartas a la nueva columna
+                    removeCardCurrenColumn(actualColumn, pane);
+                    addCardCurrenColumn(newColumn, pane);
                 }
                 turnCards(actualColumn);    //Voltea las cartas de espaldas
                 // Agregar el -1pt para mantener los puntos al día
@@ -451,6 +451,32 @@ public class GameController extends Controller implements Initializable {
         });
 
         return space;
+    }
+
+    public void removeCardCurrenColumn(VBox currentColumn, Pane pane) {
+        int indexCurrentColumn = columns.indexOf(currentColumn);
+        if (indexCurrentColumn != -1 && (allStacks != null && !allStacks.isEmpty())) {
+            StackcardDto currentStackCard = allStacks.get(indexCurrentColumn);
+            StackcardxcardDto card = searchStackcardxcardDto(pane);
+            if (currentStackCard != null && card != null) {
+                indexCurrentColumn = currentStackCard.getStackCardxCards().indexOf(card);
+                currentColumn.getChildren().remove(pane);
+                currentStackCard.getStackCardxCards().remove(indexCurrentColumn);
+            }
+        }
+    }
+
+    public void addCardCurrenColumn(VBox newColumn, Pane pane) {
+        int indexNewColumn = columns.indexOf(newColumn);
+        if (indexNewColumn != -1 && (allStacks != null && !allStacks.isEmpty())) {
+            StackcardDto newStackCard = allStacks.get(indexNewColumn);
+            StackcardxcardDto card = searchStackcardxcardDto(pane);
+            if (newStackCard != null && card != null) {
+                newStackCard.getStackCardxCards().add(card);
+                card.setStackCard(newStackCard);
+                newColumn.getChildren().add(pane);
+            }
+        }
     }
 
     private String setupStyle() {

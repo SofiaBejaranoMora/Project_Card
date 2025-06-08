@@ -208,6 +208,7 @@ public class GameController extends Controller implements Initializable {
                             return;
                         }
                     }
+                    setupBoard();
                 }
             } else {
                 message.showModal(Alert.AlertType.WARNING, "¡Alto ahí, tahúr impaciente!", getStage(), "¡No puedes repartir si una columna está vacía.!\n\n"

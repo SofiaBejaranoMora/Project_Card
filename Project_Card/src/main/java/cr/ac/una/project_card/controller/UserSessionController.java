@@ -53,19 +53,19 @@ public class UserSessionController extends Controller implements Initializable {
     @FXML
     private Button btnEdit;
     @FXML
-    private MFXButton btnChangePhoto;
+    private MFXButton btnUploadPhoto;
     @FXML
     private MFXButton btnRegisterUser;
     @FXML
     private StackPane stp;
 
     @FXML
-    private void onActionChangePhoto(ActionEvent event) {
+    private void onActionBtnUploadPhoto(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar imagen");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
 
-        Stage stage = (Stage) btnChangePhoto.getScene().getWindow();
+        Stage stage = (Stage) btnUploadPhoto.getScene().getWindow();
         selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {

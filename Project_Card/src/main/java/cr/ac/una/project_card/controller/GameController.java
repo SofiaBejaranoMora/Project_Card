@@ -115,9 +115,11 @@ public class GameController extends Controller implements Initializable {
     @FXML
     private void onActionBtnBack(ActionEvent event) {
         if ((game != null) && (allStackcardxcard != null && !allStackcardxcard.isEmpty())) {
-            currentTime.stop();
-            isTimerStarted = false;
-            game.setTime(game.getTime() - Long.valueOf(timeCalculate));
+            if (timeCalculate != 0) {
+                currentTime.stop();
+                isTimerStarted = false;
+                game.setTime(game.getTime() - Long.valueOf(timeCalculate));
+            }
             GameService serviceGame = new GameService();
             StackcardxcardService serviceStackcardxcard = new StackcardxcardService();
             Respuesta answerGame = serviceGame.EditGameId(game, cards);
@@ -548,6 +550,14 @@ public class GameController extends Controller implements Initializable {
             cards.remove(i);    //Agregar los 100pts por completar palos
         }
     }
+    
+    private void moveToFullSuit(ImageView fullSuitImage, Point2D ubication) {
+        List<Node> suits = (List<ImageView>) (ImageView) hBoxSuits.getChildren();
+        for (int i = suits.size(); i >= 0; i--) {
+            if(suits.)
+        }
+        
+    }
 
     private VBox getColumn(Point2D ubication) {   //Extrae los VBox y los identifica como si fueran columnas
         for (VBox column : columns) {
@@ -560,12 +570,12 @@ public class GameController extends Controller implements Initializable {
     }
 
     private List<Pane> ladderCards(Pane selected) {
-        List<Pane> laderList = new ArrayList<>();
+        List<Pane> ladder = new ArrayList<>();
         VBox parent = (VBox) selected.getParent();
         for (int i = parent.getChildren().indexOf(selected); i < parent.getChildren().size(); i++) {
-            laderList.add((Pane) parent.getChildren().get(i));
+            ladder.add((Pane) parent.getChildren().get(i));
         }
-        return laderList;
+        return ladder;
     }
 
     private void turnCards(VBox actualColumn) {

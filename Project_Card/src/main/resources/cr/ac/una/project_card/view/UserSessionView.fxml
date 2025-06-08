@@ -76,7 +76,7 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <MFXButton id="MenuButton" fx:id="btnChangePhoto" onAction="#onActionChangePhoto" stylesheets="@Style.css" text="Editar Foto">
+                  <MFXButton id="MenuButton" fx:id="btnUploadPhoto" onAction="#onActionBtnUploadPhoto" stylesheets="@Style.css" text="Cargar Foto">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

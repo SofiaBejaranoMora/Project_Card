@@ -560,10 +560,12 @@ public class GameController extends Controller implements Initializable {
         }
     }
     
-    private void moveToFullSuit(ImageView fullSuitImage, Point2D ubication) {
-        List<Node> suits = (List<ImageView>) (ImageView) hBoxSuits.getChildren();
+    private void moveToFullSuit(Node fullSuitImage, Point2D ubication) {
+        List<Node> suits = hBoxSuits.getChildren();
         for (int i = suits.size(); i >= 0; i--) {
-            if(suits.)
+            if(suits.contains(i)){
+                
+            }
         }
         
     }

@@ -181,7 +181,8 @@ public class GameController extends Controller implements Initializable {
         StackcardxcardService stackcardxcardService = new StackcardxcardService();
         Respuesta answer = stackcardxcardService.SaveStackcardxCardList(newStackcardxcardDtoList);
         if (answer.getEstado()) {
-            newStackcardxcardDtoList = (List<StackcardxcardDto>) answer.getResultado("Stackcardxcard");
+            newStackcardxcardDtoList.clear();
+            newStackcardxcardDtoList.addAll((List<StackcardxcardDto>) answer.getResultado ("Stackcardxcard"));
             return true;
         }
         return false;
@@ -211,7 +212,12 @@ public class GameController extends Controller implements Initializable {
         if (!(node instanceof Pane)) { // revisa si el node es diferente a un Pane
             return false;
         }
-        StackcardxcardDto lastCardNewColumn = searchStackcardxcardDto((Pane) node);
+        Pane pane =(Pane) node;
+        if(!((pane.getId()!=null || !pane.getId().isBlank())&&(firstPane.getId()!=null || !firstPane.getId().isBlank()))){
+            return false;
+        }
+        
+        StackcardxcardDto lastCardNewColumn = searchStackcardxcardDto(pane);
         StackcardxcardDto firstCardPane = searchStackcardxcardDto(firstPane);
         if (!(lastCardNewColumn != null && firstCardPane != null)) { // revisa que se encuentren las cartas
             return false;

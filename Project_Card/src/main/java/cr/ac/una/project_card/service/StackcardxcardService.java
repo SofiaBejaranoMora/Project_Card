@@ -101,7 +101,7 @@ public class StackcardxcardService {
                             et.rollback();
                             return new Respuesta(false, "No se encontro la entidad de una columna o la carta a la que asociar el stackcardxcard.", "SaveStackcardxCardList NoResultException");
                         }
-                        
+
                         card.getStackCardxCards().add(stackcardxcard);
                         stackcard.getStackCardxCards().add(stackcardxcard);
                         stackcardxcard.setCard(card);
@@ -183,7 +183,11 @@ public class StackcardxcardService {
             if (stackcardxcard == null) {
                 return false;
             }
-            stackcardxcard.getStackCard().setStackCardxCards(new ArrayList<>());
+            Stackcard stackcard = stackcardxcard.getStackCard();
+            if (!(stackcard != null && stackcard.getStackCardxCards() != null)) {
+                return false;
+            } 
+            stackcard.getStackCardxCards().clear();
         }
         return true;
     }

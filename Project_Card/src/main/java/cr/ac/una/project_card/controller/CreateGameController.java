@@ -66,7 +66,7 @@ public class CreateGameController extends Controller implements Initializable {
     private Long difficulty;
     private Boolean lastNameValid = true;
     private Boolean hasColumns = true;
-    GameDto gameDto = new GameDto();
+    GameDto gameDto;
 
     private CardService cardService = new CardService();
     private List<CardDto> cards = new ArrayList<>(); // Mazo completo
@@ -167,7 +167,7 @@ public class CreateGameController extends Controller implements Initializable {
                         answer = playerService.getPlayerName(player.getName());
                         if (answer != null && answer.getEstado()) {
                             this.player = (PlayerDto) answer.getResultado("Jugador");
-                            uploadGameAchievement(playerService,answer);
+                            uploadGameAchievement(playerService, answer);
                             AppContext.getInstance().set("CurrentUser", player);
                             AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
                             cleanView();
@@ -185,29 +185,29 @@ public class CreateGameController extends Controller implements Initializable {
 
     private void uploadGameAchievement(PlayerService playerService, Respuesta answer) {
         AchievementsService achievementsService = new AchievementsService();
-        
-            if (player.getGameList().size() == 1) {
-                answer = achievementsService.addPlayerAchieveme(player, "Estrenandose");
+
+        if (player.getGameList().size() == 1) {
+            answer = achievementsService.addPlayerAchieveme(player, "Estrenandose");
+            if (answer.getEstado()) {
+                answer = playerService.getPlayerId(player.getId());
+                player = (PlayerDto) answer.getResultado("Jugador");
                 if (answer.getEstado()) {
-                    answer = playerService.getPlayerId(player.getId());
-                    player = (PlayerDto) answer.getResultado("Jugador");
-                    if (answer.getEstado()) {
-                        //animació
-                    }
+                    //animació
                 }
             }
-            
-            if (player.getGameList().size() == 15) {
-                answer = achievementsService.addPlayerAchieveme(player, "Vicio");
+        }
+
+        if (player.getGameList().size() == 15) {
+            answer = achievementsService.addPlayerAchieveme(player, "Vicio");
+            if (answer.getEstado()) {
+                answer = playerService.getPlayerId(player.getId());
+                player = (PlayerDto) answer.getResultado("Jugador");
                 if (answer.getEstado()) {
-                    answer = playerService.getPlayerId(player.getId());
-                    player = (PlayerDto) answer.getResultado("Jugador");
-                    if (answer.getEstado()) {
-                        //animació
-                    }
+                    //animació
                 }
             }
-            
+        }
+
     }
 
     private void prepareGame(GameDto game) {
@@ -269,11 +269,11 @@ public class CreateGameController extends Controller implements Initializable {
     } //segundo
 
     private CardDto getCartaByNumber(List<CardDto> type, int number) {
-        for (CardDto cardDto : type) {
+        for (int i = 0; i < type.size(); i++) {
+            CardDto cardDto = type.get(i);
             if (cardDto.getNumber() != null && cardDto.getNumber() == number) {
-                CardDto cardResultDto = cardDto;
-                type.remove(cardDto);
-                return cardResultDto;
+                type.remove(i); // ✅ remover de forma segura
+                return cardDto;
             }
         }
         return null;
@@ -281,7 +281,7 @@ public class CreateGameController extends Controller implements Initializable {
 
     private List<StackcardDto> mixCards() {
 
-        Collections.shuffle(cards,new SecureRandom());  // Mezcla la lista de manera ramdon
+        Collections.shuffle(cards, new SecureRandom());  // Mezcla la lista de manera ramdon
 
         List<StackcardDto> columnList = createColumns();
         for (int i = 0; i < 10; i++) {
@@ -591,13 +591,14 @@ public class CreateGameController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cleanView();
         txfNameGame.delegateSetTextFormatter(Formato.getInstance().letrasFormat(20));
     }
 
     @Override
     public void initialize() {
+        cleanView();
         player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
+        gameDto = new GameDto();
         existingGames = player.getGameList();
         initializeBackCardStyles(player);
 

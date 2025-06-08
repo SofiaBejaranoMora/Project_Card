@@ -38,18 +38,18 @@ public class GameService {
         try {
             Query qryGame = em.createNamedQuery("Game.findById", Game.class);
             qryGame.setParameter("id", id);
-            Game game  =(Game) qryGame.getSingleResult();
+            Game game = (Game) qryGame.getSingleResult();
             GameDto gameDto = new GameDto(game);
-            List<StackcardDto> stackcardDtoList= new ArrayList<>();
+            List<StackcardDto> stackcardDtoList = new ArrayList<>();
             for (Card card : game.getCards()) {
                 gameDto.getCards().add(new CardDto(card));
             }
-            for (Stackcard stackcard: game.getStackCards()){
-                List<StackcardxcardDto> stackcardxcardDtoList=new ArrayList<>();
-                for(Stackcardxcard stackcardxcard: stackcard.getStackCardxCards()){
+            for (Stackcard stackcard : game.getStackCards()) {
+                List<StackcardxcardDto> stackcardxcardDtoList = new ArrayList<>();
+                for (Stackcardxcard stackcardxcard : stackcard.getStackCardxCards()) {
                     stackcardxcardDtoList.add(new StackcardxcardDto(stackcardxcard));
                 }
-                StackcardDto stackcardDto= new StackcardDto(stackcard);
+                StackcardDto stackcardDto = new StackcardDto(stackcard);
                 Collections.sort(stackcardxcardDtoList, Comparator.comparing(StackcardxcardDto::getPositionNumber));
                 stackcardDto.setStackCardxCards(stackcardxcardDtoList);
                 stackcardDtoList.add(stackcardDto);
@@ -115,7 +115,14 @@ public class GameService {
                         }
                         player.getGames().add(game);
                         game.setPlayer(player);
+
+                        Set<Long> idsVistas = new HashSet<>();
                         for (CardDto cardDto : cardDtoList) { //Se relacionan todas las cartas del mazo al juego
+                            Long id = cardDto.getId();
+                            if (!idsVistas.add(id)) {
+                                System.out.println("⚠️ Carta duplicada con ID: " + id);
+                                continue;
+                            }
                             Card card = em.find(Card.class, cardDto.getId());
                             if (card == null) { //Ve si el carta se encontro
                                 et.rollback();
@@ -138,11 +145,11 @@ public class GameService {
                     }
                     em.persist(game);
                 }
-                et.commit();// error
+                et.commit();
                 return new Respuesta(true, "", "", "Partida", new GameDto(game));
             }
         } catch (Exception ex) {
-            et.rollback();
+            et.rollback();// error
             Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, "Error guardando la partida[" + gameDto + "]", ex);
             return new Respuesta(false, "Error guardando la partida.", "Partida " + ex.getMessage());
         }

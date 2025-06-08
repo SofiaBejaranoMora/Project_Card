@@ -7,6 +7,7 @@ import cr.ac.una.project_card.model.StackcardDto;
 import cr.ac.una.project_card.model.StackcardxcardDto;
 import cr.ac.una.project_card.service.CardService;
 import cr.ac.una.project_card.service.GameService;
+import cr.ac.una.project_card.service.PlayerService;
 import cr.ac.una.project_card.service.StackcardxcardService;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
@@ -103,6 +104,39 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        if ((game != null) && (allStackcardxcard != null && !allStackcardxcard.isEmpty())) {
+            GameService serviceGame = new GameService();
+            StackcardxcardService serviceStackcardxcard = new StackcardxcardService();
+            Respuesta answerGame = serviceGame.EditGameId(game, cards);
+            Respuesta answerStackcardxcard = serviceStackcardxcard.updateStackcardxCardList(allStackcardxcard);
+            if (answerGame.getEstado() && answerStackcardxcard.getEstado()) {
+                PlayerService servicePlayer = new PlayerService();
+                if (player.getId() != null) {
+                    Respuesta answerPlayer = servicePlayer.getPlayerId(player.getId());
+                    if (answerPlayer != null && answerPlayer.getEstado()) {
+                        this.player = (PlayerDto) answerPlayer.getResultado("Jugador");
+                        AppContext.getInstance().set("CurrentUser", player);
+                        message.showModal(Alert.AlertType.INFORMATION, "¡La jugada quedó registrada!", getStage(), "Tus cartas están a salvo, listas para esperar tu próximo movimiento. Todo quedó guardado correctamente.\n\n"
+                                + "¡Nos vemos en la próxima mano!");
+                    } else {
+                        message.showModal(Alert.AlertType.WARNING, "¡Tu perfil no pudo robar la carta que necesitaba!", getStage(), "Algo impidió que tus datos se sincronizaran con el mazo del destino.\n\n"
+                                + "Te recomendamos iniciar sesión nuevamente para asegurar que tu perfil esté al día y listo para jugar sin trampas del azar.");
+                    }
+                } else {
+                    message.showModal(Alert.AlertType.ERROR, "Esta jugada se nos escapó de las manos…", getStage(), "No pudimos guardar tu partida esta vez."
+                            + " Asegúrate de estar conectado y haber iniciado sesión para no perder tu progreso.\n\n"
+                            + "¡La próxima mano será mejor!" + "PLAYER");
+                }
+            } else {
+                message.showModal(Alert.AlertType.ERROR, "Esta jugada se nos escapó de las manos…", getStage(), "No pudimos guardar tu partida esta vez."
+                        + " Asegúrate de estar conectado y haber iniciado sesión para no perder tu progreso.\n\n"
+                        + "¡La próxima mano será mejor!" + "ESTADOS");
+            }
+        } else {
+            message.showModal(Alert.AlertType.ERROR, "Esta jugada se nos escapó de las manos…", getStage(), "No pudimos guardar tu partida esta vez."
+                    + " Asegúrate de estar conectado y haber iniciado sesión para no perder tu progreso.\n\n"
+                    + "¡La próxima mano será mejor!" + "NULOS");
+        }
         FlowController.getInstance().goView("MenuView");
     }
 
@@ -170,7 +204,7 @@ public class GameController extends Controller implements Initializable {
             newStackcardxcardDto.setCard(cards.remove(cards.size() - 1));
             newStackcardxcardDto.setStackCard(allStacks.get(i));
             newStackcardxcardDtoList.add(newStackcardxcardDto);
-            if (cards.isEmpty()) {
+            if (cards.isEmpty()) { // si se acaban las cartas pone el mazo en cris
                 colorAdjust.setSaturation(-1);
                 colorAdjust.setBrightness(-0.3);
                 colorAdjust.setContrast(-0.2);
@@ -181,9 +215,12 @@ public class GameController extends Controller implements Initializable {
         StackcardxcardService stackcardxcardService = new StackcardxcardService();
         Respuesta answer = stackcardxcardService.SaveStackcardxCardList(newStackcardxcardDtoList);
         if (answer.getEstado()) {
-            newStackcardxcardDtoList.clear();
-            newStackcardxcardDtoList.addAll((List<StackcardxcardDto>) answer.getResultado ("Stackcardxcard"));
-            return true;
+            answer = stackcardxcardService.getListStackcardxCard((List<StackcardxcardDto>) answer.getResultado("Stackcardxcard"));
+            if (answer.getEstado()) {
+                newStackcardxcardDtoList.clear();
+                newStackcardxcardDtoList.addAll((List<StackcardxcardDto>) answer.getResultado("StackcardxCard"));
+                return true;
+            }
         }
         return false;
     }
@@ -212,11 +249,11 @@ public class GameController extends Controller implements Initializable {
         if (!(node instanceof Pane)) { // revisa si el node es diferente a un Pane
             return false;
         }
-        Pane pane =(Pane) node;
-        if(!((pane.getId()!=null || !pane.getId().isBlank())&&(firstPane.getId()!=null || !firstPane.getId().isBlank()))){
+        Pane pane = (Pane) node;
+        if (!((pane.getId() != null || !pane.getId().isBlank()) && (firstPane.getId() != null || !firstPane.getId().isBlank()))) {
             return false;
         }
-        
+
         StackcardxcardDto lastCardNewColumn = searchStackcardxcardDto(pane);
         StackcardxcardDto firstCardPane = searchStackcardxcardDto(firstPane);
         if (!(lastCardNewColumn != null && firstCardPane != null)) { // revisa que se encuentren las cartas
@@ -227,7 +264,7 @@ public class GameController extends Controller implements Initializable {
             return false;
         }
 
-        if (lastCardNewColumn.getCard().getNumber() > firstCardPane.getCard().getNumber()) {
+        if (lastCardNewColumn.getCard().getNumber() == firstCardPane.getCard().getNumber() + 1) {
             return true;
         }
 

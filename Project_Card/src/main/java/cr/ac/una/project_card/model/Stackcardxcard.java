@@ -24,8 +24,9 @@ import java.math.BigInteger;
 @Entity
 @Table(name = "STACKCARDXCARD", schema = "PRO")
 @NamedQueries({
-    @NamedQuery(name = "Stackcardxcard.findAll", query = "SELECT s FROM Stackcardxcard s"), /*@NamedQuery(name = "Stackcardxcard.findBySxcId", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcId = :sxcId"),
-    @NamedQuery(name = "Stackcardxcard.findBySxcIsfaceup", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcIsfaceup = :sxcIsfaceup"),
+    @NamedQuery(name = "Stackcardxcard.findAll", query = "SELECT s FROM Stackcardxcard s"), 
+    @NamedQuery(name = "Stackcardxcard.findById", query = "SELECT s FROM Stackcardxcard s WHERE s.id = :id"),
+    /*@NamedQuery(name = "Stackcardxcard.findBySxcIsfaceup", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcIsfaceup = :sxcIsfaceup"),
     @NamedQuery(name = "Stackcardxcard.findBySxcVersion", query = "SELECT s FROM Stackcardxcard s WHERE s.sxcVersion = :sxcVersion")*/})
 public class Stackcardxcard implements Serializable {
 

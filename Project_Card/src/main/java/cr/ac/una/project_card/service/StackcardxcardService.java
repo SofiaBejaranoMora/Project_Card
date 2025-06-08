@@ -14,6 +14,9 @@ import cr.ac.una.project_card.util.EntityManagerHelper;
 import cr.ac.una.project_card.util.Respuesta;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
+import jakarta.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,6 +30,30 @@ public class StackcardxcardService {
 
     private EntityManager em = EntityManagerHelper.getInstance().getManager();
     private EntityTransaction et;
+
+    public Respuesta getListStackcardxCard(List<StackcardxcardDto> stackcardDtoList) {
+        try {
+            List<StackcardxcardDto> resultStackcardDtoList = new ArrayList<>();
+
+            for (StackcardxcardDto stackcardxcardDto : stackcardDtoList) {
+                if (stackcardxcardDto.getId() == null) {
+                    return new Respuesta(false, " ", " ", "StackcardxCard", null);
+                }
+                Stackcardxcard Stackcardxcard = em.find(Stackcardxcard.class, stackcardxcardDto.getId());
+                StackcardxcardDto StackcardxcardDto = new StackcardxcardDto(Stackcardxcard);
+                resultStackcardDtoList.add(StackcardxcardDto);
+            }
+            return new Respuesta(true, " ", " ", "StackcardxCard", resultStackcardDtoList);
+        } catch (NoResultException ex) {
+            return new Respuesta(false, "No existe una de las columnsXcarta con las credenciales ingresadas.", "StackcardxCard");
+        } catch (NonUniqueResultException ex) {
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Ocurrio un error al consultar las columnasXcartas.", ex);
+            return new Respuesta(false, "Ocurrio un error al consultar las lista de columansxCard.", "StackcardxCard");
+        } catch (Exception ex) {
+            Logger.getLogger(PlayerService.class.getName()).log(Level.SEVERE, "Error obteniendo las columnasxCard ", ex);
+            return new Respuesta(false, "Error obtener la lista de columnasxCartas.", "StackcardxCard " + ex.getMessage());
+        }
+    }
 
     public Respuesta SaveStackcardxCard(StackcardxcardDto stackcardxcardDto) {
         try {
@@ -186,7 +213,7 @@ public class StackcardxcardService {
             Stackcard stackcard = stackcardxcard.getStackCard();
             if (!(stackcard != null && stackcard.getStackCardxCards() != null)) {
                 return false;
-            } 
+            }
             stackcard.getStackCardxCards().clear();
         }
         return true;

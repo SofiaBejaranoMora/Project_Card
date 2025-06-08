@@ -104,7 +104,7 @@ public class GameService {
                     et.rollback();
                     return new Respuesta(false, "Este game ya existe", "SaveGame NoResultException");
                 } else { // si no tiene id empezamos con la parte crear el 
-                    game = new Game(gameDto);
+                    game = new Game(gameDto, false);
 
                     if (playerDto.getId() != null && !cardDtoList.isEmpty() && !stackcardDtoList.isEmpty()) {// revisa que el jugador, mazo y columnas a la que se va a relacionar exista
                         Player player = em.find(Player.class, playerDto.getId());
@@ -115,6 +115,7 @@ public class GameService {
                         }
                         player.getGames().add(game);
                         game.setPlayer(player);
+                        game.setCards(new ArrayList<>());
 
                         for (CardDto cardDto : cardDtoList) { //Se relacionan todas las cartas del mazo al juego
                             Long id = cardDto.getId();
@@ -150,7 +151,7 @@ public class GameService {
         }
     }
 
-    public Respuesta EditGameId(GameDto gameDto) {
+    public Respuesta EditGameId(GameDto gameDto, List<CardDto> cardDtoList) {
         try {
             et = em.getTransaction();
             et.begin();
@@ -161,11 +162,21 @@ public class GameService {
                     et.rollback();
                     return new Respuesta(false, "No se encontró la partida a actualizar", "EditGameId NoResultException");
                 }
-                game.update(gameDto);
+                game.update(gameDto, true);
+                game.getCards().clear();
+                for (CardDto cardDto : cardDtoList) { //Se relacionan todas las cartas del mazo al juego
+                    Long id = cardDto.getId();
+                    Card card = em.find(Card.class, cardDto.getId());
+                    if (card == null) { //Ve si el carta se encontro
+                        et.rollback();
+                        return new Respuesta(false, "No se encontró el carta asociado.", "SaveGame NoResultException");
+                    }
+                    game.getCards().add(card);
+                }
                 game = em.merge(game);
             } else {
-                game = new Game(gameDto);
-                em.persist(game);
+                et.rollback();
+                return new Respuesta(false, "Este game no existe", "EditGameId NoResultException");
             }
             et.commit();
             return new Respuesta(true, "", "", "Partida", new GameDto(game));

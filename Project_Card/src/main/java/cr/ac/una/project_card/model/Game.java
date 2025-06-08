@@ -28,12 +28,11 @@ import java.util.List;
 @Entity
 @Table(name = "GAME", schema = "PRO")
 @NamedQueries({
-    @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"), 
+    @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"),
     @NamedQuery(name = "Game.findById", query = "SELECT g FROM Game g WHERE g.id = :id"),
     @NamedQuery(name = "Game.findByName", query = "SELECT g FROM Game g WHERE g.name = :name"),
-    @NamedQuery(name = "Game.findByNamePlayerId", query = "SELECT DISTINCT g FROM Game g JOIN g.player p " +
-            "WHERE p.id = :playerId AND g.name LIKE :name"),
-    /*@NamedQuery(name = "Game.findByGamTime", query = "SELECT g FROM Game g WHERE g.gamTime = :gamTime"),
+    @NamedQuery(name = "Game.findByNamePlayerId", query = "SELECT DISTINCT g FROM Game g JOIN g.player p "
+            + "WHERE p.id = :playerId AND g.name LIKE :name"), /*@NamedQuery(name = "Game.findByGamTime", query = "SELECT g FROM Game g WHERE g.gamTime = :gamTime"),
     @NamedQuery(name = "Game.findByGamScore", query = "SELECT g FROM Game g WHERE g.gamScore = :gamScore"),
     @NamedQuery(name = "Game.findByGamVersion", query = "SELECT g FROM Game g WHERE g.gamVersion = :gamVersion"),
     @NamedQuery(name = "Game.findByGamHaswon", query = "SELECT g FROM Game g WHERE g.gamHaswon = :gamHaswon"),
@@ -84,22 +83,24 @@ public class Game implements Serializable {
         this.id = id;
     }
 
-    public Game(GameDto gameDto) {
+    public Game(GameDto gameDto, Boolean isUpdate) {
         this.id = gameDto.getId();
-        update(gameDto);
+        update(gameDto, isUpdate);
     }
 
-    public void update(GameDto gameDto) {
+    public void update(GameDto gameDto, Boolean isUpdate) {
         this.id = gameDto.getId();
-        this.name=gameDto.getName();
+        this.name = gameDto.getName();
         this.time = gameDto.getTime();
         this.score = gameDto.getScore();
         this.hasWon = gameDto.getHasWon();
         if (hasWon.equalsIgnoreCase("T") || hasWon.equalsIgnoreCase("F") || hasWon.equalsIgnoreCase("N")) {
             this.hasWon = gameDto.getHasWon();
         }
-        this.cards = new ArrayList<>();
-        this.stackCards = new ArrayList<>();
+        if (!isUpdate) {
+            this.cards = new ArrayList<>();
+            this.stackCards = new ArrayList<>();
+        }
         this.difficulty = gameDto.getDifficulty();
         this.version = gameDto.getVersion();
     }

@@ -158,23 +158,25 @@ public class CreateGameController extends Controller implements Initializable {
                 answer = stackcardxcardService.SaveStackcardxCardList(stackcardDtoList);
 
                 if (answer.getEstado()) {
-                    GameService gameService = new GameService();
-                    answer = gameService.SaveGame(gameDto, player, cards, columnList);
-                    if (answer.getEstado()) {
-                        gameDto = (GameDto) answer.getResultado("Partida");
-                        Long dificultad = gameDto.getDifficulty();
-                        PlayerService playerService = new PlayerService();
-                        answer = playerService.getPlayerName(player.getName());
-                        if (answer != null && answer.getEstado()) {
-                            this.player = (PlayerDto) answer.getResultado("Jugador");
-                            uploadGameAchievement(playerService, answer);
-                            AppContext.getInstance().set("CurrentUser", player);
-                            AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
-                            cleanView();
-                            FlowController.getInstance().goView("GameView");
+                    if (player.getId() != null && (cards != null || !cards.isEmpty()) && (columnList != null || !columnList.isEmpty())) {
+                        GameService gameService = new GameService();
+                        answer = gameService.SaveGame(gameDto, player, cards, columnList);
+                        if (answer.getEstado()) {
+                            gameDto = (GameDto) answer.getResultado("Partida");
+                            Long dificultad = gameDto.getDifficulty();
+                            PlayerService playerService = new PlayerService();
+                            answer = playerService.getPlayerName(player.getName());
+                            if (answer != null && answer.getEstado()) {
+                                this.player = (PlayerDto) answer.getResultado("Jugador");
+                                uploadGameAchievement(playerService, answer);
+                                AppContext.getInstance().set("CurrentUser", player);
+                                AppContext.getInstance().set("IdCurrentGame", gameDto.getId());
+                                cleanView();
+                                FlowController.getInstance().goView("GameView");
+                            }
+                        } else {
+                            message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
                         }
-                    } else {
-                        message.showModal(Alert.AlertType.ERROR, "Guardar Jugador", getStage(), answer.getMensaje());
                     }
                 } else {
                     //mandar mensaje y mandarlo al menu de nuevo
@@ -272,7 +274,7 @@ public class CreateGameController extends Controller implements Initializable {
         for (int i = 0; i < type.size(); i++) {
             CardDto cardDto = type.get(i);
             if (cardDto.getNumber() != null && cardDto.getNumber() == number) {
-                type.remove(i); // ✅ remover de forma segura
+                type.remove(i);
                 return cardDto;
             }
         }
@@ -605,6 +607,11 @@ public class CreateGameController extends Controller implements Initializable {
         easyModeCard.setBackImagePath(easyCardBack);
         mediumModeCard.setBackImagePath(mediumCardBack);
         hardModeCard.setBackImagePath(hardCardBack);
+        corazones=new ArrayList<>();
+        picas=new ArrayList<>();
+        treboles=new ArrayList<>();
+        diamantes=new ArrayList<>();
+        cards=new ArrayList<>();
 
         initialConditionsCards();
         setupCardInteractions();

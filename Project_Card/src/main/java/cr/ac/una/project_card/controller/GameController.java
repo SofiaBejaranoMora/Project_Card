@@ -391,7 +391,30 @@ public class GameController extends Controller implements Initializable {
             return false;
         }
     }
-    
+
+    private Boolean isContinueGame() {        
+        timeLimit = game.getTime().intValue();
+        int timeUsed = 0;
+        if (game.getDifficulty() == null) {
+            return false;
+        } else {
+            if(game.getDifficulty() == 3L){
+                timeUsed = (int) 1260L - timeLimit;
+            }
+            else if(game.getDifficulty() == 2L){
+                timeUsed = (int) 992L - timeLimit;
+            } else {
+                timeUsed = (int) 600L - timeLimit;
+            }
+        }
+        if(timeUsed != 0 && timeUsed != 1260 && timeUsed != 992 && timeUsed != 600) {
+            timeCalculate = timeUsed;
+            lblTimer.setText(timerFormat(timeUsed));
+            return true;
+        }
+        return  false;
+    }
+        
     private void highlightMove(Pane startCard, VBox destColumn) {
         try {
             DropShadow cardGlow = new DropShadow();
@@ -475,29 +498,6 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
-    private Boolean isContinueGame() {        
-        timeLimit = game.getTime().intValue();
-        int timeUsed = 0;
-        if (game.getDifficulty() == null) {
-            return false;
-        } else {
-            if(game.getDifficulty() == 3L){
-                timeUsed = (int) 1260L - timeLimit;
-            }
-            else if(game.getDifficulty() == 2L){
-                timeUsed = (int) 992L - timeLimit;
-            } else {
-                timeUsed = (int) 600L - timeLimit;
-            }
-        }
-        if(timeUsed != 0 && timeUsed != 1260 && timeUsed != 992 && timeUsed != 600) {
-            timeCalculate = timeUsed;
-            lblTimer.setText(timerFormat(timeUsed));
-            return true;
-        }
-        return  false;
-    }
-    
     public StackcardxcardDto searchStackcardxcardDto(Pane pane) {
         if (pane.getId() != null && !pane.getId().isBlank()) {
             Long idPane = Long.valueOf(pane.getId());

@@ -35,6 +35,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -47,6 +48,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -175,6 +177,7 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnClues(ActionEvent event) {
+        suggestMove();
     }
 
     @FXML
@@ -386,6 +389,81 @@ public class GameController extends Controller implements Initializable {
         }
     }
     
+    
+    private void highlightMove(Pane startCard, VBox destColumn) {
+        try {
+            DropShadow cardGlow = new DropShadow();
+            cardGlow.setColor(Color.BLUE);
+            cardGlow.setRadius(30.0);
+            cardGlow.setSpread(0.5);
+            startCard.setEffect(cardGlow);
+            startCard.setStyle("-fx-border-color: blue; -fx-border-width: 3; -fx-border-radius: 5;");
+
+            DropShadow columnGlow = new DropShadow();
+            columnGlow.setColor(Color.GREEN);
+            columnGlow.setRadius(30.0);
+            columnGlow.setSpread(0.5);
+            destColumn.setEffect(columnGlow);
+            destColumn.setStyle("-fx-border-color: green; -fx-border-width: 3; -fx-border-radius: 5;");
+
+        } catch (Exception e) {
+            message.showModal(Alert.AlertType.ERROR, "Error al resaltar", getStage(), "No se pudo resaltar la pista: " + e.getMessage());
+        }
+    }
+
+    private void suggestMove() {
+        try {
+            if (hasValidMoves()) {
+                for (int col = 0; col < columns.size(); col++) {
+                    VBox column = columns.get(col); // ¿Qué cartas tiene esta columna según el modelo?
+                    List<StackcardxcardDto> cards = allStacks.get(col).getStackCardxCards();
+                    if (!cards.isEmpty() && cards.get(cards.size() - 1).getIsFaceUp()) {
+                        // Buscamos la primera carta boca arriba como punto de partida
+                        int startIndex = cards.size() - 1;
+                        while (startIndex > 0 && cards.get(startIndex - 1).getIsFaceUp()) {
+                            startIndex--; // ¿La de abajo también está boca arriba? Bajamos más
+                        }
+                        // ¿Es esta secuencia válida desde 'startIndex' hasta el final?
+                        if (isValidSequence(column, (Pane) column.getChildren().get(startIndex))) {
+                            // ¡Encontramos una secuencia! Ahora buscamos un destino
+                            for (int destCol = 0; destCol < columns.size(); destCol++) {
+                                if (destCol != col) {
+                                    VBox destColumn = columns.get(destCol);
+                                    StackcardxcardDto topCard;
+                                    if (destColumn.getChildren().isEmpty()) {
+                                        topCard = null;
+                                    } else {
+                                        topCard = searchStackcardxcardDto((Pane) destColumn.getChildren().get(destColumn.getChildren().size() - 1));
+                                    }
+                                    // ¿Podemos mover la secuencia a esta columna?
+                                    boolean canMove;
+                                    if (destColumn.getChildren().isEmpty()) {
+                                        canMove = true;
+                                    } else if (topCard != null && isValidColumnMove(destColumn, cards.get(startIndex).getCard().getType(), cards.get(startIndex).getCard().getNumber())) {
+                                        canMove = true;
+                                    } else {
+                                        canMove = false;
+                                    }
+
+                                    if (canMove) {
+                                        message.showModal(Alert.AlertType.INFORMATION, "Pista", getStage(), "¡Mueve la secuencia desde la columna " + (col + 1) + " (posición " + startIndex + ") a la columna " + (destCol + 1) + "!");
+                                        Pane startCard = (Pane) column.getChildren().get(startIndex);
+                                        highlightMove(startCard, destColumn);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                message.showModal(Alert.AlertType.WARNING, "Sin movimientos", getStage(), "No hay movimientos válidos. ¡Estamos jodidos");
+            }
+        } catch (Exception e) {
+            message.showModal(Alert.AlertType.ERROR, "Error en pista", getStage(), "Algo salió mal al buscar pista: " + e.getMessage());
+        }
+    }
+
     private Boolean isContinueGame() {        
         timeLimit = game.getTime().intValue();
         int timeUsed = 0;

@@ -253,6 +253,7 @@ public class UserSessionController extends Controller implements Initializable {
         if (!"".equals(player.getName().trim())) {
             currentName = txfUserName.getText().trim();
             txfUserName.setText(currentName);
+            lblCurrentPoints.setText(player.getAccumulatedPoint() + "");
             mgvUserPhoto.setImage(new Image("file:" + saveRoute + currentName + ".png"));
         }
         if ((Boolean) AppContext.getInstance().get("isRegisterSession")) {

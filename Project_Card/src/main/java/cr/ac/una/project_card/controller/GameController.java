@@ -430,8 +430,8 @@ public class GameController extends Controller implements Initializable {
 
             if (newColumn != null && enableCardMove(newColumn, space)) {
                 for (Pane pane : ladderList[0]) {
-                    actualColumn.getChildren().remove(pane);
-                    newColumn.getChildren().add(pane);
+                    actualColumn.getChildren().remove(pane);    //Borra las cartas de la columna pasada
+                    newColumn.getChildren().add(pane);              //Agrega las cartas a la nueva columna
                 }
                 turnCards(actualColumn);    //Voltea las cartas de espaldas
                 // Agregar el -1pt para mantener los puntos al día

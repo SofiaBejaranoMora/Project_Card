@@ -29,7 +29,7 @@ public class StackcardxcardDto {
 
     public StackcardxcardDto(Stackcardxcard stackcardxcard) {
         this();
-        this.id.set(stackcardxcard.toString());
+        this.id.set(stackcardxcard.getId().toString());
         this.isFaceUp.set(stackcardxcard.getIsFaceUp().equals("T"));
         this.positionNumber.set(stackcardxcard.getPositionNumber().toString());
         this.card=new CardDto(stackcardxcard.getCard());
@@ -119,5 +119,7 @@ public class StackcardxcardDto {
         final StackcardxcardDto other = (StackcardxcardDto) obj;
         return Objects.equals(this.id, other.id);
     }
+    
+    
 
 }

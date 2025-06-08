@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
@@ -391,7 +392,6 @@ public class GameController extends Controller implements Initializable {
         }
     }
     
-    
     private void highlightMove(Pane startCard, VBox destColumn) {
         try {
             DropShadow cardGlow = new DropShadow();
@@ -407,6 +407,15 @@ public class GameController extends Controller implements Initializable {
             columnGlow.setSpread(0.5);
             destColumn.setEffect(columnGlow);
             destColumn.setStyle("-fx-border-color: green; -fx-border-width: 3; -fx-border-radius: 5;");
+            
+            PauseTransition pause = new PauseTransition(Duration.seconds(3)); // 3 segundos
+            pause.setOnFinished(event -> {
+                startCard.setStyle(""); 
+                startCard.setEffect(null);
+                destColumn.setStyle("");
+                destColumn.setEffect(null);
+            });
+            pause.play();
 
         } catch (Exception e) {
             message.showModal(Alert.AlertType.ERROR, "Error al resaltar", getStage(), "No se pudo resaltar la pista: " + e.getMessage());

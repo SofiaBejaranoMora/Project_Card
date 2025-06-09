@@ -510,6 +510,19 @@ public class GameController extends Controller implements Initializable {
             lblTimer.setText(timerFormat(timeUsed));
             return true;
         }
+        if (chargeUnfinishGames()) {
+            for (StackcardxcardDto stackcardxcardDto : chargeUnfinishGameList) {
+                if (stackcardxcardDto.getCard().getNumber() == 1L) {
+                    String cardPath = ImagesUtil.getCardPath(player.getCardStyle() + "/", stackcardxcardDto.getCard().getNumber() + stackcardxcardDto.getCard().getType());
+                    fillSuits = 7 - chargeUnfinishGameList.size();
+                    for (int i = hBoxSuits.getChildren().size() - 1; i >= fillSuits; i--) {
+                        ImageView suits = (ImageView) hBoxSuits.getChildren().get(i);
+                        suits.setImage(new Image(cardPath));
+                    }
+                }
+                return true;
+            }
+        }
         return false;
     }
 

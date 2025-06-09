@@ -802,13 +802,18 @@ public class GameController extends Controller implements Initializable {
     }
 
     private String setupStyle() {
-        Long styleType = player.getCardStyle();
-        if (styleType.equals(2L)) {
-            return style + "M";
-        } else if (styleType.equals(3L)) {
-            return style + "V";
+        if ("noimagen".equals(player.getCardBackImageName())) {
+            Long styleType = player.getCardStyle();
+            if (styleType.equals(2L)) {
+                return style + "M";
+            } else if (styleType.equals(3L)) {
+                return style + "V";
+            } else {
+                return style + "N";
+            }
         } else {
-            return style + "N";
+            style = player.getCardBackImageName();
+            return style;
         }
     }
 

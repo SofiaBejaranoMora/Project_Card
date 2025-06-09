@@ -67,7 +67,6 @@ public class GameController extends Controller implements Initializable {
     private List<CardDto> cards = new ArrayList<>(); // Mazo completo
     private List<StackcardDto> allStacks = new ArrayList<>();
     private List<StackcardxcardDto> allStackcardxcard;
-    private List<StackcardxcardDto> chargeUnfinishGameList;
     private List<VBox> columns = new ArrayList<>(); // columnas
     private List<Pane> ladderList = new ArrayList<>();
     private List<AchievementDto> achievementNotObtainedTime = new ArrayList();
@@ -133,9 +132,6 @@ public class GameController extends Controller implements Initializable {
             if (answerGame.getEstado() && answerStackcardxcard.getEstado()) {
                 PlayerService servicePlayer = new PlayerService();
                 if (player.getId() != null) {
-                    if (game.getHasWon().equals("F") || game.getHasWon().equals("T")) {
-                        gameAchievements();
-                    }
                     Respuesta answerPlayer = servicePlayer.getPlayerId(player.getId());
                     if (answerPlayer != null && answerPlayer.getEstado()) {
                         this.player = (PlayerDto) answerPlayer.getResultado("Jugador");
@@ -236,40 +232,11 @@ public class GameController extends Controller implements Initializable {
         achievementNotObtainedPoint.clear();
         achievementNotObtainedTime.clear();
         achievementNotObtainedWin.clear();
-        chargeUnfinishGameList.clear();
         allStacks.clear();
         allStackcardxcard.clear();
         ladderList.clear();
         columns.clear();
         cards.clear();
-    }
-
-    public void gameAchievements() {
-        GameService gameService = new GameService();
-        Respuesta answer = new Respuesta();
-        List<GameDto> gameList = new ArrayList<>();
-        int size = 0;
-        if (game.getHasWon().equals("F")) {
-            answer = gameService.getGameParameter(player.getId(), "F");
-            if (answer.getEstado() != null && answer.getEstado()) {
-                gameList = (List<GameDto>) answer.getResultado("Partida");
-                for (int i = 0; i < achievementNotObtainedLose.size(); i++) {
-                    if (UploadAchievement(achievementNotObtainedLose.get(i), gameList.size(), false)) {
-                        achievementNotObtainedLose.remove(i);
-                    }
-                }
-            }
-        } else if (game.getHasWon().equals("T")) {
-            answer = gameService.getGameParameter(player.getId(), "T");
-            if (answer.getEstado() != null && answer.getEstado()) {
-                gameList = (List<GameDto>) answer.getResultado("Partida");
-                for (int i = 0; i < achievementNotObtainedWin.size(); i++) {
-                    if (UploadAchievement(achievementNotObtainedWin.get(i), gameList.size(), false)) {
-                        achievementNotObtainedWin.remove(i);
-                    }
-                }
-            }
-        }
     }
 
     public List<StackcardxcardDto> SaveStackcardxcardList() {
@@ -424,7 +391,7 @@ public class GameController extends Controller implements Initializable {
             return false;
         }
     }
-
+    
     private Boolean isValidColumnMove(VBox destColumn, String sourceSuit, Long sourceNumber) {
         try {
             if (destColumn.getChildren().isEmpty()) {
@@ -510,19 +477,6 @@ public class GameController extends Controller implements Initializable {
             lblTimer.setText(timerFormat(timeUsed));
             return true;
         }
-        if (chargeUnfinishGames()) {
-            for (StackcardxcardDto stackcardxcardDto : chargeUnfinishGameList) {
-                if (stackcardxcardDto.getCard().getNumber() == 1L) {
-                    String cardPath = ImagesUtil.getCardPath(player.getCardStyle() + "/", stackcardxcardDto.getCard().getNumber() + stackcardxcardDto.getCard().getType());
-                    fillSuits = 7 - chargeUnfinishGameList.size();
-                    for (int i = hBoxSuits.getChildren().size() - 1; i >= fillSuits; i--) {
-                        ImageView suits = (ImageView) hBoxSuits.getChildren().get(i);
-                        suits.setImage(new Image(cardPath));
-                    }
-                }
-                return true;
-            }
-        }
         return false;
     }
 
@@ -562,23 +516,6 @@ public class GameController extends Controller implements Initializable {
         }
 
         return expectedNumber == 1;
-    }
-
-    private Boolean isEndGame() {
-        int empty = 0;
-        if (cards.isEmpty()) {
-            for (VBox column : columns) {
-                if (column.getChildren().isEmpty()) {
-                    empty++;
-                }
-            }
-            if (empty == 10) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
     }
 
     private void highlightMove(Pane startCard, VBox destColumn) {
@@ -679,17 +616,13 @@ public class GameController extends Controller implements Initializable {
 
     private void managementPoints() {
         for (int i = 0; i < achievementNotObtainedPoint.size(); i++) {
-            if (UploadAchievement(achievementNotObtainedPoint.get(i), originalPoints, true)) {
-                achievementNotObtainedPoint.remove(i);
-            }
+            UploadAchievement(achievementNotObtainedPoint.get(i), originalPoints, true, i);
         }
-
+        
         if (originalPoints == 0) {
             game.setHasWon("F");
             AnimationAndSound.looseSound();
-            AnimationAndSound.looseTransition(root, () -> {
-                onActionBtnBack(null);
-            });
+            AnimationAndSound.looseTransition(root, () -> { onActionBtnBack(null); });
         }
 
     }
@@ -706,7 +639,6 @@ public class GameController extends Controller implements Initializable {
                 Respuesta answer = gameService.getGameID(gameId);
                 if (answer != null && answer.getEstado()) {
                     this.game = (GameDto) answer.getResultado("Partida");
-
                     allStackcardxcard = new ArrayList<>();
                     this.cards.addAll(game.getCards());
                     Collections.shuffle(cards, new SecureRandom());
@@ -750,7 +682,7 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
-    private void moveToFullSuit(ImageView fillSuitImage) {
+    private void moveToFullSuit(ImageView fillSuitImage, Point2D ubication) {
         List<ImageView> suits = new ArrayList<>();
         for (Node node : hBoxSuits.getChildren()) {
             if (node instanceof ImageView) {
@@ -763,11 +695,6 @@ public class GameController extends Controller implements Initializable {
                 fillSuits -= 1;
                 originalPoints += 100;  //Da 100 por completar el palo
                 lblPoints.setText("Puntuación: " + originalPoints);
-                if(isEndGame()) {
-                    game.setHasWon("T");
-                    AnimationAndSound.winSound();
-                    AnimationAndSound.winTransition(root, () -> { onActionBtnBack(null); });
-                }
             }
         }
     }
@@ -897,9 +824,8 @@ public class GameController extends Controller implements Initializable {
                         lblPoints.setText("Puntuación: " + originalPoints);
                         managementPoints();
                     } else if (isFullSuit(actualColumn, space)) {
-                        Pane asPane = (Pane) actualColumn.getChildren().get(actualColumn.getChildren().size() -1);
-                        ImageView spaceImage = (ImageView) asPane.getChildren().get(0);
-                        moveToFullSuit(spaceImage);
+                        ImageView spaceImage = (ImageView) space.getChildren().get(0);
+                        moveToFullSuit(spaceImage, mousePosition);
                         deleteFullSuit(actualColumn);
                         turnCards(actualColumn);
                     } else {
@@ -978,9 +904,7 @@ public class GameController extends Controller implements Initializable {
             lblTimer.setText(timerFormat(timeCalculate));
 
             for (int i = 0; i < achievementNotObtainedTime.size(); i++) {
-                if (UploadAchievement(achievementNotObtainedTime.get(i), timeCalculate / 60, false)) {
-                    achievementNotObtainedTime.remove(i);
-                }
+                UploadAchievement(achievementNotObtainedTime.get(i), timeCalculate / 60, false, i);
 
             }
 
@@ -988,7 +912,9 @@ public class GameController extends Controller implements Initializable {
                 currentTime.stop();
                 game.setHasWon("F");
                 AnimationAndSound.looseSound();
-                AnimationAndSound.looseTransition(root, () -> { onActionBtnBack(null); });
+                AnimationAndSound.looseTransition(root, () -> {
+                    onActionBtnBack(null);
+                });
             }
 
         }));
@@ -1002,7 +928,7 @@ public class GameController extends Controller implements Initializable {
         root.setBackground(new Background(backgroundImage));
     }
 
-    private Boolean UploadAchievement(AchievementDto achievementDto, int amount, Boolean isPoints) {
+    private void UploadAchievement(AchievementDto achievementDto, int amount, Boolean isPoints, int index) {
         int amountAchievement = achievementDto.getAmount().intValue();
         if (achievementDto != null) {
             Respuesta answer = new Respuesta();
@@ -1011,8 +937,8 @@ public class GameController extends Controller implements Initializable {
                     answer = achievementsService.addPlayerAchieveme(player, achievementDto.getName());
                     if (answer.getEstado() != null && answer.getEstado()) {
                         System.out.println("logro: " + achievementDto.getName());
+                        achievementNotObtainedTime.remove(index);
                         AnimationAndSound.achievementSound();
-                        return true;
                     }
                 }
             } else {
@@ -1020,13 +946,12 @@ public class GameController extends Controller implements Initializable {
                     answer = achievementsService.addPlayerAchieveme(player, achievementDto.getName());
                     if (answer.getEstado() != null && answer.getEstado()) {
                         System.out.println("logro: " + achievementDto.getName());
+                        achievementNotObtainedTime.remove(index);
                         AnimationAndSound.achievementSound();
-                        return true;
                     }
                 }
             }
         }
-        return false;
     }
 
     public void loadAchievementNotObtained() {
@@ -1045,17 +970,6 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
-    public Boolean chargeUnfinishGames() {
-        List<StackcardxcardDto> allStackcardxcardColumn = allStacks.get(10).getStackCardxCards();
-        for (StackcardxcardDto stackcardxcardDto : allStackcardxcardColumn) {
-            if (stackcardxcardDto.getCard().getNumber() == 1L) {
-                chargeUnfinishGameList.add(stackcardxcardDto);
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -1064,7 +978,6 @@ public class GameController extends Controller implements Initializable {
     @Override
     public void initialize() {
         AnimationAndSound.startGameSound();
-        chargeUnfinishGameList= new ArrayList<>();
         loadGame();
         loadAchievementNotObtained();
         style = game.getDifficulty() + "";
@@ -1077,8 +990,8 @@ public class GameController extends Controller implements Initializable {
             String rute = ImagesUtil.getBackground((String) AppContext.getInstance().get("Background"));
             setupBackground(rute);
         }
-        String rute = ImagesUtil.getBackCardPath(setupStyle());
-        mgvMaze.setImage(new Image(rute));
+        String route = ImagesUtil.getBackCardPath(setupStyle());
+        mgvMaze.setImage(new Image(route));
         if (!isContinueGame() && !isTimerStarted) {
             lblTimer.setText("Tiempo: 00:00");
         }

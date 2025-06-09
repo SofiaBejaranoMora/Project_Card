@@ -30,7 +30,7 @@ import javafx.stage.Stage;
  */
 public class SettingsController extends Controller implements Initializable {
 
-    private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/Cards/Backs/";
+    private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/ProgramImages/Cards/Backs/";
     Mensaje message = new Mensaje();
     private File selectedFile;
     private PlayerDto player;
@@ -51,6 +51,7 @@ public class SettingsController extends Controller implements Initializable {
     private Button btnVictorianMass;
     @FXML
     private Button btnPersonalizeBack;
+    @FXML
     private ImageView mgvPersonalized;
 
     @FXML
@@ -183,24 +184,23 @@ public class SettingsController extends Controller implements Initializable {
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
             mgvPersonalized.setImage(image);
+            savePersonalizedBack();
+        } else {
+            message.showModal(Alert.AlertType.WARNING, "Selección de espalda", getStage(), "No hay imagen seleccionada para guardar.");
         }
     }
 
     private void savePersonalizedBack() {
         if (selectedFile != null) {
-            if (player == null) {
-                message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
-                return;
-            }
 
             try {
-                String savePath = saveRoute + player.getId() + ".png";
+                String savePath = saveRoute + player.getName() + ".png";
                 Path destination = Path.of(savePath);
 
                 Files.createDirectories(destination.getParent());
                 Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
 
-                player.setCardBackImageName(player.getId() + "");
+                player.setCardBackImageName(player.getName() + "");
                 PlayerService playerService = new PlayerService();
                 Respuesta answer = playerService.EditPlayerId(player);// tercera linea de error
 
@@ -219,12 +219,15 @@ public class SettingsController extends Controller implements Initializable {
                     message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
 
                 } else {
+                    player.setCardBackImageName("noimagen");
                     message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
                 }
             } catch (IOException e) {
+                player.setCardBackImageName("noimagen");
                 message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), "Error al guardar la imagen: " + e.getMessage());
             }
         } else {
+            player.setCardBackImageName("noimagen");
             message.showModal(Alert.AlertType.WARNING, "Selección de espalda", getStage(), "No hay imagen seleccionada para guardar.");
         }
     }

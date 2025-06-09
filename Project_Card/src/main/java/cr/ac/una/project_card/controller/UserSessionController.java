@@ -197,7 +197,7 @@ public class UserSessionController extends Controller implements Initializable {
 
     private void uploadRegistrationAchievement(PlayerService playerService, Respuesta answer) {
         AchievementsService achievementsService = new AchievementsService();
-        answer = playerService.loadAllPlayer(); // error
+        answer = playerService.loadAllPlayer(); 
         if (answer.getEstado()) {
             List<PlayerDto> playerDtoList = (List<PlayerDto>) answer.getResultado("jugadores");
             if (playerDtoList.size() == 1) {

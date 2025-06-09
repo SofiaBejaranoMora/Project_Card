@@ -1,11 +1,13 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.AchievementDto;
 import cr.ac.una.project_card.model.AnimationAndSound;
 import cr.ac.una.project_card.model.CardDto;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.model.StackcardDto;
 import cr.ac.una.project_card.model.StackcardxcardDto;
+import cr.ac.una.project_card.service.AchievementsService;
 import cr.ac.una.project_card.service.GameService;
 import cr.ac.una.project_card.service.PlayerService;
 import cr.ac.una.project_card.service.StackcardxcardService;
@@ -59,6 +61,7 @@ import javafx.util.Duration;
 public class GameController extends Controller implements Initializable {
 
     // Variables del juego
+    private AchievementsService achievementsService = new AchievementsService();
     private PlayerDto player = new PlayerDto();
     private GameDto game;
     private List<CardDto> cards = new ArrayList<>(); // Mazo completo
@@ -66,6 +69,10 @@ public class GameController extends Controller implements Initializable {
     private List<StackcardxcardDto> allStackcardxcard;
     private List<VBox> columns = new ArrayList<>(); // columnas
     private List<Pane> ladderList = new ArrayList<>();
+    private List<AchievementDto> achievementNotObtainedTime = new ArrayList();
+    private List<AchievementDto> achievementNotObtainedWin = new ArrayList();
+    private List<AchievementDto> achievementNotObtainedLose = new ArrayList();
+    private List<AchievementDto> achievementNotObtainedPoint = new ArrayList();
     private ColorAdjust colorAdjust = new ColorAdjust();
     private Mensaje message = new Mensaje();
     private String style;
@@ -221,6 +228,10 @@ public class GameController extends Controller implements Initializable {
     }
 
     public void cleanList() {
+        achievementNotObtainedLose.clear();
+        achievementNotObtainedPoint.clear();
+        achievementNotObtainedTime.clear();
+        achievementNotObtainedWin.clear();
         allStacks.clear();
         allStackcardxcard.clear();
         ladderList.clear();
@@ -401,7 +412,7 @@ public class GameController extends Controller implements Initializable {
             return false;
         }
     }
-    
+
     private Boolean isContinueGame() {
         timeLimit = game.getTime().intValue();
         int timeUsed = 0;
@@ -559,11 +570,11 @@ public class GameController extends Controller implements Initializable {
     }
 
     private void managementPoints() {
-        if (originalPoints == 0){
+        if (originalPoints == 0) {
             //Perdió
         }
     }
-    
+
     private void loadGame() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             Long gameId = (Long) AppContext.getInstance().get("IdCurrentGame");
@@ -835,11 +846,17 @@ public class GameController extends Controller implements Initializable {
         currentTime = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             timeCalculate++;
             lblTimer.setText(timerFormat(timeCalculate));
+
+                for (int i = 0; i < achievementNotObtainedTime.size(); i++) {
+                    UploadAchievement(achievementNotObtainedTime.get(i), timeCalculate / 60, false,i);
+                    
+                }
+
             if (timeCalculate == timeLimit) {
                 currentTime.stop();
                 //Perdió
             }
-            //Logros
+
         }));
         currentTime.setCycleCount(timeLimit);
     }
@@ -851,6 +868,48 @@ public class GameController extends Controller implements Initializable {
         root.setBackground(new Background(backgroundImage));
     }
 
+    private void UploadAchievement(AchievementDto achievementDto, int amount, Boolean isPoints,int index) {
+        int amountAchievement = achievementDto.getAmount().intValue();
+        if (achievementDto != null) {
+            Respuesta answer = new Respuesta();
+            if (!isPoints) {
+                if (amountAchievement == amount) {
+                    answer = achievementsService.addPlayerAchieveme(player, achievementDto.getName());
+                    if (answer.getEstado() != null && answer.getEstado()) {
+                        System.out.println("logro: " + achievementDto.getName());
+                        achievementNotObtainedTime.remove(index);
+                        //animación
+                    }
+                }
+            } else {
+                if (amountAchievement >= amount) {
+                    answer = achievementsService.addPlayerAchieveme(player, achievementDto.getName());
+                    if (answer.getEstado() != null && answer.getEstado()) {
+                        System.out.println("logro: " + achievementDto.getName());
+                        achievementNotObtainedTime.remove(index);
+                        //animación
+                    }
+                }
+            }
+        }
+    }
+
+    public void loadAchievementNotObtained() {
+        if (player != null && player.getId() != null) {
+            Respuesta answerTime = achievementsService.getAchievemenSearchParameter("", "Tiempo", player.getId(), false);
+            Respuesta answerPoints = achievementsService.getAchievemenSearchParameter("", "Puntos", player.getId(), false);
+            Respuesta answerWins = achievementsService.getAchievemenSearchParameter("", "Ganar", player.getId(), false);
+            Respuesta answerLose = achievementsService.getAchievemenSearchParameter("", "Perder", player.getId(), false);
+            if ((answerTime != null && answerTime.getEstado()) && (answerPoints != null && answerPoints.getEstado())
+                    && (answerWins != null && answerWins.getEstado()) && (answerLose != null && answerLose.getEstado())) {
+                achievementNotObtainedTime = (List<AchievementDto>) answerTime.getResultado("Logro");
+                achievementNotObtainedPoint = (List<AchievementDto>) answerPoints.getResultado("Logro");
+                achievementNotObtainedWin = (List<AchievementDto>) answerWins.getResultado("Logro");
+                achievementNotObtainedLose = (List<AchievementDto>) answerLose.getResultado("Logro");
+            }
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -859,6 +918,7 @@ public class GameController extends Controller implements Initializable {
     @Override
     public void initialize() {
         loadGame();
+        loadAchievementNotObtained();
         style = game.getDifficulty() + "";
         originalPoints = game.getScore().intValue();
         lblPoints.setText("Puntuación: " + originalPoints);

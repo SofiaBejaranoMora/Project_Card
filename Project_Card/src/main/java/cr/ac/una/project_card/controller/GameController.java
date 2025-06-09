@@ -198,11 +198,12 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onMouseClickedMgvMaze(MouseEvent event) {
-        AnimationAndSound.buttonSound();
-        originalPoints -= 100;    // Quita -1pt para mantener los puntos al día
-        lblPoints.setText("Puntuación: " + originalPoints);
-        managementPoints();
+
         if (!cards.isEmpty()) {
+            AnimationAndSound.buttonSound();
+            originalPoints -= 100;    // Quita -1pt para mantener los puntos al día
+            lblPoints.setText("Puntuación: " + originalPoints);
+            managementPoints();
 
             if (enableAddingCardsColumns()) {
                 StackcardxcardDto newStackcardxcardDto;
@@ -570,9 +571,14 @@ public class GameController extends Controller implements Initializable {
     }
 
     private void managementPoints() {
-        if (originalPoints == 0) {
-            //Perdió
+        for (int i = 0; i < achievementNotObtainedPoint.size(); i++) {
+            UploadAchievement(achievementNotObtainedPoint.get(i), originalPoints, true, i);
         }
+        
+        if (originalPoints == 0) {
+            //perdio
+        }
+
     }
 
     private void loadGame() {
@@ -847,10 +853,10 @@ public class GameController extends Controller implements Initializable {
             timeCalculate++;
             lblTimer.setText(timerFormat(timeCalculate));
 
-                for (int i = 0; i < achievementNotObtainedTime.size(); i++) {
-                    UploadAchievement(achievementNotObtainedTime.get(i), timeCalculate / 60, false,i);
-                    
-                }
+            for (int i = 0; i < achievementNotObtainedTime.size(); i++) {
+                UploadAchievement(achievementNotObtainedTime.get(i), timeCalculate / 60, false, i);
+
+            }
 
             if (timeCalculate == timeLimit) {
                 currentTime.stop();
@@ -868,7 +874,7 @@ public class GameController extends Controller implements Initializable {
         root.setBackground(new Background(backgroundImage));
     }
 
-    private void UploadAchievement(AchievementDto achievementDto, int amount, Boolean isPoints,int index) {
+    private void UploadAchievement(AchievementDto achievementDto, int amount, Boolean isPoints, int index) {
         int amountAchievement = achievementDto.getAmount().intValue();
         if (achievementDto != null) {
             Respuesta answer = new Respuesta();

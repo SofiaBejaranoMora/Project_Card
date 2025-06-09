@@ -65,7 +65,7 @@ public class GameController extends Controller implements Initializable {
     private List<StackcardxcardDto> allStackcardxcard;
     private List<VBox> columns = new ArrayList<>(); // columnas
     private List<Pane> ladderList = new ArrayList<>();
-    private ColorAdjust colorAdjust = new ColorAdjust();    
+    private ColorAdjust colorAdjust = new ColorAdjust();
     private Mensaje message = new Mensaje();
     private String style;
     private Timeline currentTime;
@@ -191,7 +191,7 @@ public class GameController extends Controller implements Initializable {
                 StackcardxcardDto newStackcardxcardDto;
                 List<StackcardxcardDto> newStackcardxcardDtoList = new ArrayList<>();
                 newStackcardxcardDtoList = SaveStackcardxcardList();
-                if (newStackcardxcardDtoList!=null) {
+                if (newStackcardxcardDtoList != null) {
                     for (int i = 0; i < 10; i++) {
                         newStackcardxcardDto = newStackcardxcardDtoList.get(i);
                         allStacks.get(i).getStackCardxCards().add(newStackcardxcardDto);
@@ -209,8 +209,8 @@ public class GameController extends Controller implements Initializable {
             }
         }
     }
-    
-    public void cleanList(){
+
+    public void cleanList() {
         allStacks.clear();
         allStackcardxcard.clear();
         ladderList.clear();
@@ -240,7 +240,7 @@ public class GameController extends Controller implements Initializable {
             answer = stackcardxcardService.getListStackcardxCard((List<StackcardxcardDto>) answer.getResultado("Stackcardxcard"));
             if (answer.getEstado()) {
                 newStackcardxcardDtoList.clear();
-                newStackcardxcardDtoList=(List<StackcardxcardDto>) answer.getResultado("StackcardxCard");
+                newStackcardxcardDtoList = (List<StackcardxcardDto>) answer.getResultado("StackcardxCard");
                 return newStackcardxcardDtoList;
             }
         }
@@ -341,7 +341,7 @@ public class GameController extends Controller implements Initializable {
                 }
                 return false;
             }
-            return false; 
+            return false;
         } catch (Exception e) {
             message.showModal(Alert.AlertType.ERROR, "Error en verificación", getStage(), "No se pudo verificar el movimiento: " + e.getMessage());
             return false;
@@ -591,12 +591,17 @@ public class GameController extends Controller implements Initializable {
 
     private void deleteFullSuit(VBox from) {     //Borra un palo completo, cuando se alcanza la escalera de As a K
         List<Node> cards = from.getChildren();
-        for (int i = cards.size(); i > 13; i--) {
-            removeCardCurrentColumn(from, (Pane)cards);
-            addCardCurrentColumn(from, (Pane)cards, true);
+        int sizeVbox = from.getChildren().size();
+        if (sizeVbox > 13) {
+            for (int i = 0; i < 13; i++) {
+                if (sizeVbox - i > 0 && sizeVbox - i < cards.size()) {
+                    addCardCurrentColumn(from, (Pane) cards.get(sizeVbox - i), true);// Error
+                    removeCardCurrentColumn(from, (Pane) cards.get(sizeVbox - i));
+                }
+            }
         }
     }
-    
+
     private void moveToFullSuit(ImageView fillSuitImage, Point2D ubication) {
         List<ImageView> suits = new ArrayList<>();
         for (Node node : hBoxSuits.getChildren()) {
@@ -714,7 +719,7 @@ public class GameController extends Controller implements Initializable {
                 for (Pane pane : ladderList) {
                     pane.setVisible(false);
                 }
-                
+
                 space.setOnMouseDragged(dragEvent -> {  // Evento al arrastrar la carta
                     System.out.println("Hello drag");
                     copyCard.setLayoutX(dragEvent.getSceneX() - copyCard.getFitWidth() / 2);
@@ -747,10 +752,10 @@ public class GameController extends Controller implements Initializable {
                         pane.setVisible(true);
                     }
                 });
-                
+
             }
         });
-        
+
         return space;
     }
 
@@ -767,11 +772,11 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
-    public void addCardCurrentColumn (VBox newColumn, Pane pane, Boolean isLastColumn) {
+    public void addCardCurrentColumn(VBox newColumn, Pane pane, Boolean isLastColumn) {
         int indexNewColumn = columns.indexOf(newColumn);
         if (indexNewColumn != -1 && (allStacks != null && !allStacks.isEmpty())) {
             if (isLastColumn) {
-                indexNewColumn = 11;
+                indexNewColumn = 10;
             }
             StackcardDto newStackCard = allStacks.get(indexNewColumn);
             StackcardxcardDto card = searchStackcardxcardDto(pane);
@@ -800,8 +805,8 @@ public class GameController extends Controller implements Initializable {
     private String timerFormat(int totalSeconds) {
         return String.format("Tiempo: %02d:%02d", (totalSeconds / 60), (totalSeconds % 60));
     }
-    
-    private void setupTimer() {        
+
+    private void setupTimer() {
         currentTime = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             timeCalculate++;
             lblTimer.setText(timerFormat(timeCalculate));
@@ -812,7 +817,7 @@ public class GameController extends Controller implements Initializable {
         }));
         currentTime.setCycleCount(timeLimit);
     }
-    
+
     private void setupBackground(String rute) { //Manipula la ruta que del fondo para adecuarla al anchorpane
         BackgroundImage backgroundImage = new BackgroundImage(new Image(rute),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -840,7 +845,7 @@ public class GameController extends Controller implements Initializable {
         }
         String rute = ImagesUtil.getBackCardPath(setupStyle());
         mgvMaze.setImage(new Image(rute));
-        if(!isContinueGame() && !isTimerStarted){
+        if (!isContinueGame() && !isTimerStarted) {
             lblTimer.setText("Tiempo: 00:00");
         }
         columns.clear();

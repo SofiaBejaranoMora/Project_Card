@@ -125,6 +125,8 @@ public class GameController extends Controller implements Initializable {
             }
             GameService serviceGame = new GameService();
             StackcardxcardService serviceStackcardxcard = new StackcardxcardService();
+            cards.size();
+            allStackcardxcard.size();
             Respuesta answerGame = serviceGame.EditGameId(game, cards);
             Respuesta answerStackcardxcard = serviceStackcardxcard.updateStackcardxCardList(allStackcardxcard);
             if (answerGame.getEstado() && answerStackcardxcard.getEstado()) {
@@ -208,7 +210,6 @@ public class GameController extends Controller implements Initializable {
                             return;
                         }
                     }
-                    setupBoard();
                 }
             } else {
                 message.showModal(Alert.AlertType.WARNING, "¡Alto ahí, tahúr impaciente!", getStage(), "¡No puedes repartir si una columna está vacía.!\n\n"

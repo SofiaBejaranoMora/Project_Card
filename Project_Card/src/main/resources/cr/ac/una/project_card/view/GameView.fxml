@@ -135,7 +135,7 @@
                      </HBox.margin>
                   </MFXButton>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <MFXButton id="GameButton" fx:id="btnUndo" onAction="#onActionBtnUndo" prefHeight="42.0" prefWidth="239.0" styleClass="btnUndo" stylesheets="@Style.css" text="Deshacer" HBox.hgrow="ALWAYS">
+                  <MFXButton id="GameButton" fx:id="btnHelp" onAction="#onActionBtnHelp" prefHeight="42.0" prefWidth="239.0" styleClass="btnHelpGame" stylesheets="@Style.css" text="Ayuda" HBox.hgrow="ALWAYS">
                      <graphic>
                         <VBox prefHeight="30.0" prefWidth="30.0">
                            <children>

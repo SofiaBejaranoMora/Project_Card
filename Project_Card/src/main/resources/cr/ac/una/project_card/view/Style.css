@@ -87,8 +87,8 @@
     -fx-image: url("../resources/ProgramImages/CluesIcon.png");
 }
 
-.btnUndo > VBox >  ImageView {
-    -fx-image: url("../resources/ProgramImages/UndoIcon.png");
+.btnHelpGame > VBox >  ImageView {
+    -fx-image: url("../resources/ProgramImages/HelpGameIcon.png");
 }
 
 .btnBack > ImageView {

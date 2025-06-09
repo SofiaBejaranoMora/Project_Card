@@ -96,7 +96,7 @@ public class GameController extends Controller implements Initializable {
     @FXML
     private MFXButton btnClues;
     @FXML
-    private MFXButton btnUndo;
+    private MFXButton btnHelp;
     @FXML
     private AnchorPane root;
     @FXML
@@ -185,13 +185,16 @@ public class GameController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionBtnUndo(ActionEvent event) {
+    private void onActionBtnHelp(ActionEvent event) {
         AnimationAndSound.buttonSound();
     }
 
     @FXML
     private void onMouseClickedMgvMaze(MouseEvent event) {
         AnimationAndSound.buttonSound();
+        originalPoints -= 100;    // Quita -1pt para mantener los puntos al día
+        lblPoints.setText("Puntuación: " + originalPoints);
+        managementPoints();
         if (!cards.isEmpty()) {
 
             if (enableAddingCardsColumns()) {
@@ -555,6 +558,12 @@ public class GameController extends Controller implements Initializable {
         return null;
     }
 
+    private void managementPoints() {
+        if (originalPoints == 0){
+            //Perdió
+        }
+    }
+    
     private void loadGame() {
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             Long gameId = (Long) AppContext.getInstance().get("IdCurrentGame");
@@ -750,6 +759,7 @@ public class GameController extends Controller implements Initializable {
                         turnCards(actualColumn);    //Voltea las cartas de espaldas
                         originalPoints -= 1;    // Quita -1pt para mantener los puntos al día
                         lblPoints.setText("Puntuación: " + originalPoints);
+                        managementPoints();
                     } else if (isFullSuit(actualColumn, space)) {
                         ImageView spaceImage = (ImageView) space.getChildren().get(0);
                         moveToFullSuit(spaceImage, mousePosition);
@@ -827,6 +837,7 @@ public class GameController extends Controller implements Initializable {
             lblTimer.setText(timerFormat(timeCalculate));
             if (timeCalculate == timeLimit) {
                 currentTime.stop();
+                //Perdió
             }
             //Logros
         }));

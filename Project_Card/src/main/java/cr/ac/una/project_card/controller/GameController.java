@@ -76,6 +76,7 @@ public class GameController extends Controller implements Initializable {
     private Timeline currentTime;
     private int timeLimit;
     private int timeCalculate;
+    private int fillSuits = 7;
     private Boolean isTimerStarted = false;
 
     // Listas de cartas por tipo
@@ -610,13 +611,16 @@ public class GameController extends Controller implements Initializable {
     }
     
     private void moveToFullSuit(ImageView fillSuitImage, Point2D ubication) {
-        List<ImageView> suits = hBoxSuits.getChildren().stream()
-                .filter(node -> node instanceof ImageView)
-                .map(node -> (ImageView) node)
-                .collect(Collectors.toList());
-        for (ImageView suit : suits) {
-            if(suit.contains(ubication)){
-                suit.setImage((Image) fillSuitImage.getImage());
+        List<ImageView> suits = new ArrayList<>();
+        for (Node node : hBoxSuits.getChildren()) {
+            if (node instanceof ImageView) {
+                suits.add((ImageView) node);
+            }
+        }
+        for (int i = hBoxSuits.getChildren().size() - 1; i >= 0; i++) {
+            if (i == fillSuits) {
+                suits.get(i).setImage(fillSuitImage.getImage());
+                fillSuits -= 1;
             }
         }
     }
@@ -742,8 +746,9 @@ public class GameController extends Controller implements Initializable {
                         turnCards(actualColumn);    //Voltea las cartas de espaldas
                         // Agregar el -1pt para mantener los puntos al día
                     } else if (isFullSuit(actualColumn, space)) {
-                        moveToFullSuit((ImageView) space.getChildren(), mousePosition);
-                        deleteFullSuit(newColumn);
+                        ImageView spaceImage = (ImageView) space.getChildren().get(0);
+                        moveToFullSuit(spaceImage, mousePosition);
+                        deleteFullSuit(actualColumn);
                         turnCards(actualColumn);
                     }
 

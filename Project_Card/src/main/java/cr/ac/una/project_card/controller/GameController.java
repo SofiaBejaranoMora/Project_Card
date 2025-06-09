@@ -424,6 +424,25 @@ public class GameController extends Controller implements Initializable {
         }
         return  false;
     }
+    
+    private Boolean isFullSuit(VBox from, Pane highCard) {
+        int indexCard = from.getChildren().indexOf(highCard);
+        int indexColumn = columns.indexOf(from);
+        List<StackcardxcardDto> cards = allStacks.get(indexColumn).getStackCardxCards();
+        
+        String suitType = cards.get(indexCard).getCard().getType();
+        Long expectedNumber = cards.get(indexCard).getCard().getNumber();
+        for (int i = indexCard + 1; i < cards.size(); i++) {
+            
+            String currentSuit = cards.get(i).getCard().getType();
+            Long currentNumber = cards.get(i).getCard().getNumber();
+            if (!currentSuit.equals(suitType) || currentNumber != expectedNumber - 1) {
+                return false;
+            }
+            expectedNumber = currentNumber;
+        }
+        return true;
+    }
         
     private void highlightMove(Pane startCard, VBox destColumn) {
         try {
@@ -565,7 +584,6 @@ public class GameController extends Controller implements Initializable {
     private void deleteFullSuit(VBox from) {     //Borra un palo completo, cuando se alcanza la escalera de As a K
         List<Node> cards = from.getChildren();
         for (int i = cards.size(); i > 13; i--) {
-            game.setScore(game.getScore() + 100);
             cards.remove(i);    //Agregar los 100pts por completar palos
         }
     }
@@ -701,11 +719,15 @@ public class GameController extends Controller implements Initializable {
 
             if (newColumn != null && enableCardMove(newColumn, space)) {
                 for (Pane pane : ladderList) {
-                    removeCardCurrenColumn(actualColumn, pane);
-                    addCardCurrenColumn(newColumn, pane);
+                    removeCardCurrentColumn(actualColumn, pane);
+                    addCardCurrentColumn(newColumn, pane);
                 }
                 turnCards(actualColumn);    //Voltea las cartas de espaldas
                 // Agregar el -1pt para mantener los puntos al día
+            } else if (isFullSuit(actualColumn, space)) {
+                moveToFullSuit((ImageView) space.getChildren(), mousePosition);
+                deleteFullSuit(newColumn);
+                turnCards(actualColumn);
             }
 
             root.getChildren().remove(copyCard);
@@ -717,7 +739,7 @@ public class GameController extends Controller implements Initializable {
         return space;
     }
 
-    public void removeCardCurrenColumn(VBox currentColumn, Pane pane) {
+    public void removeCardCurrentColumn(VBox currentColumn, Pane pane) {
         int indexCurrentColumn = columns.indexOf(currentColumn);
         if (indexCurrentColumn != -1 && (allStacks != null && !allStacks.isEmpty())) {
             StackcardDto currentStackCard = allStacks.get(indexCurrentColumn);
@@ -730,7 +752,7 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
-    public void addCardCurrenColumn(VBox newColumn, Pane pane) {
+    public void addCardCurrentColumn(VBox newColumn, Pane pane) {
         int indexNewColumn = columns.indexOf(newColumn);
         if (indexNewColumn != -1 && (allStacks != null && !allStacks.isEmpty())) {
             StackcardDto newStackCard = allStacks.get(indexNewColumn);

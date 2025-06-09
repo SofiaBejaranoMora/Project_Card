@@ -198,6 +198,14 @@ public class AnimationAndSound {
         }
     }
     
+    public static void wrongActionSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/wrongActionSound.wav");
+        if (url != null) {
+            AudioClip clip = new AudioClip(url.toString());
+            clip.play();
+        }
+    }
+    
     public static void clueMovesSound() {
         URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/clueMovesSound.wav");
         if (url != null) {

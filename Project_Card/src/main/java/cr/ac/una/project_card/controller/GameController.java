@@ -198,7 +198,6 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onMouseClickedMgvMaze(MouseEvent event) {
-
         if (!cards.isEmpty()) {
             AnimationAndSound.buttonSound();
             originalPoints -= 100;    // Quita -1pt para mantener los puntos al día
@@ -827,6 +826,8 @@ public class GameController extends Controller implements Initializable {
                         moveToFullSuit(spaceImage, mousePosition);
                         deleteFullSuit(actualColumn);
                         turnCards(actualColumn);
+                    } else {
+                        AnimationAndSound.wrongActionSound();
                     }
 
                     root.getChildren().remove(copyCard);
@@ -835,6 +836,8 @@ public class GameController extends Controller implements Initializable {
                     }
                 });
 
+            } else {
+                AnimationAndSound.wrongActionSound();
             }
         });
 
@@ -968,7 +971,7 @@ public class GameController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        AnimationAndSound.starGameSound();
+        AnimationAndSound.startGameSound();
         loadGame();
         loadAchievementNotObtained();
         style = game.getDifficulty() + "";

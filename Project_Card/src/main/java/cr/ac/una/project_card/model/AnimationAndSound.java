@@ -238,8 +238,8 @@ public class AnimationAndSound {
         }
     }
     
-    public static void starGameSound() {
-        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/starGameSound.wav");
+    public static void startGameSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/startGameSound.wav");
         if (url != null) {
             AudioClip clip = new AudioClip(url.toString());
             clip.play();

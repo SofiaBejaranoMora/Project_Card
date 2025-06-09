@@ -76,6 +76,100 @@ public class AnimationAndSound {
         startTransition.play();
     }
     
+    public static void winTransition(Pane animationPane, Runnable change) {
+        Pane panel = new Pane();
+        ImageView image = new ImageView();
+        ImageView gif = new ImageView();
+
+        double width = animationPane.getWidth();
+        double heigth = animationPane.getHeight();
+
+        image.setImage(new Image(ImagesUtil.getAnimationImage("WinCaseBackground")));
+        gif.setImage(new Image(ImagesUtil.getAnimationGif("winGif")));
+        gif.setFitWidth(390);
+        gif.setFitHeight(390);
+        panel.getChildren().add(image);
+        panel.getChildren().add(gif);
+        animationPane.getChildren().add(panel);
+        animationPane.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            panel.setPrefHeight(newHeight.doubleValue());
+            image.setFitHeight(newHeight.doubleValue());
+        });
+        panel.setPrefWidth(width);
+        panel.setPrefHeight(heigth);
+        image.setFitHeight(heigth);
+        image.setPreserveRatio(true);
+        panel.setLayoutX(width);
+        gif.layoutXProperty().bind(panel.widthProperty().subtract(gif.fitWidthProperty()).divide(0.8));
+        gif.setLayoutY((heigth / 2) - 195);
+        
+        Timeline startTransition = new Timeline();
+        startTransition.getKeyFrames().add(new KeyFrame(Duration.millis(2500),
+                new KeyValue(panel.layoutXProperty(), -300)));
+
+        Timeline finishTransition = new Timeline();
+        finishTransition.getKeyFrames().add(new KeyFrame(Duration.millis(2500),
+                new KeyValue(panel.layoutXProperty(), -width * 2)));
+
+        finishTransition.setOnFinished(e -> {
+            animationPane.getChildren().remove(panel);
+        });
+
+        startTransition.setOnFinished(e -> {
+            change.run();
+            finishTransition.play();
+        });
+
+        startTransition.play();
+    }
+    
+    public static void looseTransition(Pane animationPane, Runnable change) {
+        Pane panel = new Pane();
+        ImageView image = new ImageView();
+        ImageView gif = new ImageView();
+
+        double width = animationPane.getWidth();
+        double heigth = animationPane.getHeight();
+
+        image.setImage(new Image(ImagesUtil.getAnimationImage("LooseCaseBackground")));
+        gif.setImage(new Image(ImagesUtil.getAnimationGif("looseGif")));
+        gif.setFitWidth(390);
+        gif.setFitHeight(390);
+        panel.getChildren().add(image);
+        panel.getChildren().add(gif);
+        animationPane.getChildren().add(panel);
+        animationPane.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            panel.setPrefHeight(newHeight.doubleValue());
+            image.setFitHeight(newHeight.doubleValue());
+        });
+        panel.setPrefWidth(width);
+        panel.setPrefHeight(heigth);
+        image.setFitHeight(heigth);
+        image.setPreserveRatio(true);
+        panel.setLayoutX(width);
+        gif.layoutXProperty().bind(panel.widthProperty().subtract(gif.fitWidthProperty()).divide(0.8));
+        gif.setLayoutY((heigth / 2) - 195);
+        
+        Timeline startTransition = new Timeline();
+        startTransition.getKeyFrames().add(new KeyFrame(Duration.millis(2500),
+                new KeyValue(panel.layoutXProperty(), -300)));
+
+        Timeline finishTransition = new Timeline();
+        finishTransition.getKeyFrames().add(new KeyFrame(Duration.millis(2500),
+                new KeyValue(panel.layoutXProperty(), -width * 2)));
+
+        finishTransition.setOnFinished(e -> {
+            animationPane.getChildren().remove(panel);
+        });
+
+        startTransition.setOnFinished(e -> {
+            change.run();
+            finishTransition.play();
+        });
+
+        startTransition.play();
+    }
+    
     public static void turnCardsAnimation(ImageView card, Image newCard) {
         card.setRotationAxis(new Point3D(1, 0, 0));
         card.setRotate(0);
@@ -130,6 +224,38 @@ public class AnimationAndSound {
     
     public static void multiUseSound() {
         URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/multiUseSound.wav");
+        if (url != null) {
+            AudioClip clip = new AudioClip(url.toString());
+            clip.play();
+        }
+    }
+    
+    public static void starGameSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/starGameSound.wav");
+        if (url != null) {
+            AudioClip clip = new AudioClip(url.toString());
+            clip.play();
+        }
+    }
+    
+    public static void winSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/winSound.wav");
+        if (url != null) {
+            AudioClip clip = new AudioClip(url.toString());
+            clip.play();
+        }
+    }
+    
+    public static void looseSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/looseSound.wav");
+        if (url != null) {
+            AudioClip clip = new AudioClip(url.toString());
+            clip.play();
+        }
+    }
+    
+    public static void aboutOfEntranceSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/aboutOfEntranceSound.wav");
         if (url != null) {
             AudioClip clip = new AudioClip(url.toString());
             clip.play();

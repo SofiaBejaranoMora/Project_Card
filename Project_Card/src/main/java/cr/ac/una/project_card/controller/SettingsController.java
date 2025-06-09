@@ -25,14 +25,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-/** * FXML Controller class * * @author ashly */
+/**
+ * * FXML Controller class * * @author ashly
+ */
 public class SettingsController extends Controller implements Initializable {
 
     private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/Cards/Backs/";
     Mensaje message = new Mensaje();
     private File selectedFile;
     private PlayerDto player;
-    
+
     @FXML
     private AnchorPane root;
     @FXML
@@ -50,8 +52,8 @@ public class SettingsController extends Controller implements Initializable {
     @FXML
     private Button btnPersonalizeBack;
     private ImageView mgvPersonalized;
-    
-       @FXML
+
+    @FXML
     private void onActionBtnBack(ActionEvent event) {
         AnimationAndSound.buttonSound();
         FlowController.getInstance().goView("MenuView");
@@ -79,15 +81,24 @@ public class SettingsController extends Controller implements Initializable {
 
         player.setCardStyle(Long.valueOf(1));
         System.out.println(player);
-        
+
         PlayerService playerService = new PlayerService();
         Respuesta answer = playerService.EditPlayerId(player);// tercera linea de error
-        
+
         if (answer.getEstado()) {
             this.player = (PlayerDto) answer.getResultado("Jugador");
+
+            answer = playerService.getPlayerName(player.getName());
+            if (answer != null && answer.getEstado()) {
+                this.player = (PlayerDto) answer.getResultado("Jugador");
+            } else {
+                message.showModal(Alert.AlertType.WARNING, "¡Ups! Esta carta no quiso cambiar de traje.", getStage(), "No pudimos actualizar tu perfil con el nuevo estilo de espalda. \n\n"
+                        + "Cierra sesión e inicia nuevamente para asegurarte de que tus partidas y logros reflejen tu toque personal con todo su esplendor..");
+            }
+
             AppContext.getInstance().set("CurrentUser", player);
             message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
-        
+
         } else {
             message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
         }
@@ -103,15 +114,24 @@ public class SettingsController extends Controller implements Initializable {
 
         player.setCardStyle(Long.valueOf(2));
         System.out.println(player);
-        
+
         PlayerService playerService = new PlayerService();
         Respuesta answer = playerService.EditPlayerId(player);// tercera linea de error
-        
+
         if (answer.getEstado()) {
             this.player = (PlayerDto) answer.getResultado("Jugador");
+
+            answer = playerService.getPlayerName(player.getName());
+            if (answer != null && answer.getEstado()) {
+                this.player = (PlayerDto) answer.getResultado("Jugador");
+            } else {
+                message.showModal(Alert.AlertType.WARNING, "¡Ups! Esta carta no quiso cambiar de traje.", getStage(), "No pudimos actualizar tu perfil con el nuevo estilo de espalda. \n\n"
+                        + "Cierra sesión e inicia nuevamente para asegurarte de que tus partidas y logros reflejen tu toque personal con todo su esplendor..");
+            }
+
             AppContext.getInstance().set("CurrentUser", player);
             message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
-        
+
         } else {
             message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
         }
@@ -127,15 +147,24 @@ public class SettingsController extends Controller implements Initializable {
 
         player.setCardStyle(Long.valueOf(3));
         System.out.println(player);
-        
+
         PlayerService playerService = new PlayerService();
         Respuesta answer = playerService.EditPlayerId(player);// tercera linea de error
-        
+
         if (answer.getEstado()) {
             this.player = (PlayerDto) answer.getResultado("Jugador");
+
+            answer = playerService.getPlayerName(player.getName());
+            if (answer != null && answer.getEstado()) {
+                this.player = (PlayerDto) answer.getResultado("Jugador");
+            } else {
+                message.showModal(Alert.AlertType.WARNING, "¡Ups! Esta carta no quiso cambiar de traje.", getStage(), "No pudimos actualizar tu perfil con el nuevo estilo de espalda. \n\n"
+                        + "Cierra sesión e inicia nuevamente para asegurarte de que tus partidas y logros reflejen tu toque personal con todo su esplendor..");
+            }
+
             AppContext.getInstance().set("CurrentUser", player);
             message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
-        
+
         } else {
             message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
         }
@@ -156,9 +185,9 @@ public class SettingsController extends Controller implements Initializable {
             mgvPersonalized.setImage(image);
         }
     }
-    
+
     private void savePersonalizedBack() {
-        if(selectedFile != null) {
+        if (selectedFile != null) {
             if (player == null) {
                 message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
                 return;
@@ -167,20 +196,29 @@ public class SettingsController extends Controller implements Initializable {
             try {
                 String savePath = saveRoute + player.getId() + ".png";
                 Path destination = Path.of(savePath);
-                
+
                 Files.createDirectories(destination.getParent());
                 Files.copy(selectedFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
-                                
-                player.setCardBackImageName(player.getId()+"");
+
+                player.setCardBackImageName(player.getId() + "");
                 PlayerService playerService = new PlayerService();
                 Respuesta answer = playerService.EditPlayerId(player);// tercera linea de error
-                
+
                 if (answer.getEstado()) {
                     this.player = (PlayerDto) answer.getResultado("Jugador");
+
+                    answer = playerService.getPlayerName(player.getName());
+                    if (answer != null && answer.getEstado()) {
+                        this.player = (PlayerDto) answer.getResultado("Jugador");
+                    } else {
+                        message.showModal(Alert.AlertType.WARNING, "¡Ups! Esta carta no quiso cambiar de traje.", getStage(), "No pudimos actualizar tu perfil con el nuevo estilo de espalda. \n\n"
+                                + "Cierra sesión e inicia nuevamente para asegurarte de que tus partidas y logros reflejen tu toque personal con todo su esplendor..");
+                    }
+
                     AppContext.getInstance().set("CurrentUser", player);
                     message.showModal(Alert.AlertType.INFORMATION, "Selección de espalda", getStage(), "La espalda personalizada se guardo correctamente");
-               
-                }else {
+
+                } else {
                     message.showModal(Alert.AlertType.ERROR, "Selección de espalda", getStage(), answer.getMensaje());
                 }
             } catch (IOException e) {
@@ -190,7 +228,7 @@ public class SettingsController extends Controller implements Initializable {
             message.showModal(Alert.AlertType.WARNING, "Selección de espalda", getStage(), "No hay imagen seleccionada para guardar.");
         }
     }
- 
+
     private void fitCards(Button btn) {
         btn.setMinWidth(126);
         btn.prefWidthProperty().bind(root.widthProperty().divide(4.4));
@@ -218,7 +256,7 @@ public class SettingsController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @Override
     public void initialize() {
@@ -228,7 +266,7 @@ public class SettingsController extends Controller implements Initializable {
         fitCards(btnPersonalizeBack);
         fitBackgrounds(btnGrassBackground);
         fitBackgrounds(btnWoodBackground);
-        player =  (PlayerDto) AppContext.getInstance().get("CurrentUser");
+        player = (PlayerDto) AppContext.getInstance().get("CurrentUser");
     }
 
 }

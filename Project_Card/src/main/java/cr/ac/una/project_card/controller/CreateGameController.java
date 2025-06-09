@@ -210,7 +210,7 @@ public class CreateGameController extends Controller implements Initializable {
                 answer = playerService.getPlayerId(player.getId());
                 player = (PlayerDto) answer.getResultado("Jugador");
                 if (answer.getEstado()) {
-                    //animació
+                    AnimationAndSound.achievementSound();
                 }
             }
         }
@@ -221,7 +221,7 @@ public class CreateGameController extends Controller implements Initializable {
                 answer = playerService.getPlayerId(player.getId());
                 player = (PlayerDto) answer.getResultado("Jugador");
                 if (answer.getEstado()) {
-                    //animació
+                    AnimationAndSound.achievementSound();
                 }
             }
         }

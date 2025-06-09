@@ -884,7 +884,7 @@ public class GameController extends Controller implements Initializable {
                     if (answer.getEstado() != null && answer.getEstado()) {
                         System.out.println("logro: " + achievementDto.getName());
                         achievementNotObtainedTime.remove(index);
-                        //animación
+                        AnimationAndSound.achievementSound();
                     }
                 }
             } else {
@@ -893,7 +893,7 @@ public class GameController extends Controller implements Initializable {
                     if (answer.getEstado() != null && answer.getEstado()) {
                         System.out.println("logro: " + achievementDto.getName());
                         achievementNotObtainedTime.remove(index);
-                        //animación
+                        AnimationAndSound.achievementSound();
                     }
                 }
             }
@@ -923,6 +923,7 @@ public class GameController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
+        AnimationAndSound.starGameSound();
         loadGame();
         loadAchievementNotObtained();
         style = game.getDifficulty() + "";

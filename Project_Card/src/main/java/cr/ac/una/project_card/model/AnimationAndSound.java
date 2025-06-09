@@ -99,17 +99,17 @@ public class AnimationAndSound {
         panel.setPrefHeight(heigth);
         image.setFitHeight(heigth);
         image.setPreserveRatio(true);
-        panel.setLayoutX(width);
+        panel.setLayoutY(-heigth);
         gif.layoutXProperty().bind(panel.widthProperty().subtract(gif.fitWidthProperty()).divide(0.8));
-        gif.setLayoutY((heigth / 2) - 195);
+        gif.layoutYProperty().bind(panel.heightProperty().subtract(gif.fitHeightProperty()).divide(0.8));
         
         Timeline startTransition = new Timeline();
         startTransition.getKeyFrames().add(new KeyFrame(Duration.millis(2500),
-                new KeyValue(panel.layoutXProperty(), -300)));
+                new KeyValue(panel.layoutXProperty(), 0)));
 
         Timeline finishTransition = new Timeline();
         finishTransition.getKeyFrames().add(new KeyFrame(Duration.millis(2500),
-                new KeyValue(panel.layoutXProperty(), -width * 2)));
+                new KeyValue(panel.layoutXProperty(), heigth)));
 
         finishTransition.setOnFinished(e -> {
             animationPane.getChildren().remove(panel);
@@ -146,17 +146,17 @@ public class AnimationAndSound {
         panel.setPrefHeight(heigth);
         image.setFitHeight(heigth);
         image.setPreserveRatio(true);
-        panel.setLayoutX(width);
+        panel.setLayoutY(heigth);
         gif.layoutXProperty().bind(panel.widthProperty().subtract(gif.fitWidthProperty()).divide(0.8));
-        gif.setLayoutY((heigth / 2) - 195);
-        
+        gif.layoutYProperty().bind(panel.heightProperty().subtract(gif.fitHeightProperty()).divide(0.8));
+
         Timeline startTransition = new Timeline();
         startTransition.getKeyFrames().add(new KeyFrame(Duration.millis(2500),
-                new KeyValue(panel.layoutXProperty(), -300)));
+                new KeyValue(panel.layoutYProperty(), 0)));
 
         Timeline finishTransition = new Timeline();
         finishTransition.getKeyFrames().add(new KeyFrame(Duration.millis(2500),
-                new KeyValue(panel.layoutXProperty(), -width * 2)));
+                new KeyValue(panel.layoutXProperty(), -heigth)));
 
         finishTransition.setOnFinished(e -> {
             animationPane.getChildren().remove(panel);

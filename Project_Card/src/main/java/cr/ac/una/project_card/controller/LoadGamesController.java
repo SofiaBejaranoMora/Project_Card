@@ -38,8 +38,6 @@ public class LoadGamesController extends Controller implements Initializable {
     @FXML
     private TableColumn<GameDto, String> cmnSaveGames;
     @FXML
-    private MFXButton btnDelete;
-    @FXML
     private MFXButton btnContinue;
     @FXML
     private Button btnStatistics;
@@ -54,18 +52,6 @@ public class LoadGamesController extends Controller implements Initializable {
     private void onActionBtnBack(ActionEvent event) {
         AnimationAndSound.buttonSound();
         FlowController.getInstance().goView("MenuView");
-    }
-
-    @FXML
-    private void onActionBtnDelete(ActionEvent event) {
-        AnimationAndSound.buttonSound();
-        GameDto selectedGame = tbvSaveGames.getSelectionModel().getSelectedItem();
-        if (selectedGame != null) {
-            saveGames.remove(selectedGame);
-            observableSaveGames.setAll(saveGames);
-        } else {
-            message.showModal(Alert.AlertType.WARNING, "Eliminar partida", getStage(), "Por favor selecciona una partida antes de eliminar.");
-        }
     }
 
     @FXML

@@ -53,8 +53,6 @@
             <HBox alignment="CENTER" prefHeight="42.0" prefWidth="600.0">
                <children>
                   <HBox prefHeight="42.0" prefWidth="143.0" />
-                  <MFXButton id="SystemButton" fx:id="btnDelete" onAction="#onActionBtnDelete" stylesheets="@Style.css" text="Eliminar" HBox.hgrow="ALWAYS" />
-                  <HBox prefHeight="42.0" prefWidth="157.0" />
                   <MFXButton id="SystemButton" fx:id="btnContinue" onAction="#onActionBtnContinue" stylesheets="@Style.css" text="Continuar" HBox.hgrow="ALWAYS" />
                   <HBox prefHeight="42.0" prefWidth="153.0" />
                </children>

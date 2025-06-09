@@ -100,6 +100,7 @@ public class UserSessionController extends Controller implements Initializable {
                 AppContext.getInstance().set("CurrentUser", player);
                 buttonManager(3);
                 lblCurrentPoints.setText("0");
+                AnimationAndSound.multiUseSound();
                 message.showModal(Alert.AlertType.INFORMATION, "Inicio de sesión", getStage(), "Sesión creada con éxito, disfrute del juego.");
                 AppContext.getInstance().set("hasSectionStarted", true);
                 FlowController.getInstance().goView("MenuView");
@@ -127,6 +128,7 @@ public class UserSessionController extends Controller implements Initializable {
             AppContext.getInstance().set("CurrentUser", player);
             AppContext.getInstance().set("hasSectionStarted", true);
             message.showModal(Alert.AlertType.INFORMATION, "Inicio de sesión", getStage(), "Sesión iniciada con éxito, disfrute del juego.");
+            AnimationAndSound.multiUseSound();
             lblCurrentPoints.setText(player.getAccumulatedPoint().toString());
             mgvUserPhoto.setImage(new Image("file:" + saveRoute + currentName + ".png"));
 
@@ -155,6 +157,7 @@ public class UserSessionController extends Controller implements Initializable {
                         Files.move(oldFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                         AppContext.getInstance().set("CurrentUser", player);
                         message.showModal(Alert.AlertType.INFORMATION, "Editar Jugador", getStage(), "Sesión editada con éxito, disfrute del juego.");
+                        AnimationAndSound.multiUseSound();
                         mgvUserPhoto.setImage(new Image("file:" + saveRoute + currentName + ".png"));
 
                     } else {
@@ -206,7 +209,7 @@ public class UserSessionController extends Controller implements Initializable {
                     answer = playerService.getPlayerId(player.getId());
                     player = (PlayerDto) answer.getResultado("Jugador");
                     if (answer.getEstado()) {
-                        //animació
+                        AnimationAndSound.achievementSound();
                     }
                 }
             }
@@ -216,7 +219,7 @@ public class UserSessionController extends Controller implements Initializable {
                     answer = playerService.getPlayerId(player.getId());
                     player = (PlayerDto) answer.getResultado("Jugador");
                     if (answer.getEstado()) {
-                        //animación
+                        AnimationAndSound.achievementSound();
                     }
                 }
             }

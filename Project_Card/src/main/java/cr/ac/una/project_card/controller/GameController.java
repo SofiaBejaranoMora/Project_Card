@@ -1064,6 +1064,7 @@ public class GameController extends Controller implements Initializable {
     @Override
     public void initialize() {
         AnimationAndSound.startGameSound();
+        chargeUnfinishGameList= new ArrayList<>();
         loadGame();
         loadAchievementNotObtained();
         style = game.getDifficulty() + "";

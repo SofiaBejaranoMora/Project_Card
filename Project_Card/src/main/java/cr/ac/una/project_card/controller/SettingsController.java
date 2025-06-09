@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 /** * FXML Controller class * * @author ashly */
 public class SettingsController extends Controller implements Initializable {
 
-    private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/Cards/";
+    private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/Cards/Backs/";
     Mensaje message = new Mensaje();
     private File selectedFile;
     private PlayerDto player;

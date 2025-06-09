@@ -535,7 +535,7 @@ public class GameController extends Controller implements Initializable {
                     }
                 }
             } else {
-                message.showModal(Alert.AlertType.WARNING, "Sin movimientos", getStage(), "No hay movimientos válidos. ¡Estamos jodidos");
+                message.showModal(Alert.AlertType.WARNING, "Sin movimientos", getStage(), "No hay movimientos válidos.");
             }
         } catch (Exception e) {
             message.showModal(Alert.AlertType.ERROR, "Error en pista", getStage(), "Algo salió mal al buscar pista: " + e.getMessage());
@@ -602,8 +602,9 @@ public class GameController extends Controller implements Initializable {
         if (sizeVbox > 13) {
             for (int i = 0; i < 13; i++) {
                 if (sizeVbox - i > 0 && sizeVbox - i < cards.size()) {
-                    addCardCurrentColumn(from, (Pane) cards.get(sizeVbox - i), true);// Error
-                    removeCardCurrentColumn(from, (Pane) cards.get(sizeVbox - i));
+                    Pane card = (Pane) cards.get(sizeVbox - i);
+                    addCardCurrentColumn(from, card, true);
+                    removeCardCurrentColumn(from, card);
                 }
             }
         }
@@ -653,8 +654,9 @@ public class GameController extends Controller implements Initializable {
             if (!ubication.getIsFaceUp()) {
                 ubication.setIsFaceUp(true);
                 String rute = ImagesUtil.getCardPath(player.getCardStyle() + "/", cardDto.getNumber() + cardDto.getType());
+                Image cardImage = new Image(rute);
                 ImageView card = (ImageView) toTurn.getChildren().get(0);
-                card.setImage(new Image(rute));
+                AnimationAndSound.turnCardsAnimation(card, cardImage);
             }
         }
     }
@@ -693,7 +695,8 @@ public class GameController extends Controller implements Initializable {
         } else {
             cardPath = ImagesUtil.getBackCardPath(setupStyle());
         }
-        card.setImage(new Image(cardPath));
+        Image cardImage = new Image(cardPath);
+        AnimationAndSound.turnCardsAnimation(card, cardImage);
 
         space.setId(String.valueOf(stackcardxcardDto.getId()));
         card.fitWidthProperty().bind(width);

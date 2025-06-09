@@ -81,12 +81,12 @@ public class AnimationAndSound {
         card.setRotate(0);
         Timeline firstPartRotate = new Timeline();
         firstPartRotate.getKeyFrames().add(
-                new KeyFrame(Duration.millis(1500),
+                new KeyFrame(Duration.millis(150),
                 new KeyValue(card.rotateProperty(), 90)));
         
         Timeline secondPartRotate = new Timeline();
         secondPartRotate.getKeyFrames().add(
-                new KeyFrame(Duration.millis(1500),
+                new KeyFrame(Duration.millis(150),
                 new KeyValue(card.rotateProperty(), 0)));
         
         firstPartRotate.setOnFinished(e -> {
@@ -104,8 +104,16 @@ public class AnimationAndSound {
         }
     }
     
-    public static void clueSound() {
-        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/clueSound.wav");
+    public static void clueMovesSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/clueMovesSound.wav");
+        if (url != null) {
+            AudioClip clip = new AudioClip(url.toString());
+            clip.play();
+        }
+    }
+    
+    public static void clueNoMovesSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/clueNoMovesSound.wav");
         if (url != null) {
             AudioClip clip = new AudioClip(url.toString());
             clip.play();

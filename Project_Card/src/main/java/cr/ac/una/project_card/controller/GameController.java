@@ -350,34 +350,31 @@ public class GameController extends Controller implements Initializable {
 
     private Boolean hasValidMoves() {
         try {
-            for (int col = 0; col < columns.size(); col++) {
-                VBox column = columns.get(col);
-                List<StackcardxcardDto> cards = allStacks.get(col).getStackCardxCards();
+            for (int col = 0; col < 10; col++) {
+                VBox column = columns.get(col); // Solo para compatibilidad con isValidSequence
+                List<StackcardxcardDto> cards = allStacks.get(col).getStackCardxCards(); // Usamos las cartas actualizadas del modelo
                 if (!cards.isEmpty() && cards.get(cards.size() - 1).getIsFaceUp()) {
                     int startIndex = cards.size() - 1;
                     while (startIndex > 0 && cards.get(startIndex - 1).getIsFaceUp()) {
                         startIndex--;
                     }
-                    if (isValidSequence(column, (Pane) column.getChildren().get(startIndex))) {
-                        for (int destCol = 0; destCol < columns.size(); destCol++) {
+                    // Usamos el Pane correspondiente desde la vista para isValidSequence
+                    Pane startPane = (Pane) column.getChildren().get(startIndex);
+                    if (isValidSequence(column, startPane)) {
+                        for (int destCol = 0; destCol < 10; destCol++) {
                             if (destCol != col) {
-                                VBox destColumn = columns.get(destCol);
-                                StackcardxcardDto topCard;
-                                if (destColumn.getChildren().isEmpty()) {
-                                    topCard = null;
-                                } else {
-                                    topCard = searchStackcardxcardDto((Pane) destColumn.getChildren().get(destColumn.getChildren().size() - 1));
-                                }
-                                boolean canMove;
-                                List<Node> children = destColumn.getChildren();
+                                VBox destColumn = columns.get(destCol); // Para compatibilidad
+                                List<StackcardxcardDto> destCards = allStacks.get(destCol).getStackCardxCards();
+                                StackcardxcardDto topCard = destCards.isEmpty() ? null : destCards.get(destCards.size() - 1);
 
-                                if (children.isEmpty()) {
+                                boolean canMove;
+                                if (destCards.isEmpty()) {
                                     canMove = true;
                                 } else {
                                     if (topCard != null) {
                                         canMove = isValidColumnMove(destColumn, cards.get(startIndex).getCard().getType(), cards.get(startIndex).getCard().getNumber());
                                     } else {
-                                        canMove = false; 
+                                        canMove = false;
                                     }
                                 }
                                 if (canMove) {
@@ -394,7 +391,7 @@ public class GameController extends Controller implements Initializable {
             return false;
         }
     }
-
+    
     private Boolean isContinueGame() {
         timeLimit = game.getTime().intValue();
         int timeUsed = 0;
@@ -488,7 +485,7 @@ public class GameController extends Controller implements Initializable {
     private void suggestMove() {
         try {
             if (hasValidMoves()) {
-                for (int col = 0; col < columns.size(); col++) {
+                for (int col = 0; col < 10; col++) {
                     VBox column = columns.get(col); // ¿Qué cartas tiene esta columna según el modelo?
                     List<StackcardxcardDto> cards = allStacks.get(col).getStackCardxCards();
                     if (!cards.isEmpty() && cards.get(cards.size() - 1).getIsFaceUp()) {
@@ -500,7 +497,7 @@ public class GameController extends Controller implements Initializable {
                         // ¿Es esta secuencia válida desde 'startIndex' hasta el final?
                         if (isValidSequence(column, (Pane) column.getChildren().get(startIndex))) {
                             // ¡Encontramos una secuencia! Ahora buscamos un destino
-                            for (int destCol = 0; destCol < columns.size(); destCol++) {
+                            for (int destCol = 0; destCol < 10; destCol++) {
                                 if (destCol != col) {
                                     VBox destColumn = columns.get(destCol);
                                     StackcardxcardDto topCard;

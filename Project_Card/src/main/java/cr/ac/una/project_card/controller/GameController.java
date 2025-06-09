@@ -391,7 +391,7 @@ public class GameController extends Controller implements Initializable {
             return false;
         }
     }
-    
+
     private Boolean isValidColumnMove(VBox destColumn, String sourceSuit, Long sourceNumber) {
         try {
             if (destColumn.getChildren().isEmpty()) {
@@ -518,6 +518,23 @@ public class GameController extends Controller implements Initializable {
         return expectedNumber == 1;
     }
 
+    private Boolean isEndGame() {
+        int empty = 0;
+        if (cards.isEmpty()) {
+            for (VBox column : columns) {
+                if (column.getChildren().isEmpty()) {
+                    empty++;
+                }
+            }
+            if (empty == 10) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
     private void highlightMove(Pane startCard, VBox destColumn) {
         try {
             DropShadow cardGlow = new DropShadow();
@@ -618,9 +635,13 @@ public class GameController extends Controller implements Initializable {
         for (int i = 0; i < achievementNotObtainedPoint.size(); i++) {
             UploadAchievement(achievementNotObtainedPoint.get(i), originalPoints, true, i);
         }
-        
+
         if (originalPoints == 0) {
-            //perdio
+            game.setHasWon("F");
+            AnimationAndSound.looseSound();
+            AnimationAndSound.looseTransition(root, () -> {
+                onActionBtnBack(null);
+            });
         }
 
     }
@@ -680,7 +701,7 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
-    private void moveToFullSuit(ImageView fillSuitImage, Point2D ubication) {
+    private void moveToFullSuit(ImageView fillSuitImage) {
         List<ImageView> suits = new ArrayList<>();
         for (Node node : hBoxSuits.getChildren()) {
             if (node instanceof ImageView) {
@@ -693,6 +714,11 @@ public class GameController extends Controller implements Initializable {
                 fillSuits -= 1;
                 originalPoints += 100;  //Da 100 por completar el palo
                 lblPoints.setText("Puntuación: " + originalPoints);
+                if(isEndGame()) {
+                    game.setHasWon("T");
+                    AnimationAndSound.winSound();
+                    AnimationAndSound.winTransition(root, () -> { onActionBtnBack(null); });
+                }
             }
         }
     }
@@ -822,8 +848,9 @@ public class GameController extends Controller implements Initializable {
                         lblPoints.setText("Puntuación: " + originalPoints);
                         managementPoints();
                     } else if (isFullSuit(actualColumn, space)) {
-                        ImageView spaceImage = (ImageView) space.getChildren().get(0);
-                        moveToFullSuit(spaceImage, mousePosition);
+                        Pane asPane = (Pane) actualColumn.getChildren().get(actualColumn.getChildren().size() -1);
+                        ImageView spaceImage = (ImageView) asPane.getChildren().get(0);
+                        moveToFullSuit(spaceImage);
                         deleteFullSuit(actualColumn);
                         turnCards(actualColumn);
                     } else {
@@ -908,7 +935,9 @@ public class GameController extends Controller implements Initializable {
 
             if (timeCalculate == timeLimit) {
                 currentTime.stop();
-                //Perdió
+                game.setHasWon("F");
+                AnimationAndSound.looseSound();
+                AnimationAndSound.looseTransition(root, () -> { onActionBtnBack(null); });
             }
 
         }));

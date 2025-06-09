@@ -82,13 +82,11 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void OnActionBtnRegisterSession(ActionEvent event) {
-        AnimationAndSound.buttonSound();
         sessionChecker(true);
     }
 
     @FXML
     private void OnActionBtnStartSession(ActionEvent event) {
-        AnimationAndSound.buttonSound();
         sessionChecker(false);
     }
 
@@ -104,7 +102,8 @@ public class MenuController extends Controller implements Initializable {
         FlowController.getInstance().salir();
     }
 
-    private void sessionChecker(boolean situation) {
+    private void sessionChecker(boolean situation) {        
+        AnimationAndSound.buttonSound();
         AppContext.getInstance().set("isRegisterSession", situation);
         FlowController.getInstance().goView("UserSessionView");
     }

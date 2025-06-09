@@ -348,6 +348,51 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
+    private Boolean isValidSequence(List<StackcardxcardDto> columnCards, CardDto card) {
+        try {
+            // Buscar el índice de la carta inicial en la lista
+            int indexPane = -1;
+            for (int i = 0; i < columnCards.size(); i++) {
+                if (columnCards.get(i).getCard().getNumber().equals(card.getNumber())
+                        && columnCards.get(i).getCard().getType().equals(card.getType())
+                        && columnCards.get(i).getIsFaceUp()) {
+                    indexPane = i;
+                    break;
+                }
+            }
+            if (indexPane == -1) {
+                System.out.println("Carta no encontrada o no boca arriba: " + card.getNumber() + card.getType());
+                return false;
+            }
+
+            // Verificar que todas las cartas desde indexPane hasta el final estén boca arriba
+            for (int i = indexPane; i < columnCards.size(); i++) {
+                if (!columnCards.get(i).getIsFaceUp()) {
+                    System.out.println("Carta en posición " + i + " no está boca arriba");
+                    return false;
+                }
+            }
+
+            // Verificar que la secuencia sea descendente y del mismo palo
+            String suitType = columnCards.get(indexPane).getCard().getType();
+            Long expectedNumber = columnCards.get(indexPane).getCard().getNumber();
+            for (int i = indexPane + 1; i < columnCards.size(); i++) {
+                String currentSuit = columnCards.get(i).getCard().getType();
+                Long currentNumber = columnCards.get(i).getCard().getNumber();
+                if (!currentSuit.equals(suitType) || !currentNumber.equals(expectedNumber - 1)) {
+                    System.out.println("Secuencia inválida en posición " + i + ": " + currentNumber + currentSuit + " vs esperado " + (expectedNumber - 1) + suitType);
+                    return false;
+                }
+                expectedNumber = currentNumber;
+            }
+            System.out.println("Secuencia válida desde índice " + indexPane + " con " + (columnCards.size() - indexPane) + " cartas");
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error en isValidSequence: " + e.getMessage());
+            return false;
+        }
+    }
+    
     private Boolean isValidColumnMove(VBox destColumn, String sourceSuit, Long sourceNumber) {
         try {
             if (destColumn.getChildren().isEmpty()) {
@@ -382,7 +427,7 @@ public class GameController extends Controller implements Initializable {
                     }
                     // Usamos el Pane correspondiente desde la vista para isValidSequence
                     Pane startPane = (Pane) column.getChildren().get(startIndex);
-                    if (isValidSequence(column, startPane)) {
+                    if (isValidSequence(cards, cards.get(startIndex).getCard())) {
                         for (int destCol = 0; destCol < 10; destCol++) {
                             if (destCol != col) {
                                 VBox destColumn = columns.get(destCol); // Para compatibilidad

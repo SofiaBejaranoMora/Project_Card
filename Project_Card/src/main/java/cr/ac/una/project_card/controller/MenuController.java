@@ -47,6 +47,7 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnNew(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         if (hasStarted) {
             FlowController.getInstance().goView("CreateGameView");
         } else {
@@ -57,6 +58,7 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnContinue(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         if (hasStarted) {
             FlowController.getInstance().goView("LoadGamesView");
         } else {
@@ -67,6 +69,7 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnAchievements(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         if (hasStarted) {
             FlowController.getInstance().goView("AchievementsView");
         } else {
@@ -77,16 +80,19 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void OnActionBtnRegisterSession(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         sessionChecker(true);
     }
 
     @FXML
     private void OnActionBtnStartSession(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         sessionChecker(false);
     }
 
     @FXML
     private void onActionBtnExit(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         FlowController.getInstance().salir();
     }
 

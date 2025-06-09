@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.AnimationAndSound;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.util.AppContext;
@@ -146,7 +147,6 @@ public class UserStatisticController extends Controller implements Initializable
         configurePlayedGames();
     }
     
-    
     private void configureAcumulatePoints() {
         Long totalPoints = (player != null && player.getAccumulatedPoint() != null) ? player.getAccumulatedPoint() : 0L;
         lblAcomulatePoints.setText(totalPoints.toString());
@@ -229,10 +229,11 @@ public class UserStatisticController extends Controller implements Initializable
         configureBestPuntuation();
         configureAveragePoints();
     }
+    
     @FXML
     private void onActionBtnBack(ActionEvent event) {
-        
-     FlowController.getInstance().goView("MenuView");
+        AnimationAndSound.buttonSound();
+        FlowController.getInstance().goView("MenuView");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cr.ac.una.project_card.controller;
 
 import cr.ac.una.project_card.model.AchievementDto;
+import cr.ac.una.project_card.model.AnimationAndSound;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.service.AchievementsService;
 import cr.ac.una.project_card.util.AppContext;
@@ -77,17 +78,20 @@ public class AchievementsController extends Controller implements Initializable 
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         clean();
         FlowController.getInstance().goView("MenuView");
     }
 
     @FXML
     private void onActionBtnStatistics(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         FlowController.getInstance().goView("UserStatisticView");
     }
 
     @FXML
     private void onActionBtnSearchAchievementNotObtained(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         String selectionType = cmbSearchNotObtainedAchievementType.getValue();
         String name = txtSearchNotObtainedAchievementsName.getText();
         if (((selectionType != null) && !selectionType.isBlank()) || ((name != null) && !name.isEmpty())) {
@@ -108,6 +112,7 @@ public class AchievementsController extends Controller implements Initializable 
 
     @FXML
     private void onActionBtnSearchAchievementObtained(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         String selectionType = cmbSearchAchievementObtainedType.getValue();
         String name = txtSearchNameAchievementObtained.getText();
         if (((selectionType != null) && !selectionType.isBlank()) || ((name != null) && !name.isEmpty())) {

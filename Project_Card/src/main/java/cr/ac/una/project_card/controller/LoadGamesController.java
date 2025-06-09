@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.AnimationAndSound;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.util.AppContext;
@@ -45,16 +46,19 @@ public class LoadGamesController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnStatistics(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         FlowController.getInstance().goView("UserStatisticView");
     }
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         FlowController.getInstance().goView("MenuView");
     }
 
     @FXML
     private void onActionBtnDelete(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         GameDto selectedGame = tbvSaveGames.getSelectionModel().getSelectedItem();
         if (selectedGame != null) {
             saveGames.remove(selectedGame);
@@ -66,6 +70,7 @@ public class LoadGamesController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnContinue(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         game = tbvSaveGames.getSelectionModel().getSelectedItem();
         
         if (game != null && game.getName() != null && !game.getName().trim().isEmpty()) {

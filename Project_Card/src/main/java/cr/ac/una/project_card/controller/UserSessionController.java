@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.AnimationAndSound;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.service.AchievementsService;
 import cr.ac.una.project_card.service.PlayerService;
@@ -61,6 +62,7 @@ public class UserSessionController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnUploadPhoto(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar imagen");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));
@@ -76,6 +78,7 @@ public class UserSessionController extends Controller implements Initializable {
 
     @FXML
     private void onActionRegisterUser(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         currentName = txfUserName.getText().trim();
         PlayerService playerService = new PlayerService();
         Respuesta checkUser = playerService.getPlayerName(currentName);
@@ -108,6 +111,7 @@ public class UserSessionController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnStartSession(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         buttonManager(3);
         currentName = txfUserName.getText().trim();
         //buscar usuario
@@ -135,6 +139,7 @@ public class UserSessionController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnEdit(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         if ((Boolean) AppContext.getInstance().get("hasSectionStarted")) {
             File oldFile = new File(saveRoute + currentName + ".png");
             File newFile = new File(saveRoute + txfUserName.getText().trim() + ".png");
@@ -166,6 +171,7 @@ public class UserSessionController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnCloseSession(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         AppContext.getInstance().set("hasSectionStarted", false);
         AppContext.getInstance().set("isRegisterSession", true);
         mgvUserPhoto.setImage(null);
@@ -178,6 +184,7 @@ public class UserSessionController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         FlowController.getInstance().goView("MenuView");
     }
 

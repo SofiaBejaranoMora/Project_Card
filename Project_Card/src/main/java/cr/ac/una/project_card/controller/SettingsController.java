@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.AnimationAndSound;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.service.PlayerService;
 import cr.ac.una.project_card.util.AppContext;
@@ -52,21 +53,25 @@ public class SettingsController extends Controller implements Initializable {
     
        @FXML
     private void onActionBtnBack(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         FlowController.getInstance().goView("MenuView");
     }
 
     @FXML
     private void onActionBtnGrassBackground(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         AppContext.getInstance().set("Background", "GrassBackground");
     }
 
     @FXML
     private void onActionBtnWoodBackground(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         AppContext.getInstance().set("Background", "WoodBackground");
     }
 
     @FXML
     private void onActionBtnNormalMass(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         if (player == null) {
             message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
             return;
@@ -90,6 +95,7 @@ public class SettingsController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnMandalaMass(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         if (player == null) {
             message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
             return;
@@ -113,6 +119,7 @@ public class SettingsController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnVictoriaMass(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         if (player == null) {
             message.showModal(Alert.AlertType.ERROR, "Usuario indefinido", getStage(), "El usuario está vacío o no existe.");
             return;
@@ -136,6 +143,7 @@ public class SettingsController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnPersonalizeBack(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar imagen");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg"));

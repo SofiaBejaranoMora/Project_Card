@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.AnimationAndSound;
 import cr.ac.una.project_card.model.CardDto;
 import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
@@ -107,6 +108,7 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         if ((game != null) && (allStackcardxcard != null && !allStackcardxcard.isEmpty())) {
             if (timeCalculate != 0) {
                 currentTime = new Timeline();
@@ -154,6 +156,7 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnSizeScreen(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         if (isBigScreen) {
@@ -171,20 +174,24 @@ public class GameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         FlowController.getInstance().goView("SettingsView");
     }
 
     @FXML
     private void onActionBtnClues(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         suggestMove();
     }
 
     @FXML
     private void onActionBtnUndo(ActionEvent event) {
+        AnimationAndSound.buttonSound();
     }
 
     @FXML
     private void onMouseClickedMgvMaze(MouseEvent event) {
+        AnimationAndSound.buttonSound();
         if (!cards.isEmpty()) {
 
             if (enableAddingCardsColumns()) {

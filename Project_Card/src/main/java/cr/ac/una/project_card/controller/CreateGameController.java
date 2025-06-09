@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.AnimationAndSound;
 import cr.ac.una.project_card.model.CardDto;
 import cr.ac.una.project_card.model.Game;
 import cr.ac.una.project_card.model.GameDto;
@@ -110,35 +111,41 @@ public class CreateGameController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnEasyMode(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         player.setCardBackImageName(easyCardBack);
         signDifficulty(1L);
     }
 
     @FXML
     private void onActionBtnMediumMode(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         player.setCardBackImageName(mediumCardBack);
         signDifficulty(2L);
     }
 
     @FXML
     private void onActionBtnHardMode(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         player.setCardBackImageName(hardCardBack);
         signDifficulty(3L);
     }
 
     @FXML
     private void onActionBtnBack(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         cleanView();
         FlowController.getInstance().goView("MenuView");
     }
 
     @FXML
     private void onActionBtnHowToPlay(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         //POR IMPLEMENTAR, AGREGAR LAS INSTRUCCIONES
     }
 
     @FXML
     private void onActionBtnStartGame(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         if (validatingDataBeforeStart()) {
             Long time = 600L;
             if (difficulty == 2L) {

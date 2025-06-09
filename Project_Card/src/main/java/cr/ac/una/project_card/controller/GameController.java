@@ -585,7 +585,8 @@ public class GameController extends Controller implements Initializable {
     private void deleteFullSuit(VBox from) {     //Borra un palo completo, cuando se alcanza la escalera de As a K
         List<Node> cards = from.getChildren();
         for (int i = cards.size(); i > 13; i--) {
-            cards.remove(i);    //Agregar los 100pts por completar palos
+            removeCardCurrentColumn(from, (Pane)cards);
+            addCardCurrentColumn(from, (Pane)cards, true);
         }
     }
     
@@ -721,7 +722,7 @@ public class GameController extends Controller implements Initializable {
             if (newColumn != null && enableCardMove(newColumn, space)) {
                 for (Pane pane : ladderList) {
                     removeCardCurrentColumn(actualColumn, pane);
-                    addCardCurrentColumn(newColumn, pane);
+                    addCardCurrentColumn(newColumn, pane, false);
                 }
                 turnCards(actualColumn);    //Voltea las cartas de espaldas
                 // Agregar el -1pt para mantener los puntos al día
@@ -753,15 +754,21 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
-    public void addCardCurrentColumn(VBox newColumn, Pane pane) {
+    public void addCardCurrentColumn (VBox newColumn, Pane pane, Boolean isLastColumn) {
         int indexNewColumn = columns.indexOf(newColumn);
         if (indexNewColumn != -1 && (allStacks != null && !allStacks.isEmpty())) {
+            if (isLastColumn) {
+                indexNewColumn = 11;
+            }
             StackcardDto newStackCard = allStacks.get(indexNewColumn);
             StackcardxcardDto card = searchStackcardxcardDto(pane);
             if (newStackCard != null && card != null) {
                 newStackCard.getStackCardxCards().add(card);
                 card.setStackCard(newStackCard);
-                newColumn.getChildren().add(pane);
+                card.setPositionNumber(Long.valueOf(newColumn.getChildren().size() + 1));
+                if (!isLastColumn) {
+                    newColumn.getChildren().add(pane);
+                }
             }
         }
     }

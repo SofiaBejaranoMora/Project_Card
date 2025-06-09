@@ -403,48 +403,66 @@ public class GameController extends Controller implements Initializable {
         }
     }
 
-    private Boolean isContinueGame() {        
+    private Boolean isContinueGame() {
         timeLimit = game.getTime().intValue();
         int timeUsed = 0;
         if (game.getDifficulty() == null) {
             return false;
         } else {
-            if(game.getDifficulty() == 3L){
+            if (game.getDifficulty() == 3L) {
                 timeUsed = (int) 1260L - timeLimit;
-            }
-            else if(game.getDifficulty() == 2L){
+            } else if (game.getDifficulty() == 2L) {
                 timeUsed = (int) 992L - timeLimit;
             } else {
                 timeUsed = (int) 600L - timeLimit;
             }
         }
-        if(timeUsed != 0 && timeUsed != 1260 && timeUsed != 992 && timeUsed != 600) {
+        if (timeUsed != 0 && timeUsed != 1260 && timeUsed != 992 && timeUsed != 600) {
             timeCalculate = timeUsed;
             lblTimer.setText(timerFormat(timeUsed));
             return true;
         }
-        return  false;
+        return false;
     }
-    
+
     private Boolean isFullSuit(VBox from, Pane highCard) {
-        int indexCard = from.getChildren().indexOf(highCard);
         int indexColumn = columns.indexOf(from);
         List<StackcardxcardDto> cards = allStacks.get(indexColumn).getStackCardxCards();
-        
-        String suitType = cards.get(indexCard).getCard().getType();
-        Long expectedNumber = cards.get(indexCard).getCard().getNumber();
-        for (int i = indexCard + 1; i < cards.size(); i++) {
-            
-            String currentSuit = cards.get(i).getCard().getType();
-            Long currentNumber = cards.get(i).getCard().getNumber();
+
+        if (cards.size() < 13) {
+            return false;
+        }
+
+        int indexCard = cards.indexOf(allStackcardxcard.stream()
+                .filter(stack -> stack.getId() == Integer.parseInt(highCard.getId()))
+                .findFirst()
+                .orElse(null));
+
+        if (indexCard == -1 || indexCard > cards.size() - 13) {
+            return false;
+        }
+
+        List<StackcardxcardDto> last13Cards = cards.subList(indexCard, indexCard + 13);
+        String suitType = last13Cards.get(0).getCard().getType();
+        Long expectedNumber = last13Cards.get(0).getCard().getNumber();
+
+        if (expectedNumber != 13) {
+            return false;
+        }
+
+        for (int i = 1; i < last13Cards.size(); i++) {
+            String currentSuit = last13Cards.get(i).getCard().getType();
+            Long currentNumber = last13Cards.get(i).getCard().getNumber();
+
             if (!currentSuit.equals(suitType) || currentNumber != expectedNumber - 1) {
                 return false;
             }
             expectedNumber = currentNumber;
         }
-        return true;
+
+        return expectedNumber == 1;
     }
-        
+
     private void highlightMove(Pane startCard, VBox destColumn) {
         try {
             DropShadow cardGlow = new DropShadow();
@@ -460,10 +478,10 @@ public class GameController extends Controller implements Initializable {
             columnGlow.setSpread(0.5);
             destColumn.setEffect(columnGlow);
             destColumn.setStyle("-fx-border-color: green; -fx-border-width: 3; -fx-border-radius: 5;");
-            
+
             PauseTransition pause = new PauseTransition(Duration.seconds(3)); // 3 segundos
             pause.setOnFinished(event -> {
-                startCard.setStyle(""); 
+                startCard.setStyle("");
                 startCard.setEffect(null);
                 destColumn.setStyle("");
                 destColumn.setEffect(null);
@@ -665,8 +683,7 @@ public class GameController extends Controller implements Initializable {
         String cardPath;
 
         if (isFaceUp) {
-            cardPath = ImagesUtil.getCardPath(player.getCardStyle() + "/",
-                    cardDto.getNumber() + cardDto.getType());
+            cardPath = ImagesUtil.getCardPath(player.getCardStyle() + "/", cardDto.getNumber() + cardDto.getType());
         } else {
             cardPath = ImagesUtil.getBackCardPath(setupStyle());
         }
@@ -703,41 +720,41 @@ public class GameController extends Controller implements Initializable {
                 for (Pane pane : ladderList) {
                     pane.setVisible(false);
                 }
+                
+                space.setOnMouseDragged(dragEvent -> {  // Evento al arrastrar la carta
+                    System.out.println("Hello drag");
+                    copyCard.setLayoutX(dragEvent.getSceneX() - copyCard.getFitWidth() / 2);
+                    copyCard.setLayoutY(dragEvent.getSceneY() - copyCard.getFitHeight() / 2);
+                });
 
+                space.setOnMouseReleased(releaseEvent -> {  // Evento al soltar la carta
+                    System.out.println("Bye drag");
+                    Point2D mousePosition = new Point2D(releaseEvent.getSceneX(), releaseEvent.getSceneY());
+                    VBox newColumn = getColumn(mousePosition);  //Vbox llegada
+                    VBox actualColumn = (VBox) space.getParent();   //Vbox salida
+
+                    if (newColumn != null && enableCardMove(newColumn, space)) {
+                        for (Pane pane : ladderList) {
+                            removeCardCurrentColumn(actualColumn, pane);
+                            addCardCurrentColumn(newColumn, pane, false);
+                        }
+                        turnCards(actualColumn);    //Voltea las cartas de espaldas
+                        // Agregar el -1pt para mantener los puntos al día
+                    } else if (isFullSuit(actualColumn, space)) {
+                        moveToFullSuit((ImageView) space.getChildren(), mousePosition);
+                        deleteFullSuit(newColumn);
+                        turnCards(actualColumn);
+                    }
+
+                    root.getChildren().remove(copyCard);
+                    for (Pane pane : ladderList) {
+                        pane.setVisible(true);
+                    }
+                });
+                
             }
         });
-
-        space.setOnMouseDragged(dragEvent -> {  // Evento al arrastrar la carta
-            System.out.println("Hello drag");
-            copyCard.setLayoutX(dragEvent.getSceneX() - copyCard.getFitWidth() / 2);
-            copyCard.setLayoutY(dragEvent.getSceneY() - copyCard.getFitHeight() / 2);
-        });
-
-        space.setOnMouseReleased(releaseEvent -> {  // Evento al soltar la carta
-            System.out.println("Bye drag");
-            Point2D mousePosition = new Point2D(releaseEvent.getSceneX(), releaseEvent.getSceneY());
-            VBox newColumn = getColumn(mousePosition);  //Vbox llegada
-            VBox actualColumn = (VBox) space.getParent();   //Vbox salida
-
-            if (newColumn != null && enableCardMove(newColumn, space)) {
-                for (Pane pane : ladderList) {
-                    removeCardCurrentColumn(actualColumn, pane);
-                    addCardCurrentColumn(newColumn, pane, false);
-                }
-                turnCards(actualColumn);    //Voltea las cartas de espaldas
-                // Agregar el -1pt para mantener los puntos al día
-            } else if (isFullSuit(actualColumn, space)) {
-                moveToFullSuit((ImageView) space.getChildren(), mousePosition);
-                deleteFullSuit(newColumn);
-                turnCards(actualColumn);
-            }
-
-            root.getChildren().remove(copyCard);
-            for (Pane pane : ladderList) {
-                pane.setVisible(true);
-            }
-        });
-
+        
         return space;
     }
 

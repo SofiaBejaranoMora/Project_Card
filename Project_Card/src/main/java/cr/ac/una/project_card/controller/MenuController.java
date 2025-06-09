@@ -33,6 +33,8 @@ public class MenuController extends Controller implements Initializable {
     private Button btnExit;
     @FXML
     private MFXButton btnRegisterSession;
+    @FXML
+    private Button btnAboutOf;
 
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
@@ -88,6 +90,12 @@ public class MenuController extends Controller implements Initializable {
     private void OnActionBtnStartSession(ActionEvent event) {
         AnimationAndSound.buttonSound();
         sessionChecker(false);
+    }
+
+    @FXML
+    private void onActionBtnAboutOf(ActionEvent event) {
+        AnimationAndSound.buttonSound();
+        FlowController.getInstance().goView("AboutOfView");
     }
 
     @FXML

@@ -194,6 +194,16 @@
     -fx-effect: dropshadow(gaussian, rgba(153, 153, 153, 1), 5, 10, 0, 1);
 }
 
+#InvisibleButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-size: 14px;
+    -fx-font-family: "Fredoka One";
+    -fx-text-fill: -fx-black-text-color;    
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 1), 5, 10, 0, 1);
+    -fx-font-weight: bold;
+}
+
 .Label {
     -fx-font-size: 16px;
     -fx-text-fill: -fx-black-text-color;

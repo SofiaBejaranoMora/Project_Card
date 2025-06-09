@@ -28,6 +28,7 @@ public class AboutOfController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
+        AnimationAndSound.aboutOfEntranceSound();
     }
 
 }

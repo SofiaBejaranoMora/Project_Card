@@ -5,7 +5,6 @@ import cr.ac.una.project_card.model.GameDto;
 import cr.ac.una.project_card.model.PlayerDto;
 import cr.ac.una.project_card.model.StackcardDto;
 import cr.ac.una.project_card.model.StackcardxcardDto;
-import cr.ac.una.project_card.service.CardService;
 import cr.ac.una.project_card.service.GameService;
 import cr.ac.una.project_card.service.PlayerService;
 import cr.ac.una.project_card.service.StackcardxcardService;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -29,7 +27,6 @@ import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -63,14 +60,11 @@ public class GameController extends Controller implements Initializable {
     // Variables del juego
     private PlayerDto player = new PlayerDto();
     private GameDto game;
-    private ImagesUtil getBackground;
     private Mensaje message = new Mensaje();
     private List<VBox> columns = new ArrayList<>(); // columnas
     private List<CardDto> cards = new ArrayList<>(); // Mazo completo
-    private CardService cardService = new CardService();
     private String style;
     private ColorAdjust colorAdjust = new ColorAdjust();
-    private MouseEvent mouse;
     private List<StackcardxcardDto> allStackcardxcard;
     private List<Pane> ladderList = new ArrayList<>();
     private Timeline currentTime;
@@ -78,12 +72,6 @@ public class GameController extends Controller implements Initializable {
     private int timeCalculate;
     private int fillSuits = 7;
     private Boolean isTimerStarted = false;
-
-    // Listas de cartas por tipo
-    private List<CardDto> corazones = new ArrayList<>();
-    private List<CardDto> picas = new ArrayList<>();
-    private List<CardDto> treboles = new ArrayList<>();
-    private List<CardDto> diamantes = new ArrayList<>();
     private Boolean isBigScreen = false;
     private List<StackcardDto> allStacks = new ArrayList<>();
 

@@ -605,17 +605,9 @@ public class CreateGameController extends Controller implements Initializable {
     }
 
     private void initializeBackCardStyles(PlayerDto player) {
-        if (player != null) {
-            if (player.getCardStyle() == 1) {
-                style = "N";
-            } else if (player.getCardStyle() == 2) {
-                style = "M";
-            } else {
-                style = "V";
-            }
-        } else {
+      
             style = "N";
-        }
+        
 
         easyCardBack = "1" + style;
         mediumCardBack = "2" + style;

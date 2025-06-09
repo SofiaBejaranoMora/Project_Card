@@ -140,7 +140,7 @@ public class CreateGameController extends Controller implements Initializable {
     @FXML
     private void onActionBtnHowToPlay(ActionEvent event) {
         AnimationAndSound.buttonSound();
-        //POR IMPLEMENTAR, AGREGAR LAS INSTRUCCIONES
+        FlowController.getInstance().goViewInWindowModal("InstructionsView", getStage(), false);
     }
 
     @FXML

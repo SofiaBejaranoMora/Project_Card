@@ -67,6 +67,7 @@ public class GameController extends Controller implements Initializable {
     private List<CardDto> cards = new ArrayList<>(); // Mazo completo
     private List<StackcardDto> allStacks = new ArrayList<>();
     private List<StackcardxcardDto> allStackcardxcard;
+    private List<StackcardxcardDto> chargeUnfinishGameList;
     private List<VBox> columns = new ArrayList<>(); // columnas
     private List<Pane> ladderList = new ArrayList<>();
     private List<AchievementDto> achievementNotObtainedTime = new ArrayList();
@@ -132,6 +133,9 @@ public class GameController extends Controller implements Initializable {
             if (answerGame.getEstado() && answerStackcardxcard.getEstado()) {
                 PlayerService servicePlayer = new PlayerService();
                 if (player.getId() != null) {
+                    if (game.getHasWon().equals("F") || game.getHasWon().equals("T")) {
+                        gameAchievements();
+                    }
                     Respuesta answerPlayer = servicePlayer.getPlayerId(player.getId());
                     if (answerPlayer != null && answerPlayer.getEstado()) {
                         this.player = (PlayerDto) answerPlayer.getResultado("Jugador");
@@ -232,11 +236,40 @@ public class GameController extends Controller implements Initializable {
         achievementNotObtainedPoint.clear();
         achievementNotObtainedTime.clear();
         achievementNotObtainedWin.clear();
+        chargeUnfinishGameList.clear();
         allStacks.clear();
         allStackcardxcard.clear();
         ladderList.clear();
         columns.clear();
         cards.clear();
+    }
+
+    public void gameAchievements() {
+        GameService gameService = new GameService();
+        Respuesta answer = new Respuesta();
+        List<GameDto> gameList = new ArrayList<>();
+        int size = 0;
+        if (game.getHasWon().equals("F")) {
+            answer = gameService.getGameParameter(player.getId(), "F");
+            if (answer.getEstado() != null && answer.getEstado()) {
+                gameList = (List<GameDto>) answer.getResultado("Partida");
+                for (int i = 0; i < achievementNotObtainedLose.size(); i++) {
+                    if (UploadAchievement(achievementNotObtainedLose.get(i), gameList.size(), false)) {
+                        achievementNotObtainedLose.remove(i);
+                    }
+                }
+            }
+        } else if (game.getHasWon().equals("T")) {
+            answer = gameService.getGameParameter(player.getId(), "T");
+            if (answer.getEstado() != null && answer.getEstado()) {
+                gameList = (List<GameDto>) answer.getResultado("Partida");
+                for (int i = 0; i < achievementNotObtainedWin.size(); i++) {
+                    if (UploadAchievement(achievementNotObtainedWin.get(i), gameList.size(), false)) {
+                        achievementNotObtainedWin.remove(i);
+                    }
+                }
+            }
+        }
     }
 
     public List<StackcardxcardDto> SaveStackcardxcardList() {
@@ -391,7 +424,7 @@ public class GameController extends Controller implements Initializable {
             return false;
         }
     }
-    
+
     private Boolean isValidColumnMove(VBox destColumn, String sourceSuit, Long sourceNumber) {
         try {
             if (destColumn.getChildren().isEmpty()) {
@@ -616,9 +649,11 @@ public class GameController extends Controller implements Initializable {
 
     private void managementPoints() {
         for (int i = 0; i < achievementNotObtainedPoint.size(); i++) {
-            UploadAchievement(achievementNotObtainedPoint.get(i), originalPoints, true, i);
+            if (UploadAchievement(achievementNotObtainedPoint.get(i), originalPoints, true)) {
+                achievementNotObtainedPoint.remove(i);
+            }
         }
-        
+
         if (originalPoints == 0) {
             //perdio
         }
@@ -637,6 +672,7 @@ public class GameController extends Controller implements Initializable {
                 Respuesta answer = gameService.getGameID(gameId);
                 if (answer != null && answer.getEstado()) {
                     this.game = (GameDto) answer.getResultado("Partida");
+
                     allStackcardxcard = new ArrayList<>();
                     this.cards.addAll(game.getCards());
                     Collections.shuffle(cards, new SecureRandom());
@@ -902,7 +938,9 @@ public class GameController extends Controller implements Initializable {
             lblTimer.setText(timerFormat(timeCalculate));
 
             for (int i = 0; i < achievementNotObtainedTime.size(); i++) {
-                UploadAchievement(achievementNotObtainedTime.get(i), timeCalculate / 60, false, i);
+                if (UploadAchievement(achievementNotObtainedTime.get(i), timeCalculate / 60, false)) {
+                    achievementNotObtainedTime.remove(i);
+                }
 
             }
 
@@ -922,7 +960,7 @@ public class GameController extends Controller implements Initializable {
         root.setBackground(new Background(backgroundImage));
     }
 
-    private void UploadAchievement(AchievementDto achievementDto, int amount, Boolean isPoints, int index) {
+    private Boolean UploadAchievement(AchievementDto achievementDto, int amount, Boolean isPoints) {
         int amountAchievement = achievementDto.getAmount().intValue();
         if (achievementDto != null) {
             Respuesta answer = new Respuesta();
@@ -931,8 +969,8 @@ public class GameController extends Controller implements Initializable {
                     answer = achievementsService.addPlayerAchieveme(player, achievementDto.getName());
                     if (answer.getEstado() != null && answer.getEstado()) {
                         System.out.println("logro: " + achievementDto.getName());
-                        achievementNotObtainedTime.remove(index);
                         AnimationAndSound.achievementSound();
+                        return true;
                     }
                 }
             } else {
@@ -940,12 +978,13 @@ public class GameController extends Controller implements Initializable {
                     answer = achievementsService.addPlayerAchieveme(player, achievementDto.getName());
                     if (answer.getEstado() != null && answer.getEstado()) {
                         System.out.println("logro: " + achievementDto.getName());
-                        achievementNotObtainedTime.remove(index);
                         AnimationAndSound.achievementSound();
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
     public void loadAchievementNotObtained() {
@@ -962,6 +1001,17 @@ public class GameController extends Controller implements Initializable {
                 achievementNotObtainedLose = (List<AchievementDto>) answerLose.getResultado("Logro");
             }
         }
+    }
+
+    public Boolean chargeUnfinishGames() {
+        List<StackcardxcardDto> allStackcardxcardColumn = allStacks.get(10).getStackCardxCards();
+        for (StackcardxcardDto stackcardxcardDto : allStackcardxcardColumn) {
+            if (stackcardxcardDto.getCard().getNumber() == 1L) {
+                chargeUnfinishGameList.add(stackcardxcardDto);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

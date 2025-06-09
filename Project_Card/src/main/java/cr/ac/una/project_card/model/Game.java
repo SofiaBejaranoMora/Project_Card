@@ -32,11 +32,14 @@ import java.util.List;
     @NamedQuery(name = "Game.findById", query = "SELECT g FROM Game g WHERE g.id = :id"),
     @NamedQuery(name = "Game.findByName", query = "SELECT g FROM Game g WHERE g.name = :name"),
     @NamedQuery(name = "Game.findByNamePlayerId", query = "SELECT DISTINCT g FROM Game g JOIN g.player p "
-            + "WHERE p.id = :playerId AND g.name LIKE :name"), /*@NamedQuery(name = "Game.findByGamTime", query = "SELECT g FROM Game g WHERE g.gamTime = :gamTime"),
+            + "WHERE p.id = :playerId AND g.name LIKE :name"),
+    @NamedQuery(name = "Game.findByPlayerIdAndHasWon", query = "SELECT g FROM Game g WHERE g.player.id = :playerId AND g.hasWon = :hasWon"),
+        /*@NamedQuery(name = "Game.findByGamTime", query = "SELECT g FROM Game g WHERE g.gamTime = :gamTime"),
     @NamedQuery(name = "Game.findByGamScore", query = "SELECT g FROM Game g WHERE g.gamScore = :gamScore"),
     @NamedQuery(name = "Game.findByGamVersion", query = "SELECT g FROM Game g WHERE g.gamVersion = :gamVersion"),
     @NamedQuery(name = "Game.findByGamHaswon", query = "SELECT g FROM Game g WHERE g.gamHaswon = :gamHaswon"),
-    @NamedQuery(name = "Game.findByGamDifficulty", query = "SELECT g FROM Game g WHERE g.gamDifficulty = :gamDifficulty")*/})
+    @NamedQuery(name = "Game.findByGamDifficulty", query = "SELECT g FROM Game g WHERE g.gamDifficulty = :gamDifficulty")*/
+})
 public class Game implements Serializable {
 
     private static final long serialVersionUID = 1L;

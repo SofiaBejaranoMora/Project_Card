@@ -86,6 +86,27 @@ public class GameService {
         }
     }
 
+    public Respuesta getGameParameter(Long idPlayer, String hasWon) {
+        try {
+            Query queryGame;
+            queryGame = em.createNamedQuery("Game.findByPlayerIdAndHasWon", Game.class);
+
+            queryGame.setParameter("playerId", idPlayer);
+            queryGame.setParameter("hasWon", hasWon);
+            List<GameDto> gameDtoList = new ArrayList<>();
+            List<Game> gameList = queryGame.getResultList();
+            for (Game game : gameList) {
+                gameDtoList.add(new GameDto(game));
+            }
+            return new Respuesta(true, " ", " ", "Partida", gameDtoList);
+        } catch (NoResultException ex) {
+            return new Respuesta(false, "No existe un partida con las credenciales ingresadas.", "Partida");
+        } catch (Exception ex) {
+            Logger.getLogger(AchievementsService.class.getName()).log(Level.SEVERE, "Error obteniendo los partidas  [" + idPlayer + hasWon + "]", ex);
+            return new Respuesta(false, "Error obtener las partidas.", "Partida " + ex.getMessage());
+        }
+    }
+
     public Respuesta SaveGame(GameDto gameDto, PlayerDto playerDto, List<CardDto> cardDtoList, List<StackcardDto> stackcardDtoList) {
         try {
             et = em.getTransaction();

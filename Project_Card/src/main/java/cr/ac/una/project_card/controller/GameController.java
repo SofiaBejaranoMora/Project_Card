@@ -79,6 +79,7 @@ public class GameController extends Controller implements Initializable {
     private Timeline currentTime;
     private Boolean isTimerStarted = false;
     private Boolean isBigScreen = false;
+    private Boolean areHelpsInabled = false;
     private int originalPoints;
     private int timeLimit;
     private int timeCalculate;
@@ -184,11 +185,19 @@ public class GameController extends Controller implements Initializable {
         AnimationAndSound.buttonSound();
         FlowController.getInstance().goView("SettingsView");
     }
-
-    @FXML
+    
+@FXML
     private void onActionBtnClues(ActionEvent event) {
         AnimationAndSound.buttonSound();
-        suggestMove();
+        if (!areHelpsInabled) {
+            AnimationAndSound.clueMovesSound();
+            suggestMove();
+        } else {
+            AnimationAndSound.clueNoMovesSound();
+            message.showModal(Alert.AlertType.WARNING, "¡Las pistas han desaparecido!", getStage(),
+                    "Parece que has agotado todas las opciones que puedo sugerir. Ahora depende de tu habilidad estratégica y tu ojo de tahúr afilado.\n\n"
+                    + "¿Te arriesgarás a probar un movimiento audaz o confiarás en tu instinto? La victoria sigue siendo posible, pero ahora eres el único maestro de tu destino. ¡Buena suerte!");
+        }
     }
 
     @FXML
@@ -219,6 +228,7 @@ public class GameController extends Controller implements Initializable {
                             return;
                         }
                     }
+                    areHelpsInabled=true;
                 }
             } else {
                 message.showModal(Alert.AlertType.WARNING, "¡Alto ahí, tahúr impaciente!", getStage(), "¡No puedes repartir si una columna está vacía.!\n\n"

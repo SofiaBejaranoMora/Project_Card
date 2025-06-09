@@ -120,7 +120,7 @@ public class GameController extends Controller implements Initializable {
     private void onActionBtnBack(ActionEvent event) {
         if ((game != null) && (allStackcardxcard != null && !allStackcardxcard.isEmpty())) {
             if (timeCalculate != 0) {
-                currentTime.stop();
+                currentTime = new Timeline();
                 isTimerStarted = false;
                 game.setTime(game.getTime() - Long.valueOf(timeCalculate));
             }

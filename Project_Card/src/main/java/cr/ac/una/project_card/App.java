@@ -1,5 +1,6 @@
 package cr.ac.una.project_card;
 
+import cr.ac.una.project_card.model.AnimationAndSound;
 import cr.ac.una.project_card.util.FlowController;
 import io.github.palexdev.materialfx.css.themes.MFXThemeManager;
 import io.github.palexdev.materialfx.css.themes.Themes;
@@ -31,6 +32,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
         FlowController.getInstance().goView("MenuView");
+        AnimationAndSound.playMusic();
     }
 
     public static void setRoot(String fxml) throws IOException {

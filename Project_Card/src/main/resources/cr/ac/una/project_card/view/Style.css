@@ -23,6 +23,10 @@
     -fx-background-position: center center;
 }
 
+.startUpGif {
+    -fx-image: url("../resources/ProgramImages/startUpGif.gif");
+}
+
 .NormalMass {
     -fx-image: url("../resources/ProgramImages/1.png");
 }

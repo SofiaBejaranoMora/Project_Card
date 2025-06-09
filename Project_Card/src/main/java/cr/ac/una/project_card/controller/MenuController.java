@@ -1,5 +1,6 @@
 package cr.ac.una.project_card.controller;
 
+import cr.ac.una.project_card.model.AnimationAndSound;
 import cr.ac.una.project_card.util.AppContext;
 import cr.ac.una.project_card.util.FlowController;
 import cr.ac.una.project_card.util.Mensaje;
@@ -35,6 +36,7 @@ public class MenuController extends Controller implements Initializable {
 
     @FXML
     private void onActionBtnSettings(ActionEvent event) {
+        AnimationAndSound.buttonSound();
         if (hasStarted) {
             FlowController.getInstance().goView("SettingsView");
         } else {

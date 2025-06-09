@@ -1,6 +1,7 @@
 package cr.ac.una.project_card.model;
 
 import cr.ac.una.project_card.util.ImagesUtil;
+import java.net.URL;
 import javafx.scene.media.AudioClip;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -18,8 +19,6 @@ import javafx.util.Duration;
 /** * * * @author ashly */
 public class AnimationAndSound {
 
-private String saveRoute = System.getProperty("user.dir") + "/src/main/resources/cr/ac/una/project_card/resources/Sounds/";
-    
     public static void move(Node node, Point2D rute, Double duration) {
         Timeline timeline = new Timeline();
 
@@ -33,12 +32,17 @@ private String saveRoute = System.getProperty("user.dir") + "/src/main/resources
     public static void startTransition(Pane animationPane, Runnable change) {
         Pane panel = new Pane();
         ImageView image = new ImageView();
+        ImageView gif = new ImageView();
 
         double width = animationPane.getWidth();
         double heigth = animationPane.getHeight();
 
         image.setImage(new Image(ImagesUtil.getAnimationImage("Animation")));
+        gif.setImage(new Image(ImagesUtil.getAnimationGif("changeViewGif")));
+        gif.setFitWidth(390);
+        gif.setFitHeight(390);
         panel.getChildren().add(image);
+        panel.getChildren().add(gif);
         animationPane.getChildren().add(panel);
         animationPane.heightProperty().addListener((obs, oldHeight, newHeight) -> {
             panel.setPrefHeight(newHeight.doubleValue());
@@ -49,7 +53,9 @@ private String saveRoute = System.getProperty("user.dir") + "/src/main/resources
         image.setFitHeight(heigth);
         image.setPreserveRatio(true);
         panel.setLayoutX(width);
-
+        gif.layoutXProperty().bind(panel.widthProperty().subtract(gif.fitWidthProperty()).divide(0.8));
+        gif.setLayoutY((heigth / 2) - 195);
+        
         Timeline startTransition = new Timeline();
         startTransition.getKeyFrames().add(new KeyFrame(Duration.millis(2500),
                 new KeyValue(panel.layoutXProperty(), -300)));
@@ -89,37 +95,41 @@ private String saveRoute = System.getProperty("user.dir") + "/src/main/resources
         });
         firstPartRotate.play();
     }
+    
+    public static void buttonSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/buttonSound.wav");
+        if (url != null) {
+            AudioClip clip = new AudioClip(url.toString());
+            clip.play();
+        }
+    }
+    
+    public static void clueSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/clueSound.wav");
+        if (url != null) {
+            AudioClip clip = new AudioClip(url.toString());
+            clip.play();
+        }
+    }
+    
+    public static void achievementSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/achievementSound.wav");
+        if (url != null) {
+            AudioClip clip = new AudioClip(url.toString());
+            clip.play();
+        }
+    }
+    
+    public static void multiUseSound() {
+        URL url = AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/multiUseSound.wav");
+        if (url != null) {
+            AudioClip clip = new AudioClip(url.toString());
+            clip.play();
+        }
+    }
 
-    public static void startUpGif() {
-        
-    }
-
-    public static void changeViewGif() {
-        
-    }
-    
-    public void buttonSound() {
-        AudioClip clip = new AudioClip(saveRoute + "buttonSound.mp3");
-        clip.play();
-    }
-    
-    public void clueSound() {
-        AudioClip clip = new AudioClip(saveRoute + "clueSound.mp3");
-        clip.play();
-    }
-    
-    public void achievementSound() {
-        AudioClip clip = new AudioClip(saveRoute + "achievementSound.mp3");
-        clip.play();
-    }
-    
-    public void multiUseSound() {
-        AudioClip clip = new AudioClip(saveRoute + "multiUseSound.mp3");
-        clip.play();
-    }
-
-    public void playMusic() {
-        Media media = new Media(saveRoute + "backSound.mp4");
+    public static void playMusic() {
+        Media media = new Media(AnimationAndSound.class.getResource("/cr/ac/una/project_card/resources/Sounds/backSound.mp3").toString());
         MediaPlayer player = new MediaPlayer(media);
         player.setCycleCount(MediaPlayer.INDEFINITE);
         player.play();

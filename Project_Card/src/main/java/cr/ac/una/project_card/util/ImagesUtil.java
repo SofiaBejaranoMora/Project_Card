@@ -89,4 +89,18 @@ public class ImagesUtil {
         }
     }
         
+    public static String getAnimationGif(String nameGif) {
+        try {
+            String path = BASE_PATH + "ProgramImages/" + nameGif + ".gif";
+            if (ImagesUtil.class.getResource(path) == null) {
+                System.err.println("No se encontró la imagen en formato GIF " + nameGif);
+                return null;
+            }
+            return ImagesUtil.class.getResource(path).toExternalForm();
+        } catch (Exception e) {
+            System.err.println("Error cargando imagen " + nameGif + ": " + e.getMessage());
+            return null;
+        }
+    }
+    
 }

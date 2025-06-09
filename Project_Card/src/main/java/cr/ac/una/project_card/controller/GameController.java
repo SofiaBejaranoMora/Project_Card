@@ -71,6 +71,7 @@ public class GameController extends Controller implements Initializable {
     private Timeline currentTime;
     private Boolean isTimerStarted = false;
     private Boolean isBigScreen = false;
+    private int originalPoints;
     private int timeLimit;
     private int timeCalculate;
     private int fillSuits = 7;
@@ -111,6 +112,7 @@ public class GameController extends Controller implements Initializable {
                 currentTime = new Timeline();
                 isTimerStarted = false;
                 game.setTime(game.getTime() - Long.valueOf(timeCalculate));
+                game.setScore(Long.valueOf(originalPoints));
             }
             GameService serviceGame = new GameService();
             StackcardxcardService serviceStackcardxcard = new StackcardxcardService();
@@ -609,6 +611,8 @@ public class GameController extends Controller implements Initializable {
             if (i == fillSuits) {
                 suits.get(i).setImage(fillSuitImage.getImage());
                 fillSuits -= 1;
+                originalPoints += 100;  //Da 100 por completar el palo
+                lblPoints.setText("Puntuación: " + originalPoints);
             }
         }
     }
@@ -732,7 +736,8 @@ public class GameController extends Controller implements Initializable {
                             addCardCurrentColumn(newColumn, pane, false);
                         }
                         turnCards(actualColumn);    //Voltea las cartas de espaldas
-                        // Agregar el -1pt para mantener los puntos al día
+                        originalPoints -= 1;    // Quita -1pt para mantener los puntos al día
+                        lblPoints.setText("Puntuación: " + originalPoints);
                     } else if (isFullSuit(actualColumn, space)) {
                         ImageView spaceImage = (ImageView) space.getChildren().get(0);
                         moveToFullSuit(spaceImage, mousePosition);
@@ -827,6 +832,8 @@ public class GameController extends Controller implements Initializable {
     public void initialize() {
         loadGame();
         style = game.getDifficulty() + "";
+        originalPoints = game.getScore().intValue();
+        lblPoints.setText("Puntuación: " + originalPoints);
         if (AppContext.getInstance().get("Background") == null) {
             String rute = ImagesUtil.getBackground("GrassBackground");
             setupBackground(rute);

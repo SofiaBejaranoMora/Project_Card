@@ -30,13 +30,6 @@
     -fx-background-position: center center;
 }
 
-.InstructionsView {
-    -fx-background-image: url("../resources/ProgramImages/InstructionsView.jpg");
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: 100% 100%;
-    -fx-background-position: center center;
-}
-
 .startUpGif {
     -fx-image: url("../resources/ProgramImages/startUpGif.gif");
 }

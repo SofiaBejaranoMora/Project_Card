@@ -54,7 +54,7 @@
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <Button id="SystemButton" fx:id="btnPersonalizeBack" mnemonicParsing="false" onAction="#onActionBtnPersonalizeBack">
                      <graphic>
-                        <ImageView fx:id="mgvPersonalized" fitHeight="170.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="PersonalizeMass" />
+                        <ImageView fitHeight="170.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="PersonalizeMass" />
                      </graphic>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
